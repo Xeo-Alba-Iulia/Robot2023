@@ -16,7 +16,13 @@ public class prototype extends OpMode {
 
     @Override
     public void loop() {
-        robot.fourbar1.setPower(gamepad2.left_stick_y);
         robot.movement(gamepad1);
+        if (gamepad1.a)
+            robot.claw.setPower(1);
+        else if (gamepad1.b)
+            robot.claw.setPower(-1);
+        else
+            robot.claw.setPower(0);
+        robot.setFourbarPower(gamepad1.right_trigger- gamepad1.left_trigger);
     }
 }
