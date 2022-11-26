@@ -28,7 +28,7 @@ public class prototype extends OpMode {
             robot.claw.setPower(-1);
         else
             robot.claw.setPower(0);
-        robot.setFourbarPower(gamepad1.right_trigger- gamepad1.left_trigger);
+        robot.setFourbarPower(gamepad1.right_trigger - gamepad1.left_trigger);
     }
 
 }

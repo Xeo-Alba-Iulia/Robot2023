@@ -34,8 +34,6 @@ public class RobotHardware {
         frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
         backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
-
-        fourbar1 = myOpMode.hardwareMap.get(DcMotor.class, "MotorFourbar");
         claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
 
         fourbar1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
