@@ -98,9 +98,6 @@ public class RobotHardware {
     }
 
 
-    public void setFourbarPower(double power){
-        fourbar1.setPower(power);
-        fourbar2.setPower(power);
-    }
+
 
 }
