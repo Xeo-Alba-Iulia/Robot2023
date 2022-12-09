@@ -5,6 +5,10 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class RobotHardware {
 
@@ -20,42 +24,41 @@ public class RobotHardware {
     public DcMotor backRight = null;
 
     // Sisteme
-    public DcMotor fourbar1 = null;
-    public DcMotor fourbar2 = null;
+    public DcMotor ridicare = null;
+    public CRServo virtualFourbar = null;
     public CRServo claw = null;
+    public ElapsedTime timer;
+    public Telemetry telemetry;
 
+    // Constants
+    public final double ridicarePos1 = 300;
+    public final double ridicarePos2 = 600;
+    public final double ridicarePos3 = 710;
     // Define a constructor that allows the OpMode to pass a reference to itself.
     public RobotHardware(OpMode opmode) {
         myOpMode = opmode;
     }
 
     public void init() {
+
+        telemetry.addData("sec",timer.seconds());
         frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
         frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
         backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
+        ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
+        virtualFourbar = myOpMode.hardwareMap.get(CRServo.class, "ServoVFB");
         claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
 
-        fourbar1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fourbar2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
-        fourbar1 = myOpMode.hardwareMap.get(DcMotor.class, "MotorFourbar1");
-        fourbar2 = myOpMode.hardwareMap.get(DcMotor.class, "MotorFourbar2");
-
-        fourbar1.setDirection(DcMotorSimple.Direction.REVERSE);
-
-
+        timer.reset();
     }
 
     public void movement(Gamepad gamepad1) {
@@ -88,14 +91,6 @@ public class RobotHardware {
         frontRight.setPower(frontRightPower);
         backRight.setPower(backRightPower);
     }
-
-
-    public void setFourbarPower(double power) {
-        fourbar1.setPower(power);
-        fourbar2.setPower(power);
-    }
-
-
 
 
 }
