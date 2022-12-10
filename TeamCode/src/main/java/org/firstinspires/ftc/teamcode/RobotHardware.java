@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class RobotHardware {
 
@@ -24,8 +23,7 @@ public class RobotHardware {
     public DcMotor ridicare = null;
     public DcMotor virtualFourbar = null;
     public CRServo claw = null;
-    public ElapsedTime timer;
-    public Telemetry telemetry;
+    public ElapsedTime timer = new ElapsedTime();
 
     // Constants & Variables
     public double targetPos = 0;
@@ -39,25 +37,24 @@ public class RobotHardware {
 
     public void init() {
 
-        telemetry.addData("control timer",timer.seconds());
-        frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
-        frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
-        backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
-        backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
+//        frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
+//        frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
+//        backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
+//        backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
-        virtualFourbar = myOpMode.hardwareMap.get(DcMotor.class, "ServoVFB");
-        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
+        virtualFourbar = myOpMode.hardwareMap.get(DcMotor.class, "MotorVFB");
+//        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         timer.reset();
     }
 

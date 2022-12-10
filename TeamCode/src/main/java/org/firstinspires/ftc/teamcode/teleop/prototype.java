@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 public class prototype extends OpMode {
 
     RobotHardware robot = new RobotHardware(this);
-    PIDController pid = new PIDController(0, 0 ,0, this);
+    PIDController pid = new PIDController(1, 0 ,0, this);
     private double targetPos;
 
     @Override
@@ -22,14 +22,14 @@ public class prototype extends OpMode {
 
     @Override
     public void loop() {
-        robot.movement(gamepad1);
-
-        if(gamepad1.a)
-            robot.claw.setPower(0.4);
-        else if(gamepad1.b)
-            robot.claw.setPower((-0.4));
-        else
-            robot.claw.setPower(0);
+//        robot.movement(gamepad1);
+//
+//        if(gamepad1.a)
+//            robot.claw.setPower(0.4);
+//        else if(gamepad1.b)
+//            robot.claw.setPower((-0.4));
+//        else
+//            robot.claw.setPower(0);
 
         if(gamepad1.right_bumper)
             robot.virtualFourbar.setPower(0.4);

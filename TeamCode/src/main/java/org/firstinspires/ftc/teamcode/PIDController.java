@@ -38,7 +38,6 @@ public class PIDController {
             integralSum = -integralSumLimit;
         }
         double output = Kp * error + Ki * integralSum + Kd * derivative;
-        robot.telemetry.update();
         lastError = error;
         return output;
     }
