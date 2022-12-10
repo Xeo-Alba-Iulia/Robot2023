@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -13,9 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class RobotHardware {
 
     private final OpMode myOpMode;   // gain access to methods in the calling OpMode.
-
-    // Define a constructor that allows the OpMode to pass a reference to itself.
-
+    //magnum pipirig ringabel
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally
     public DcMotor frontLeft = null;
@@ -25,12 +22,13 @@ public class RobotHardware {
 
     // Sisteme
     public DcMotor ridicare = null;
-    public CRServo virtualFourbar = null;
+    public DcMotor virtualFourbar = null;
     public CRServo claw = null;
     public ElapsedTime timer;
     public Telemetry telemetry;
 
-    // Constants
+    // Constants & Variables
+    public double targetPos = 0;
     public final double ridicarePos1 = 300;
     public final double ridicarePos2 = 600;
     public final double ridicarePos3 = 710;
@@ -41,13 +39,13 @@ public class RobotHardware {
 
     public void init() {
 
-        telemetry.addData("sec",timer.seconds());
+        telemetry.addData("control timer",timer.seconds());
         frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
         frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
         backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
-        virtualFourbar = myOpMode.hardwareMap.get(CRServo.class, "ServoVFB");
+        virtualFourbar = myOpMode.hardwareMap.get(DcMotor.class, "ServoVFB");
         claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -58,7 +56,21 @@ public class RobotHardware {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         timer.reset();
+    }
+
+
+    public void setRidicarePos(Gamepad gamepad1) {
+        if(gamepad1.dpad_down)
+            targetPos = 0;
+        else if(gamepad1.dpad_left)
+            targetPos = ridicarePos1;
+        else if(gamepad1.dpad_up)
+            targetPos = ridicarePos2;
+        else if(gamepad1.dpad_right)
+            targetPos = ridicarePos3;
     }
 
     public void movement(Gamepad gamepad1) {

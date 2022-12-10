@@ -17,31 +17,34 @@ public class prototype extends OpMode {
     public void init() {
         robot.init();
         targetPos = 0;
+        telemetry.addData("ridicare", robot.ridicare.getCurrentPosition());
     }
 
     @Override
     public void loop() {
         robot.movement(gamepad1);
-        if(gamepad1.dpad_down) {
-            targetPos = 0;
-        } else if(gamepad1.dpad_left) {
-            targetPos = robot.ridicarePos1;
-        } else if(gamepad1.dpad_up) {
-            targetPos = robot.ridicarePos2;
-        } else if(gamepad1.dpad_right) {
-            targetPos = robot.ridicarePos3;
-        }
+
+        if(gamepad1.a)
+            robot.claw.setPower(0.4);
+        else if(gamepad1.b)
+            robot.claw.setPower((-0.4));
+        else
+            robot.claw.setPower(0);
+
         if(gamepad1.right_bumper)
-            robot.virtualFourbar.setPower(1);
+            robot.virtualFourbar.setPower(0.4);
         else if(gamepad1.left_bumper)
-            robot.virtualFourbar.setPower(-1);
+            robot.virtualFourbar.setPower(-0.4);
         else
             robot.virtualFourbar.setPower(0);
 
+       robot.setRidicarePos(gamepad1);
+
         if(robot.ridicare.getCurrentPosition() < targetPos - 200)
-            robot.ridicare.setPower(pid.update(targetPos, robot.ridicare.getCurrentPosition()));
+            robot.ridicare.setPower(pid.update(robot.targetPos, robot.ridicare.getCurrentPosition()));
         else
             robot.timer.reset();
+        telemetry.update();
     }
 
 }

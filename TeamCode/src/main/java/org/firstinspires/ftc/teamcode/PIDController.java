@@ -21,7 +21,6 @@ public class PIDController {
     double lastError = 0;
     double integralSum = 0;
     private static final double integralSumLimit = 0.25;
-    double output;
     /**
      * update the PID controller output
      * @param target where we would like to be, also called the reference
@@ -38,7 +37,7 @@ public class PIDController {
         if(integralSum < -integralSumLimit){
             integralSum = -integralSumLimit;
         }
-        output = Kp * error + Ki * integralSum + Kd * derivative;
+        double output = Kp * error + Ki * integralSum + Kd * derivative;
         robot.telemetry.update();
         lastError = error;
         return output;
