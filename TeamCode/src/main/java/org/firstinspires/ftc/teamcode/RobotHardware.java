@@ -37,24 +37,24 @@ public class RobotHardware {
 
     public void init() {
 
-//        frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
-//        frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
-//        backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
-//        backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
+        frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
+        frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
+        backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
+        backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
         virtualFourbar = myOpMode.hardwareMap.get(DcMotor.class, "MotorVFB");
-//        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
+        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-//        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-//        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         timer.reset();
     }
 
