@@ -21,7 +21,7 @@ public class RobotHardware {
 
     // Sisteme
     public DcMotor ridicare = null;
-    public DcMotor virtualFourbar = null;
+    public CRServo virtualFourBar = null;
     public CRServo claw = null;
     public ElapsedTime timer = new ElapsedTime();
 
@@ -37,14 +37,19 @@ public class RobotHardware {
 
     public void init() {
 
+//      Sasiu
         frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
         frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
         backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
+
+//      Sisteme
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
+        virtualFourBar = myOpMode.hardwareMap.get(CRServo.class, "VirtualFourBar");
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ridicare.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
