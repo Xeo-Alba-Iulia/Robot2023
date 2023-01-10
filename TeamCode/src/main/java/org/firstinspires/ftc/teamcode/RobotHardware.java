@@ -42,8 +42,6 @@ public class RobotHardware {
         backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
-        virtualFourbar = myOpMode.hardwareMap.get(DcMotor.class, "MotorVFB");
-        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
