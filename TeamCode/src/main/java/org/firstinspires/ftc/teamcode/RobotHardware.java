@@ -1,22 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Bitmap;
-
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.checkerframework.checker.units.qual.C;
-import org.firstinspires.ftc.robotcore.external.function.Consumer;
-import org.firstinspires.ftc.robotcore.external.function.Continuation;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
-import org.firstinspires.ftc.teamcode.utilities.Vision;
 
 
 public class RobotHardware {
@@ -33,9 +23,13 @@ public class RobotHardware {
 
     // Sisteme
     public DcMotor ridicare = null;
-    public CRServo virtualFourBar = null;
+    public CRServo vfb1;
+    public CRServo vfb2;
     public CRServo claw = null;
     public ElapsedTime timer = new ElapsedTime();
+
+    // Sensors
+    public DigitalChannel touch;
 
     // Constants & Variables
     public double targetPos = 0;
@@ -54,10 +48,16 @@ public class RobotHardware {
         frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
         backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
+        claw=myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
 
 //      Sisteme
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
-//        virtualFourBar = myOpMode.hardwareMap.get(CRServo.class, "VirtualFourBar");
+        vfb1 = myOpMode.hardwareMap.get(CRServo.class, "ServoVFB1");
+        vfb2 = myOpMode.hardwareMap.get(CRServo.class, "ServoVFB2");
+
+//      Sensors
+        touch = myOpMode.hardwareMap.get(DigitalChannel.class, "TaciDinGura");
+        touch.setMode(DigitalChannel.Mode.INPUT);
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -70,6 +70,9 @@ public class RobotHardware {
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        vfb1.setDirection(DcMotorSimple.Direction.REVERSE);
+
         timer.reset();
     }
 

@@ -31,7 +31,6 @@ public class PIDController {
      */
     public double update(double target, double state) {
         state = -state;
-        target = -target;
         double error = target - state;
         double derivative = (error - lastError) / robot.timer.seconds();
         integralSum += error * robot.timer.seconds();
@@ -41,7 +40,7 @@ public class PIDController {
         if(integralSum < -integralSumLimit){
             integralSum = -integralSumLimit;
         }
-        double output = Kp * error + Ki * integralSum + Kd * derivative;
+        double output = (Kp * error + Ki * integralSum + Kd * derivative) / 10000;
         lastError = error;
         return output;
     }
