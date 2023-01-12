@@ -16,6 +16,7 @@ public class ridicare extends LinearOpMode {
 
     public static double KP = 0, KI = 0, KD = 0;
     public static double INTEGRALSUMILIMIT = 0.25;
+    public static double POZITIE = 0;
     RobotHardware robot = new RobotHardware(this);
     double integralSum = 0;
     double lastError = 0;
@@ -26,9 +27,13 @@ public class ridicare extends LinearOpMode {
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
         boolean aWasPressed = false;
 
+        robot.init();
+
         waitForStart();
 
         if(isStopRequested()) return;
+
+
 
         while(opModeIsActive()) {
            if(gamepad1.a) {
@@ -37,9 +42,9 @@ public class ridicare extends LinearOpMode {
                 robot.ridicare.setPower(0);
                 aWasPressed = false;
             } else {
-                robot.ridicare.setPower(update(robot.targetPos, robot.ridicare.getCurrentPosition()));
+                robot.ridicare.setPower(update(POZITIE, robot.ridicare.getCurrentPosition()));
             }
-            dashboardTelemetry.addData("Target Position", robot.targetPos);
+            dashboardTelemetry.addData("Target Position", POZITIE);
             dashboardTelemetry.addData("Current Position", robot.ridicare.getCurrentPosition());
             dashboardTelemetry.update();
         }
@@ -48,6 +53,7 @@ public class ridicare extends LinearOpMode {
 
 
     public double update(double target, double state) {
+        state = -state;
         double error = target - state;
         double derivative = (error - lastError) / robot.timer.seconds();
         integralSum += error * robot.timer.seconds();

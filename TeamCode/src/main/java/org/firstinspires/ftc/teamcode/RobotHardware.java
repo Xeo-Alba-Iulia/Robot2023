@@ -74,7 +74,7 @@ public class RobotHardware {
     }
 
 
-    public void setRidicarePos(Gamepad gamepad1) {
+    public void setRlidicarePos(Gamepad gamepad1) {
         if(gamepad1.dpad_down)
             targetPos = 0;
         else if(gamepad1.dpad_left)
