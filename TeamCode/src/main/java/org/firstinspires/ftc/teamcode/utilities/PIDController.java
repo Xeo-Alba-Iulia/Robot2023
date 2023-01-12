@@ -1,21 +1,23 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.utilities;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.RobotHardware;
+
 public class PIDController {
-    double Kp, Ki, Kd;
     RobotHardware robot;
+    double Kp, Ki, Kd;
     /**
      * construct PID controller
      * @param Kp Proportional coefficient
      * @param Ki Integral coefficient
      * @param Kd Derivative coefficient
      */
-    public PIDController(double Kp, double Ki, double Kd, OpMode opmode) {
+    public PIDController(double Kp, double Ki, double Kd, OpMode opMode) {
         this.Kp = Kp;
         this.Ki = Ki;
         this.Kd = Kd;
-        robot = new RobotHardware(opmode);
+        robot = new RobotHardware(opMode);
     }
 
     double lastError = 0;

@@ -1,11 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Bitmap;
+
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.checkerframework.checker.units.qual.C;
+import org.firstinspires.ftc.robotcore.external.function.Consumer;
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
+import org.firstinspires.ftc.teamcode.utilities.Vision;
 
 
 public class RobotHardware {
@@ -14,6 +25,7 @@ public class RobotHardware {
     //magnum pipirig ringabel
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally
+
     public DcMotor frontLeft = null;
     public DcMotor frontRight = null;
     public DcMotor backLeft = null;
@@ -45,7 +57,7 @@ public class RobotHardware {
 
 //      Sisteme
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
-        virtualFourBar = myOpMode.hardwareMap.get(CRServo.class, "VirtualFourBar");
+//        virtualFourBar = myOpMode.hardwareMap.get(CRServo.class, "VirtualFourBar");
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
