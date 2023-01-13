@@ -29,7 +29,7 @@ public class RobotHardware {
     public ElapsedTime timer = new ElapsedTime();
 
     // Sensors
-    public DigitalChannel touch;
+//    public DigitalChannel touch;
 
     // Constants & Variables
     public double targetPos = 0;
@@ -56,8 +56,8 @@ public class RobotHardware {
         vfb2 = myOpMode.hardwareMap.get(CRServo.class, "ServoVFB2");
 
 //      Sensors
-        touch = myOpMode.hardwareMap.get(DigitalChannel.class, "TaciDinGura");
-        touch.setMode(DigitalChannel.Mode.INPUT);
+        //touch = myOpMode.hardwareMap.get(DigitalChannel.class, "TaciDinGura");
+        //touch.setMode(DigitalChannel.Mode.INPUT);
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -68,11 +68,12 @@ public class RobotHardware {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         vfb1.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        claw.setDirection(DcMotorSimple.Direction.REVERSE);
+       // claw.setPower(0);
         timer.reset();
     }
 
