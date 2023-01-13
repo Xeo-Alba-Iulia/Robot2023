@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 public class prototype extends OpMode {
     static final int POS_1 = 14278;
     static final int POS_2 = 42000;
-    static final int POS_3 = 75000;
+    static final int POS_3 = 78000;
     RobotHardware robot = new RobotHardware(this);
     PIDController pid = new PIDController(3, 1, 2, this);
     int target = 0;
@@ -43,18 +43,6 @@ public class prototype extends OpMode {
     }
 
     private void virtualFourBar() {
-        if (gamepad2.x) {
-            robot.vfb1.setPower(1);
-            robot.vfb2.setPower(1);
-        } else if (gamepad2.y) {
-            robot.vfb1.setPower(-1);
-            robot.vfb2.setPower(-1);
-//        } else if (!robot.touch.getState()) {
-//            robot.vfb1.setPower(0);
-//            robot.vfb2.setPower(0);
-        }
-//fata stanga
-        //spate stanga
         robot.vfb1.setPower(gamepad2.left_stick_x);
         robot.vfb2.setPower(gamepad2.left_stick_x);
     }

@@ -72,6 +72,7 @@ public class RobotHardware {
 //        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         vfb1.setDirection(DcMotorSimple.Direction.REVERSE);
+        vfb2.setDirection(DcMotorSimple.Direction.REVERSE);
         claw.setDirection(DcMotorSimple.Direction.REVERSE);
        // claw.setPower(0);
         timer.reset();
