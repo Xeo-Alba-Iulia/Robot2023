@@ -11,6 +11,8 @@ public class Prototype extends OpMode {
     static final int POS_1 = 14278;
     static final int POS_2 = 30000;
     static final int POS_3 = 55000;
+
+    static final int vfbPOS=5;
     RobotHardware robot = new RobotHardware(this);
     PIDController ridicareController = new PIDController(3, 1, 2, this);
     PIDController vFBController = new PIDController(0, 0, 0, this);
@@ -36,7 +38,13 @@ public class Prototype extends OpMode {
     }
 
     private void virtualFourBar() {
+        if (gamepad2.right_bumper) {
+            target = vfbPOS;
+        } else if (gamepad2.left_bumper) {
+            target = 0;
+        }
 
+        robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
     }
 
     private void telemetry() {
@@ -58,6 +66,7 @@ public class Prototype extends OpMode {
         telemetry.addData("Ridicare Target", target);
         telemetry.addData("Gheara Puternica", robot.claw.getPower());
         telemetry.addData("Vf power", robot.virtualFourBar.getPower());
+        telemetry.addData("Vf pos", robot.virtualFourBar.getCurrentPosition());
 
         telemetry.update();
     }

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
 @Config
-@Autonomous(name = "pidicare", group = "C")
+@Autonomous(name = "vfb", group = "C")
 public class VFBControlTest extends LinearOpMode {
 	DcMotor motor = null;
 
