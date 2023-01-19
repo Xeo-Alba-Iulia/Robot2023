@@ -13,6 +13,7 @@ public class Prototype extends OpMode {
     static final int POS_3 = 55000;
     RobotHardware robot = new RobotHardware(this);
     PIDController ridicareController = new PIDController(3, 1, 2, this);
+    PIDController vFBController = new PIDController(0, 0, 0, this);
     int target = 0;
 
     @Override
@@ -35,7 +36,7 @@ public class Prototype extends OpMode {
     }
 
     private void virtualFourBar() {
-        robot.virtualFourBar.setPower(gamepad2.left_stick_x*0.55 );
+
     }
 
     private void telemetry() {
@@ -56,6 +57,8 @@ public class Prototype extends OpMode {
 
         telemetry.addData("Ridicare Target", target);
         telemetry.addData("Gheara Puternica", robot.claw.getPower());
+        telemetry.addData("Vf power", robot.virtualFourBar.getPower());
+
         telemetry.update();
     }
 
