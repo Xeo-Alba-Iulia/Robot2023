@@ -23,8 +23,7 @@ public class RobotHardware {
 
     // Sisteme
     public DcMotor ridicare = null;
-    public CRServo vfb1;
-    public CRServo vfb2;
+    public DcMotor virtualFourBar = null;
     public CRServo claw = null;
     public ElapsedTime timer = new ElapsedTime();
 
@@ -52,8 +51,8 @@ public class RobotHardware {
 
 //      Sisteme
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
-        vfb1 = myOpMode.hardwareMap.get(CRServo.class, "ServoVFB1");
-        vfb2 = myOpMode.hardwareMap.get(CRServo.class, "ServoVFB2");
+        virtualFourBar = myOpMode.hardwareMap.get(DcMotor.class, "VirtualFourBar");
+
 
 //      Sensors
         //touch = myOpMode.hardwareMap.get(DigitalChannel.class, "TaciDinGura");
@@ -71,8 +70,6 @@ public class RobotHardware {
 //        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 //        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        vfb1.setDirection(DcMotorSimple.Direction.REVERSE);
-        vfb2.setDirection(DcMotorSimple.Direction.REVERSE);
         claw.setDirection(DcMotorSimple.Direction.REVERSE);
        // claw.setPower(0);
         timer.reset();

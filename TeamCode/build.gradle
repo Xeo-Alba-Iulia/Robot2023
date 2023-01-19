@@ -35,4 +35,6 @@ dependencies {
 //  Road Runner
     implementation 'org.apache.commons:commons-math3:3.6.1'
     implementation 'com.acmerobotics.roadrunner:core:0.5.5'
+//  EasyOpenCV
+    implementation 'org.openftc:easyopencv:1.5.3'
 }

@@ -7,12 +7,12 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 @TeleOp(name = "prototype", group = "B")
-public class prototype extends OpMode {
+public class Prototype extends OpMode {
     static final int POS_1 = 14278;
-    static final int POS_2 = 42000;
-    static final int POS_3 = 78000;
+    static final int POS_2 = 30000;
+    static final int POS_3 = 55000;
     RobotHardware robot = new RobotHardware(this);
-    PIDController pid = new PIDController(3, 1, 2, this);
+    PIDController ridicareController = new PIDController(3, 1, 2, this);
     int target = 0;
 
     @Override
@@ -30,21 +30,12 @@ public class prototype extends OpMode {
         } else if (gamepad2.dpad_right) {
             target = POS_3;
         }
-        boolean liftIsHome = target == 0 &&
-                -robot.ridicare.getCurrentPosition() < 1000 &&
-                -robot.ridicare.getCurrentPosition() > -1000;
-        if (liftIsHome) {
-            robot.ridicare.setPower(0);
-        } else if (gamepad2.left_stick_y != 0) {
-            robot.ridicare.setPower(-gamepad1.left_stick_y);
-            target = robot.ridicare.getCurrentPosition();
-        } else
-            robot.ridicare.setPower(pid.update(target, robot.ridicare.getCurrentPosition()));
+
+        robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
     }
 
     private void virtualFourBar() {
-        robot.vfb1.setPower(gamepad2.left_stick_x);
-        robot.vfb2.setPower(gamepad2.left_stick_x);
+        robot.virtualFourBar.setPower(gamepad2.left_stick_x*0.55 );
     }
 
     private void telemetry() {

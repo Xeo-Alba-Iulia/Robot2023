@@ -8,13 +8,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotHardware;
-import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 @Config
 @Autonomous(name = "pidicare", group = "C")
-public class ridicare extends LinearOpMode {
+public class Ridicare extends LinearOpMode {
     DcMotor motor = null;
-
 
     public static double KP = 0, KI = 0, KD = 0;
     public static double INTEGRALSUMILIMIT = 0.25;
