@@ -7,8 +7,10 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 public class PIDController {
     RobotHardware robot;
     double Kp, Ki, Kd;
+
     /**
      * construct PID controller
+     *
      * @param Kp Proportional coefficient
      * @param Ki Integral coefficient
      * @param Kd Derivative coefficient
@@ -23,24 +25,26 @@ public class PIDController {
     double lastError = 0;
     double integralSum = 0;
     private static final double integralSumLimit = 0.25;
+
     /**
      * update the PID controller output
+     *
      * @param target where we would like to be, also called the reference
-     * @param state where we currently are, I.E. motor position
+     * @param state  where we currently are, I.E. motor position
      * @return the command to our motor, I.E. motor power
      */
     public double update(double target, double state) {
         state = -state;
-        double error = target - state;
+        double error = 1.0 - state / target;
         double derivative = (error - lastError) / robot.timer.seconds();
         integralSum += error * robot.timer.seconds();
-        if(integralSum > integralSumLimit) {
+        if (integralSum > integralSumLimit) {
             integralSum = integralSumLimit;
         }
-        if(integralSum < -integralSumLimit){
+        if (integralSum < -integralSumLimit) {
             integralSum = -integralSumLimit;
         }
-        double output = (Kp * error + Ki * integralSum + Kd * derivative) / 10000;
+        double output = (Kp * error + Ki * integralSum + Kd * derivative);
         lastError = error;
         return output;
     }

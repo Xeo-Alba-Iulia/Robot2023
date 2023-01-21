@@ -21,7 +21,8 @@ public class Ridicare extends LinearOpMode {
     public static double POZITIE = 0;
     RobotHardware robot = new RobotHardware(this);
     double integralSum = 0;
-    double lastError = 0;
+    double
+    = 0;
 //    public static double MARGIN;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -56,15 +57,9 @@ public class Ridicare extends LinearOpMode {
 
     public double update(double target, double state) {
         state = -state;
-        double error = target - state;
+        double error = 1.0 - target / state;
         double derivative = (error - lastError) / robot.timer.seconds();
         integralSum += error * robot.timer.seconds();
-        if(integralSum > INTEGRALSUMILIMIT) {
-            integralSum = INTEGRALSUMILIMIT;
-        }
-        if(integralSum < -INTEGRALSUMILIMIT){
-            integralSum = -INTEGRALSUMILIMIT;
-        }
         double output = KP * error + KI * integralSum + KD * derivative;
         lastError = error;
         return output;

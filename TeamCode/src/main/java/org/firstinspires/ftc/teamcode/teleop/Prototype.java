@@ -8,15 +8,15 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 @TeleOp(name = "prototype", group = "B")
 public class Prototype extends OpMode {
-    static final int POS_1 = 14278;
-    static final int POS_2 = 30000;
-    static final int POS_3 = 55000;
+    static final double POS_1 = 13000;
+    static final double POS_2 = 38000;
+    static final double POS_3 = 65500;
 
     static final int vfbPOS=5;
     RobotHardware robot = new RobotHardware(this);
     PIDController ridicareController = new PIDController(3, 1, 2, this);
     PIDController vFBController = new PIDController(0, 0, 0, this);
-    int target = 0;
+    double target = 0;
 
     @Override
     public void init() {
@@ -34,7 +34,9 @@ public class Prototype extends OpMode {
             target = POS_3;
         }
 
-        robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
+        robot.ridicare.setPower(
+                ridicareController.update
+                        (target, robot.ridicare.getCurrentPosition()));
     }
 
     private void virtualFourBar() {
@@ -44,29 +46,26 @@ public class Prototype extends OpMode {
             target = 0;
         }
 
-        robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
+        robot.ridicare.setPower(vFBController.update(target, robot.ridicare.getCurrentPosition()));
     }
 
     private void telemetry() {
-        switch (target) {
-            case POS_1:
-                telemetry.addData("Target Ridicare", "Low Junction");
-                break;
-            case POS_2:
-                telemetry.addData("Target Ridicare", "Medium Junction");
-                break;
-            case POS_3:
-                telemetry.addData("Target Ridicare", "High Junction");
-                break;
-            default:
-                telemetry.addData("Target Ridicare", "Ground Junction");
-        }
 
-
+        telemetry.addLine("Ridicare");
+        telemetry.addLine();
+        telemetry.addData("Poz Ridicare",robot.ridicare.getCurrentPosition());
         telemetry.addData("Ridicare Target", target);
-        telemetry.addData("Gheara Puternica", robot.claw.getPower());
+        telemetry.addData("Putere Ridicare", robot.ridicare.getPower());
+
+        telemetry.addLine("Virtual Four Bar");
+        telemetry.addLine();
         telemetry.addData("Vf power", robot.virtualFourBar.getPower());
         telemetry.addData("Vf pos", robot.virtualFourBar.getCurrentPosition());
+
+        telemetry.addLine("Gheara");
+        telemetry.addLine();
+        telemetry.addData("Gheara Puternica", robot.claw.getPower());
+
 
         telemetry.update();
     }
@@ -80,11 +79,7 @@ public class Prototype extends OpMode {
         } else if (gamepad2.b) {
             robot.claw.setPower(-0.4);
         } else robot.claw.setPower(0);
-
-
         telemetry();
-
-
     }
 
 
