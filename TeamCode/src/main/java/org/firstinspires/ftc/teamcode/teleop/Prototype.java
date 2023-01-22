@@ -14,8 +14,8 @@ public class Prototype extends OpMode {
 
     static final int vfbPOS=5;
     RobotHardware robot = new RobotHardware(this);
-    PIDController ridicareController = new PIDController(3, 1, 2, this);
-    PIDController vFBController = new PIDController(0, 0, 0, this);
+    PIDController ridicareController = new PIDController(3, 0, 4, this);
+//    PIDController vFBController = new PIDController(0, 0, 0, this);
     double target = 0;
 
     @Override
@@ -39,16 +39,20 @@ public class Prototype extends OpMode {
                         (target, robot.ridicare.getCurrentPosition()));
     }
 
+ //   private void virtualFourBar() {
+ //       if (gamepad2.right_bumper) {
+   //         target = vfbPOS;
+     //   } else if (gamepad2.left_bumper) {
+       //     target = 0;
+        //}
+
+        //robot.ridicare.setPower(vFBController.update(target, robot.ridicare.getCurrentPosition()));
+   // }
+
+
     private void virtualFourBar() {
-        if (gamepad2.right_bumper) {
-            target = vfbPOS;
-        } else if (gamepad2.left_bumper) {
-            target = 0;
-        }
-
-        robot.ridicare.setPower(vFBController.update(target, robot.ridicare.getCurrentPosition()));
+        robot.virtualFourBar.setPower(gamepad2.right_stick_x*0.7);
     }
-
     private void telemetry() {
 
         telemetry.addLine("Ridicare");
@@ -61,7 +65,6 @@ public class Prototype extends OpMode {
         telemetry.addLine();
         telemetry.addData("Vf power", robot.virtualFourBar.getPower());
         telemetry.addData("Vf pos", robot.virtualFourBar.getCurrentPosition());
-
         telemetry.addLine("Gheara");
         telemetry.addLine();
         telemetry.addData("Gheara Puternica", robot.claw.getPower());
@@ -72,13 +75,14 @@ public class Prototype extends OpMode {
 
     public void loop() {
         robot.movement(gamepad1);
-        ridicare();
+//        ridicare();
         virtualFourBar();
         if (gamepad2.a) {
             robot.claw.setPower(0.4);
         } else if (gamepad2.b) {
             robot.claw.setPower(-0.4);
         } else robot.claw.setPower(0);
+        robot.ridicare.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
         telemetry();
     }
 

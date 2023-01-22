@@ -33,9 +33,9 @@ public class PIDController {
      * @param state  where we currently are, I.E. motor position
      * @return the command to our motor, I.E. motor power
      */
-    public double update(double target, double state) {
+    public double update( double target, double state) {
         state = -state;
-        double error = 1.0 - state / target;
+        double error = target - state;
         double derivative = (error - lastError) / robot.timer.seconds();
         integralSum += error * robot.timer.seconds();
         if (integralSum > integralSumLimit) {

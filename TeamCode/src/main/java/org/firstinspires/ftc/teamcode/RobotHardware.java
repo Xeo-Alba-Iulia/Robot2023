@@ -63,6 +63,11 @@ public class RobotHardware {
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ridicare.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        virtualFourBar.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        virtualFourBar.setTargetPosition(0);
+        virtualFourBar.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

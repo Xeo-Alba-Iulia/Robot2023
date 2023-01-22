@@ -21,8 +21,7 @@ public class Ridicare extends LinearOpMode {
     public static double POZITIE = 0;
     RobotHardware robot = new RobotHardware(this);
     double integralSum = 0;
-    double
-    = 0;
+    double lastError = 0;
 //    public static double MARGIN;
     @Override
     public void runOpMode() throws InterruptedException {
