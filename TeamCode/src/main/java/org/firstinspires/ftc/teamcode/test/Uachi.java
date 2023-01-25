@@ -30,27 +30,30 @@ public class Uachi extends LinearOpMode {
        // WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().
-                createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),
-                        cameraMonitorViewId);
+                createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),cameraMonitorViewId);
 
         camera.setPipeline(new AprilRecognition());
         camera.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
 
+
             @Override
             public void onOpened() {
-                camera.startStreaming(640,480 , OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(320,240 , OpenCvCameraRotation.UPRIGHT);
 
             }
 
             @Override
             public void onError(int errorCode) {
+                dashboardTelemetry.addData("Eroare", errorCode);
+                dashboardTelemetry.update();
             }
 
 
 
+
         });
-        dashboard.startCameraStream(camera, 0);
+        dashboard.startCameraStream(camera, 30);
         waitForStart();
         if(isStopRequested())
             return;

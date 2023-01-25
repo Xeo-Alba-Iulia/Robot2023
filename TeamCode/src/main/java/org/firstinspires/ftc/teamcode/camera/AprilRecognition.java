@@ -17,7 +17,7 @@ public class AprilRecognition extends OpenCvPipeline {
                 new Point(
                         input.cols() * (3.0 / 4.0),
                         input.rows() * (3.0 / 4.0)),
-                new Scalar(85,118,209), 4);
+                new Scalar(65,105,225), 4);
 
         return input;
     }
