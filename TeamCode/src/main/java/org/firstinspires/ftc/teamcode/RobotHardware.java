@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -37,11 +36,14 @@ public class RobotHardware {
     public final double ridicarePos3 = 710;
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
+
     public RobotHardware(OpMode opmode) {
         myOpMode = opmode;
     }
 
     public void init() {
+
+
 
 //      Sasiu
         frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
@@ -79,6 +81,7 @@ public class RobotHardware {
         claw.setDirection(DcMotorSimple.Direction.REVERSE);
         // claw.setPower(0);
         timer.reset();
+
     }
 
 
@@ -123,3 +126,5 @@ public class RobotHardware {
 
 
 }
+
+

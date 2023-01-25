@@ -14,9 +14,9 @@ public class Prototype extends OpMode {
     static final int vfbPOS = 300;
 
     RobotHardware robot = new RobotHardware(this);
-    PIDController ridicareController = new PIDController(3, 1, 2, this);
-    PIDController vFBController = new PIDController(1, 0, 0, this);
-    int target = 0;
+    PIDController ridicareController = new PIDController(3, 0, 4, this);
+   // PIDController vFBController = new PIDController(0, 0, 0, this);
+    double target = 0;
 
     @Override
     public void init() {
@@ -37,6 +37,17 @@ public class Prototype extends OpMode {
         robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
     }
 
+ //   private void virtualFourBar() {
+ //       if (gamepad2.right_bumper) {
+   //         target = vfbPOS;
+     //   } else if (gamepad2.left_bumper) {
+       //     target = 0;
+        //}
+
+        //robot.ridicare.setPower(vFBController.update(target, robot.ridicare.getCurrentPosition()));
+   // }
+
+
     private void virtualFourBar() {
         if (gamepad2.right_bumper) {
             target = vfbPOS;
@@ -46,34 +57,29 @@ public class Prototype extends OpMode {
 
         robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
     }
-
     private void telemetry() {
-        switch (target) {
-            case POS_1:
-                telemetry.addData("Target Ridicare", "Low Junction");
-                break;
-            case POS_2:
-                telemetry.addData("Target Ridicare", "Medium Junction");
-                break;
-            case POS_3:
-                telemetry.addData("Target Ridicare", "High Junction");
-                break;
-            default:
-                telemetry.addData("Target Ridicare", "Ground Junction");
-        }
 
-
+        telemetry.addLine("Ridicare");
+        telemetry.addLine();
+        telemetry.addData("Poz Ridicare",robot.ridicare.getCurrentPosition());
         telemetry.addData("Ridicare Target", target);
-        telemetry.addData("Gheara Puternica", robot.claw.getPower());
+        telemetry.addData("Putere Ridicare", robot.ridicare.getPower());
+
+        telemetry.addLine("Virtual Four Bar");
+        telemetry.addLine();
         telemetry.addData("Vf power", robot.virtualFourBar.getPower());
         telemetry.addData("Vf pos", robot.virtualFourBar.getCurrentPosition());
+        telemetry.addLine("Gheara");
+        telemetry.addLine();
+        telemetry.addData("Gheara Puternica", robot.claw.getPower());
+
 
         telemetry.update();
     }
 
     public void loop() {
         robot.movement(gamepad1);
-        ridicare();
+//        ridicare();
         virtualFourBar();
         if (gamepad2.a) {
             robot.claw.setPower(0.4);
@@ -83,8 +89,6 @@ public class Prototype extends OpMode {
 
 
         telemetry();
-
-
     }
 
 
