@@ -11,11 +11,11 @@ public class Prototype extends OpMode {
     static final int POS_1 = 14278;
     static final int POS_2 = 30000;
     static final int POS_3 = 55000;
+    static final int vfbPOS = 300;
 
-    static final int vfbPOS=5;
     RobotHardware robot = new RobotHardware(this);
     PIDController ridicareController = new PIDController(3, 1, 2, this);
-    PIDController vFBController = new PIDController(0, 0, 0, this);
+    PIDController vFBController = new PIDController(1, 0, 0, this);
     int target = 0;
 
     @Override
