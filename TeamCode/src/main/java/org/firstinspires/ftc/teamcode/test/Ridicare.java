@@ -60,6 +60,9 @@ public class Ridicare extends LinearOpMode {
         double output = KP * error + KI * integralSum + KD * derivative;
         lastError = error;
         return output;
+
+
+
     }
 
 }
