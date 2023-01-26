@@ -62,6 +62,7 @@ public class RobotHardware {
         //touch.setMode(DigitalChannel.Mode.INPUT);
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ridicare.setTargetPosition(0);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ridicare.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -74,6 +75,7 @@ public class RobotHardware {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        virtualFourBar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);

@@ -10,9 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
-@Disabled
 @Config
-@Autonomous(name = "pidicare", group = "C")
+@Autonomous(name = "pidicare", group = "B")
 public class Ridicare extends LinearOpMode {
     DcMotor motor = null;
 
@@ -22,46 +21,48 @@ public class Ridicare extends LinearOpMode {
     RobotHardware robot = new RobotHardware(this);
     double integralSum = 0;
     double lastError = 0;
-//    public static double MARGIN;
+
+    //    public static double MARGIN;
     @Override
     public void runOpMode() throws InterruptedException {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
-        boolean aWasPressed = false;
 
         robot.init();
 
         waitForStart();
 
-        if(isStopRequested()) return;
+        if (isStopRequested()) return;
 
 
+        while (opModeIsActive()) {
+            robot.ridicare.setPower(update(POZITIE, robot.ridicare.getCurrentPosition()));
 
-        while(opModeIsActive()) {
-           if(gamepad1.a) {
-               aWasPressed = true;
-           } else if(aWasPressed) {
-                robot.ridicare.setPower(0);
-                aWasPressed = false;
-            } else {
-                robot.ridicare.setPower(update(POZITIE, robot.ridicare.getCurrentPosition()));
-            }
-            dashboardTelemetry.addData("Target Position", POZITIE);
+            dashboardTelemetry.addData("Target Position", -POZITIE);
             dashboardTelemetry.addData("Current Position", robot.ridicare.getCurrentPosition());
+            dashboardTelemetry.addData("Power Motor", robot.ridicare.getPower());
             dashboardTelemetry.update();
         }
     }
 
 
 
+
     public double update(double target, double state) {
-        state = -state;
-        double error = 1.0 - target / state;
+        state = Math.abs(state);
+        double error = target - state;
         double derivative = (error - lastError) / robot.timer.seconds();
         integralSum += error * robot.timer.seconds();
-        double output = KP * error + KI * integralSum + KD * derivative;
+        if (integralSum > INTEGRALSUMILIMIT) {
+            integralSum = INTEGRALSUMILIMIT;
+        }
+        if (integralSum < -INTEGRALSUMILIMIT) {
+            integralSum = -INTEGRALSUMILIMIT;
+        }
+        double output = KP * error + KI * integralSum + KD * derivative/10000;
         lastError = error;
         return output;
     }
 
 }
+
