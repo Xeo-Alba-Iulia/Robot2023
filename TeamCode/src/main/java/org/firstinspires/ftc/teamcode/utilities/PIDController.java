@@ -29,7 +29,7 @@ public class PIDController {
     /**
      * update the PID controller output
      *
-     * @param target where we would like to be, also called the reference
+     * @param target where we would like to be, also called the reference 
      * @param state  where we currently are, I.E. motor position
      * @return the command to our motor, I.E. motor power
      */

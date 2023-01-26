@@ -8,50 +8,61 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 @TeleOp(name = "prototype", group = "B")
 public class Prototype extends OpMode {
-    static final int RIDICARE_POS_1 = 14278;
-    static final int RIDICARE_POS_2 = 30000;
-    static final int RIDICARE_POS_3 = 55000;
-    static final int VFB_OUTAKE_POS = 1500;
+    static final int POS_1 = 14278;
+    static final int POS_2 = 30000;
+    static final int POS_3 = 55000;
+    static final int vfbPOS = 300;
 
     RobotHardware robot = new RobotHardware(this);
     PIDController ridicareController = new PIDController(3, 0, 4, this);
-    PIDController vFBController = new PIDController(0.05, 0, 0.4, this);
-    double ridicareTarget = 0;
-    double vFBTarget = 0;
+    PIDController vFBController = new PIDController(1, 0, 0, this);
+    double target = 0;
 
     @Override
     public void init() {
         robot.init();
     }
 
-    private void outtake() {
+    private void ridicare() {
         if (gamepad2.dpad_down) {
-            ridicareTarget = 0;
-            vFBTarget = 0;
+            target = 0;
         } else if (gamepad2.dpad_left) {
-            ridicareTarget = RIDICARE_POS_1;
-            vFBTarget = VFB_OUTAKE_POS;
+            target = POS_1;
         } else if (gamepad2.dpad_up) {
-            ridicareTarget = RIDICARE_POS_2;
-            vFBTarget = VFB_OUTAKE_POS;
+            target = POS_2;
         } else if (gamepad2.dpad_right) {
-            ridicareTarget = RIDICARE_POS_3;
-            vFBTarget = VFB_OUTAKE_POS;
+            target = POS_3;
         }
-        double ridicarePower = ridicareController.update(ridicareTarget, -robot.ridicare.getCurrentPosition());
-        double vFBPower = vFBController.update(vFBTarget, robot.virtualFourBar.getCurrentPosition());
-        robot.ridicare.setPower(ridicarePower);
-        robot.virtualFourBar.setPower(vFBPower);
+
+        robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
     }
 
+ //   private void virtualFourBar() {
+ //       if (gamepad2.right_bumper) {
+   //         target = vfbPOS;
+     //   } else if (gamepad2.left_bumper) {
+       //     target = 0;
+        //}
+
+        //robot.ridicare.setPower(vFBController.update(target, robot.ridicare.getCurrentPosition()));
+   // }
 
 
+    private void virtualFourBar() {
+        if (gamepad2.right_bumper) {
+            target = vfbPOS;
+        } else if (gamepad2.left_bumper) {
+            target = 0;
+        }
+
+        robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
+    }
     private void telemetry() {
 
         telemetry.addLine("Ridicare");
         telemetry.addLine();
         telemetry.addData("Poz Ridicare",robot.ridicare.getCurrentPosition());
-        telemetry.addData("Ridicare Target", ridicareTarget);
+        telemetry.addData("Ridicare Target", target);
         telemetry.addData("Putere Ridicare", robot.ridicare.getPower());
 
         telemetry.addLine("Virtual Four Bar");
@@ -68,8 +79,8 @@ public class Prototype extends OpMode {
 
     public void loop() {
         robot.movement(gamepad1);
-        outtake();
-    //        virtualFourBar();
+        ridicare();
+        virtualFourBar();
         if (gamepad2.a) {
             robot.claw.setPower(0.4);
         } else if (gamepad2.b) {
