@@ -7,6 +7,9 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 public class AprilRecognition extends OpenCvPipeline {
+  //Scalar blue= new Scalar(4,197,235,255);
+  //Scalar red=new Scalar(4,)
+
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.rectangle(
@@ -21,6 +24,7 @@ public class AprilRecognition extends OpenCvPipeline {
 
         return input;
     }
+
 
 
 

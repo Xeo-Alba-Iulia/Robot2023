@@ -58,8 +58,8 @@ public class Uachi extends LinearOpMode {
         if(isStopRequested())
             return;
         while(opModeIsActive()){
-            dashboardTelemetry.addData("fps", camera.getFps());
-            dashboardTelemetry.update();
+         //   dashboardTelemetry.addData("fps", camera.getFps());
+         //   dashboardTelemetry.update();
 
         };
         }

@@ -15,7 +15,7 @@ public class Prototype extends OpMode {
 
     RobotHardware robot = new RobotHardware(this);
     PIDController ridicareController = new PIDController(3, 0, 4, this);
-   // PIDController vFBController = new PIDController(0, 0, 0, this);
+    PIDController vFBController = new PIDController(1, 0, 0, this);
     double target = 0;
 
     @Override
@@ -79,7 +79,7 @@ public class Prototype extends OpMode {
 
     public void loop() {
         robot.movement(gamepad1);
-//        ridicare();
+        ridicare();
         virtualFourBar();
         if (gamepad2.a) {
             robot.claw.setPower(0.4);
