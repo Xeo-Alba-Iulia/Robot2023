@@ -32,14 +32,14 @@ public class Uachi extends LinearOpMode {
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().
                 createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),cameraMonitorViewId);
 
-        camera.setPipeline(new AprilRecognition());
+        camera.setPipeline(new AprilRecognition(0.036));
         camera.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
 
 
             @Override
             public void onOpened() {
-                camera.startStreaming(320,240 , OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(800,448 , OpenCvCameraRotation.UPRIGHT);
 
             }
 
@@ -60,6 +60,7 @@ public class Uachi extends LinearOpMode {
         while(opModeIsActive()){
          //   dashboardTelemetry.addData("fps", camera.getFps());
          //   dashboardTelemetry.update();
+
 
         };
         }

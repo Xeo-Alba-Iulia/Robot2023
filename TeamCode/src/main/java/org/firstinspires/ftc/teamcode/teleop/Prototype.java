@@ -8,10 +8,15 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 @TeleOp(name = "prototype", group = "B")
 public class Prototype extends OpMode {
+    static final int vfbPOS = 300;
+    static final int RIDICARE_POS_1 = 14278;
+    static final int RIDICARE_POS_2 = 30000;
+    static final int RIDICARE_POS_3 = 55000;
+    static final int VFB_OUTAKE_POS = 1500;
     static final int POS_1 = 14278;
     static final int POS_2 = 30000;
     static final int POS_3 = 55000;
-    static final int vfbPOS = 300;
+    //static final int vfbPOS = 300;
 
     RobotHardware robot = new RobotHardware(this);
     PIDController ridicareController = new PIDController(3, 0, 4, this);
@@ -79,7 +84,7 @@ public class Prototype extends OpMode {
 
     public void loop() {
         robot.movement(gamepad1);
-        ridicare();
+       // ridicare();
         virtualFourBar();
         if (gamepad2.a) {
             robot.claw.setPower(0.4);
