@@ -19,7 +19,7 @@ public class Prototype extends OpMode {
     //static final int vfbPOS = 300;
 
     RobotHardware robot = new RobotHardware(this);
-    PIDController ridicareController = new PIDController(3, 0, 4, this);
+  //  PIDController ridicareController = new PIDController(3, 0, 4, this);
     PIDController vFBController = new PIDController(1, 0, 0, this);
     double target = 0;
 
@@ -39,7 +39,7 @@ public class Prototype extends OpMode {
             target = POS_3;
         }
 
-        robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
+   //     robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
     }
 
  //   private void virtualFourBar() {
@@ -60,7 +60,7 @@ public class Prototype extends OpMode {
             target = 0;
         }
 
-        robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
+       // robot.ridicare.setPower(ridicareController.update(target, robot.ridicare.getCurrentPosition()));
     }
     private void telemetry() {
 
@@ -91,7 +91,7 @@ public class Prototype extends OpMode {
         } else if (gamepad2.b) {
             robot.claw.setPower(-0.4);
         } else robot.claw.setPower(0);
-
+        robot.ridicare.setPower(gamepad2.right_trigger-gamepad2.left_trigger);
 
         telemetry();
     }
