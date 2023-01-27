@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.ServoControllerEx;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -22,8 +25,8 @@ public class RobotHardware {
 
     // Sisteme
     public DcMotor ridicare = null;
-    public DcMotor virtualFourBar = null;
     public CRServo claw = null;
+    public ServoImplEx vFB = null;
     public ElapsedTime timer = new ElapsedTime();
 
     // Sensors
@@ -50,32 +53,22 @@ public class RobotHardware {
         frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
         backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
-        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
 
 //      Sisteme
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
-        virtualFourBar = myOpMode.hardwareMap.get(DcMotor.class, "VirtualFourBar");
-
-
-//      Sensors
-        //touch = myOpMode.hardwareMap.get(DigitalChannel.class, "TaciDinGura");
-        //touch.setMode(DigitalChannel.Mode.INPUT);
+        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
+        vFB = myOpMode.hardwareMap.get(ServoImplEx.class, "VirtualFourBar");
+        vFB.setPwmRange(new PwmControl.PwmRange(500, 2500));
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setTargetPosition(0);
         ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ridicare.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        virtualFourBar.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        virtualFourBar.setTargetPosition(0);
-        virtualFourBar.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        virtualFourBar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
