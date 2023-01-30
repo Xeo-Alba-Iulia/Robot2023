@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.PwmControl;
-import com.qualcomm.robotcore.hardware.ServoControllerEx;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -26,7 +25,8 @@ public class RobotHardware {
     // Sisteme
     public DcMotor ridicare = null;
     public CRServo claw = null;
-    public ServoImplEx vFB = null;
+    public ServoImplEx vFB1 = null;
+    public ServoImplEx vFB2 = null;
     public ElapsedTime timer = new ElapsedTime();
 
     // Sensors
@@ -57,8 +57,10 @@ public class RobotHardware {
 //      Sisteme
         ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
         claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
-        vFB = myOpMode.hardwareMap.get(ServoImplEx.class, "VirtualFourBar");
-        vFB.setPwmRange(new PwmControl.PwmRange(500, 2500));
+        vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
+        vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
+        vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
+        vFB2.setPwmRange(new PwmControl.PwmRange(500,2500));
 
         ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare.setTargetPosition(0);
