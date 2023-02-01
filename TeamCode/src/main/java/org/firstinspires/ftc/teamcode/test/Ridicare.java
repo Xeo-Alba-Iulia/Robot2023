@@ -35,9 +35,9 @@ public class Ridicare extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            robot.ridicare.setPower(update(POZITIE, robot.ridicare.getCurrentPosition()));
+            robot.ridicare.setPower(update(POZITIE, -robot.ridicare.getCurrentPosition()));
 
-            dashboardTelemetry.addData("Target Position", -POZITIE);
+            dashboardTelemetry.addData("Target Position", POZITIE);
             dashboardTelemetry.addData("Current Position", robot.ridicare.getCurrentPosition());
             dashboardTelemetry.addData("Power Motor", robot.ridicare.getPower());
             dashboardTelemetry.update();
@@ -48,7 +48,6 @@ public class Ridicare extends LinearOpMode {
 
 
     public double update(double target, double state) {
-        state = Math.abs(state);
         double error = target - state;
         double derivative = (error - lastError) / robot.timer.seconds();
         integralSum += error * robot.timer.seconds();
