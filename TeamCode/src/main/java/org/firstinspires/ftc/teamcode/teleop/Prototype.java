@@ -8,15 +8,14 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 @TeleOp(name = "prototype", group = "B")
 public class Prototype extends OpMode {
-	static final int RIDICARE_POS_1 = 14278;
-	static final int RIDICARE_POS_2 = 30000;
-	static final int RIDICARE_POS_3 = 55000;
+	static final int RIDICARE_POS_1 = 5100;
+	static final int RIDICARE_POS_2 = 9800;
+	static final int RIDICARE_POS_3 = 16500;
 	static final double VFB_OUTTAKE_POS = 0.3;
 	static final double VFB_INTAKE_POS = 0;
 
 	RobotHardware robot = new RobotHardware(this);
-	//  PIDController ridicareController = new PIDController(3, 0, 4, this);
-	PIDController vFBController = new PIDController(1, 0, 0, this);
+	PIDController ridicareController = new PIDController(0.012, 0.25, 0.000144, this);
 	double ridicareTarget = 0;
 
 	@Override
@@ -77,14 +76,13 @@ public class Prototype extends OpMode {
 
 	public void loop() {
 		robot.movement(gamepad1);
-//		ridicare();
+		ridicare();
 		virtualFourBar();
 		if (gamepad2.a) {
 			robot.claw.setPower(0.4);
 		} else if (gamepad2.b) {
 			robot.claw.setPower(-0.4);
 		} else robot.claw.setPower(0);
-		robot.ridicare.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
 
 		telemetry();
 	}
