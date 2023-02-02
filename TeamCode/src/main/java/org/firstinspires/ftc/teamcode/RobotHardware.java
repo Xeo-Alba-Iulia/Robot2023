@@ -27,7 +27,12 @@ public class RobotHardware {
     public CRServo claw = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
-    public ElapsedTime timer = new ElapsedTime();
+    public ElapsedTime ridicareTimer = new ElapsedTime();
+    public ElapsedTime clawTimer = new ElapsedTime();
+    public final double VFB_OUTTAKE_POS = 0.79;
+    public final double VFB_ALIGN_POS = 0.65;
+    public final double VFB_INTAKE_POS = 0.05;
+
 
     // Sensors
 //    public DigitalChannel touch;
@@ -45,9 +50,6 @@ public class RobotHardware {
     }
 
     public void init() {
-
-
-
 //      Sasiu
         frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
         frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
@@ -77,12 +79,13 @@ public class RobotHardware {
 
         claw.setDirection(DcMotorSimple.Direction.REVERSE);
         ridicare.setDirection(DcMotorSimple.Direction.REVERSE);
-        // claw.setPower(0);
-        timer.reset();
-
+        vFB1.setPosition(0);
+        vFB2.setPosition(1);
     }
 
-
+    public void start() {
+        ridicareTimer.reset();
+    }
     public void setRlidicarePos(Gamepad gamepad1) {
         if (gamepad1.dpad_down)
             targetPos = 0;
@@ -94,9 +97,14 @@ public class RobotHardware {
             targetPos = ridicarePos3;
     }
 
+    public void setVFBPosition(double position) {
+        vFB1.setPosition(position);
+        vFB2.setPosition(1 - position);
+    }
+
     public void movement(Gamepad gamepad1) {
         double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x;
+        double x = -gamepad1.left_stick_x;
         double rx = gamepad1.right_stick_x;
 
         double frontLeftPower = y + x + rx;

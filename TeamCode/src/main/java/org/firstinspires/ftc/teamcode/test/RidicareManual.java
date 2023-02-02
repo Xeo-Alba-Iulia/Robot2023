@@ -16,5 +16,9 @@ public class RidicareManual extends OpMode {
     @Override
     public void loop() {
         robot.ridicare.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+        telemetry.addData("pozitie",robot.ridicare.getCurrentPosition());
+        telemetry.addData("pozitie ridicare", robot.ridicare.getCurrentPosition());
+        telemetry.addData("target", robot.ridicare.getTargetPosition());
+        telemetry.update();
     }
 }

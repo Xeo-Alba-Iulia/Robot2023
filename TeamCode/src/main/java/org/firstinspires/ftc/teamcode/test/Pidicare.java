@@ -35,7 +35,7 @@ public class Pidicare extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            robot.ridicare.setPower(update(POZITIE, -robot.ridicare.getCurrentPosition()));
+            robot.ridicare.setPower(update(POZITIE, -robot.ridicare.getCurrentPosition()));;
 
             dashboardTelemetry.addData("Target Position", POZITIE);
             dashboardTelemetry.addData("Current Position", robot.ridicare.getCurrentPosition());
@@ -49,8 +49,8 @@ public class Pidicare extends LinearOpMode {
 
     public double update(double target, double state) {
         double error = target - state;
-        double derivative = (error - lastError) / robot.timer.seconds();
-        integralSum += error * robot.timer.seconds();
+        double derivative = (error - lastError) / robot.ridicareTimer.seconds();
+        integralSum += error * robot.ridicareTimer.seconds();
         if (integralSum > INTEGRALSUMILIMIT) {
             integralSum = INTEGRALSUMILIMIT;
         }
