@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 
 @Config
 @Autonomous(name = "pidicare", group = "B")
-public class Ridicare extends LinearOpMode {
+public class Pidicare extends LinearOpMode {
     DcMotor motor = null;
 
     public static double KP = 0, KI = 0, KD = 0;
@@ -57,7 +57,7 @@ public class Ridicare extends LinearOpMode {
         if (integralSum < -INTEGRALSUMILIMIT) {
             integralSum = -INTEGRALSUMILIMIT;
         }
-        double output = KP * error + KI * integralSum + KD * derivative/10000;
+        double output = KP * error + KI * integralSum + KD * derivative;
         lastError = error;
         return output;
 

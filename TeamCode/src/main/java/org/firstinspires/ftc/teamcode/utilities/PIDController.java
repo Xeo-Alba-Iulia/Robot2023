@@ -24,7 +24,7 @@ public class PIDController {
 
     double lastError = 0;
     double integralSum = 0;
-    private static final double integralSumLimit = 0.25;
+    private static final double integralSumLimit = 1;
 
     /**
      * update the PID controller output
@@ -43,7 +43,7 @@ public class PIDController {
         if (integralSum < -integralSumLimit) {
             integralSum = -integralSumLimit;
         }
-        double output = (Kp * error + Ki * integralSum + Kd * derivative);
+        double output = Kp * error + Ki * integralSum + Kd * derivative;
         lastError = error;
         return output;
     }
