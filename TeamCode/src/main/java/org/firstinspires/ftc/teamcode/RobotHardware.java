@@ -29,9 +29,6 @@ public class RobotHardware {
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
     public ElapsedTime clawTimer = new ElapsedTime();
-    public final double VFB_OUTTAKE_POS = 0.79;
-    public final double VFB_ALIGN_POS = 0.65;
-    public final double VFB_INTAKE_POS = 0.05;
 
 
     // Sensors
@@ -42,6 +39,10 @@ public class RobotHardware {
     public final double ridicarePos1 = 300;
     public final double ridicarePos2 = 600;
     public final double ridicarePos3 = 710;
+    public final double VFB_OUTTAKE_POS = 0.85;
+    public final double VFB_ALIGN_POS = 0.65;
+    public final double VFB_INTAKE_POS = 0.12;
+
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
 

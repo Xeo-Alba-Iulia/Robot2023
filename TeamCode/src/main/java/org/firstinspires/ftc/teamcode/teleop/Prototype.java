@@ -9,9 +9,10 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 @TeleOp(name = "prototype", group = "B")
 public class Prototype extends OpMode {
 
-    static final int RIDICARE_POS_1 = 5500;
-    static final int RIDICARE_POS_2 = 10600;
+    static final int RIDICARE_POS_1 = 4950;
+    static final int RIDICARE_POS_2 = 12000;
     static final int RIDICARE_POS_3 = 17800;
+
 
     RobotHardware robot = new RobotHardware(this);
     PIDController ridicareController = new PIDController(0.0108, 0.00048129, 0.06058665, this);
@@ -27,11 +28,12 @@ public class Prototype extends OpMode {
         aPressedLastIteratoion = false;
         clawIn = false;
         target = 0;
+
     }
 
     private void ridicare() {
         if (gamepad2.dpad_down) {
-            target = 1000;
+            target = 0;
         } else if (gamepad2.dpad_left) {
             target = RIDICARE_POS_1;
         } else if (gamepad2.dpad_up) {
@@ -39,34 +41,45 @@ public class Prototype extends OpMode {
         } else if (gamepad2.dpad_right) {
             target = RIDICARE_POS_3;
         }
-        robot.ridicare.setPower(ridicareController.update(target, -robot.ridicare.getCurrentPosition()));
+        robot.ridicare.setPower(ridicareController.update(target, -robot.ridicare.
+                getCurrentPosition()));
     }
 
     private void virtualFourBar() {
-        if (gamepad2.left_bumper) {
+        if (gamepad2.right_bumper) {
             robot.setVFBPosition(robot.VFB_INTAKE_POS);
-        } else if (gamepad2.right_stick_button) {
+        } else if (gamepad2.left_bumper) {
             robot.setVFBPosition(robot.VFB_OUTTAKE_POS);
-        } else if (gamepad2.right_bumper) {
+        } else if (gamepad2.right_stick_button) {
             robot.setVFBPosition(robot.VFB_ALIGN_POS);
         }
 
 
     }
+        private void claw(){
 
-    private void claw() {
-        if (gamepad1.a && !aPressedLastIteratoion) {
-            clawIn = !clawIn;
-            telemetry.addData("BANG", "BANG");
-        }
-        aPressedLastIteratoion = gamepad1.a;
-        if (!clawIn) {
-            robot.claw.setPower(0.4);
-        } else {
-            robot.claw.setPower(-0.1);
+        if (gamepad2.a)
+            robot.claw.setPower(0.2);
+        else if (gamepad2.b)
+            robot.claw.setPower(-0.2);
+        else
+            robot.claw.setPower(0);
+
         }
 
-    }
+//    private void claw() {
+//        if (gamepad1.a && !aPressedLastIteratoion) {
+//            clawIn = !clawIn;
+//            telemetry.addData("BANG", "BANG");
+//        }
+//        aPressedLastIteratoion = gamepad1.a;
+//        if (!clawIn) {
+//            robot.claw.setPower(0.4);
+//        } else {
+//            robot.claw.setPower(-0.1);
+//        }
+
+//    }
 
 
     @Override
@@ -82,7 +95,8 @@ public class Prototype extends OpMode {
 
     public void loop() {
         robot.movement(gamepad1);
-        ridicare();
+     //   ridicare();
+      robot.ridicare.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
         virtualFourBar();
         claw();
 
