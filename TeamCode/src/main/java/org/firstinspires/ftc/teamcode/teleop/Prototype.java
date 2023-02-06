@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 @TeleOp(name = "prototype", group = "B")
 public class Prototype extends OpMode {
 
-    static final int RIDICARE_POS_1 = 5500;
-    static final int RIDICARE_POS_2 = 10600;
+    static final int RIDICARE_POS_1 = 4400;
+    static final int RIDICARE_POS_2 = 12000;
     static final int RIDICARE_POS_3 = 17800;
 
     RobotHardware robot = new RobotHardware(this);
@@ -39,7 +39,8 @@ public class Prototype extends OpMode {
         } else if (gamepad2.dpad_right) {
             target = RIDICARE_POS_3;
         }
-        robot.ridicare.setPower(ridicareController.update(target, -robot.ridicare.getCurrentPosition()));
+        robot.lift.setPower(ridicareController.update(target, -robot.ridicare1.getCurrentPosition()));
+//        robot.ridicare1.setPower(ridicareController.update(target, -robot.ridicare1.getCurrentPosition()));
     }
 
     private void virtualFourBar() {

@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
+
 
 public class RobotHardware {
 
@@ -23,25 +25,29 @@ public class RobotHardware {
     public DcMotor backRight = null;
 
     // Sisteme
-    public DcMotor ridicare = null;
+    public DcMotor ridicare1 = null;
+    public DcMotor ridicare2 = null;
     public CRServo claw = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
     public ElapsedTime clawTimer = new ElapsedTime();
-    public final double VFB_OUTTAKE_POS = 0.79;
+    public final double VFB_OUTTAKE_POS = 0.69;
     public final double VFB_ALIGN_POS = 0.65;
     public final double VFB_INTAKE_POS = 0.05;
 
+    public Ridicare lift = new Ridicare(this);
+     
 
     // Sensors
 //    public DigitalChannel touch;
 
     // Constants & Variables
-    public double targetPos = 0;
-    public final double ridicarePos1 = 300;
-    public final double ridicarePos2 = 600;
-    public final double ridicarePos3 = 710;
+    public double target = 0;
+    public final double RIDICARE_POS_1 = 4400;
+    public final double RIDICARE_POS_2 = 12000;
+    public final double RIDICARE_POS_3 = 17800;
+
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
 
@@ -57,17 +63,22 @@ public class RobotHardware {
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
 
 //      Sisteme
-        ridicare = myOpMode.hardwareMap.get(DcMotor.class, "MotorRidicare");
+        ridicare1 = myOpMode.hardwareMap.get(DcMotor.class, "RidicareAproape");
+        ridicare2 = myOpMode.hardwareMap.get(DcMotor.class, "RidicareDeparte");
         claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
         vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
         vFB2.setPwmRange(new PwmControl.PwmRange(500,2500));
 
-        ridicare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ridicare.setTargetPosition(0);
-        ridicare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        ridicare.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ridicare1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ridicare1.setTargetPosition(0);
+        ridicare1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ridicare1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ridicare2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ridicare2.setTargetPosition(0);
+        ridicare2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ridicare2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -78,23 +89,13 @@ public class RobotHardware {
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         claw.setDirection(DcMotorSimple.Direction.REVERSE);
-        ridicare.setDirection(DcMotorSimple.Direction.REVERSE);
+        ridicare1.setDirection(DcMotorSimple.Direction.REVERSE);
         vFB1.setPosition(0);
         vFB2.setPosition(1);
     }
 
     public void start() {
         ridicareTimer.reset();
-    }
-    public void setRlidicarePos(Gamepad gamepad1) {
-        if (gamepad1.dpad_down)
-            targetPos = 0;
-        else if (gamepad1.dpad_left)
-            targetPos = ridicarePos1;
-        else if (gamepad1.dpad_up)
-            targetPos = ridicarePos2;
-        else if (gamepad1.dpad_right)
-            targetPos = ridicarePos3;
     }
 
     public void setVFBPosition(double position) {
@@ -129,6 +130,7 @@ public class RobotHardware {
         frontRight.setPower(frontRightPower);
         backRight.setPower(backRightPower);
     }
+
 
 
 }
