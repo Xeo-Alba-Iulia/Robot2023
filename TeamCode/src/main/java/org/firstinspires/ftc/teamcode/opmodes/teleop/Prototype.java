@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,12 +9,13 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 @TeleOp(name = "prototype", group = "B")
 public class Prototype extends OpMode {
 
-    static final int RIDICARE_POS_1 = 4400;
-    static final int RIDICARE_POS_2 = 12000;
-    static final int RIDICARE_POS_3 = 17800;
+    static final int RIDICARE_POS_1 = 8700;
+    static final int RIDICARE_POS_2 = 17000;
+    static final int RIDICARE_POS_3 = 20000;
+
 
     RobotHardware robot = new RobotHardware(this);
-    PIDController ridicareController = new PIDController(0.0108, 0.00048129, 0.06058665, this);
+    PIDController ridicareController = new PIDController(0.00296, 0, 0.01865059, this);
     double ridicareTarget = 1;
     double target = 0;
 
@@ -39,8 +40,7 @@ public class Prototype extends OpMode {
         } else if (gamepad2.dpad_right) {
             target = RIDICARE_POS_3;
         }
-        robot.lift.setPower(ridicareController.update(target, -robot.ridicare1.getCurrentPosition()));
-//        robot.ridicare1.setPower(ridicareController.update(target, -robot.ridicare1.getCurrentPosition()));
+        robot.lift.setPower(ridicareController.update(target, robot.lift.getCurrentPosition()));
     }
 
     private void virtualFourBar() {
@@ -51,14 +51,11 @@ public class Prototype extends OpMode {
         } else if (gamepad2.right_bumper) {
             robot.setVFBPosition(robot.VFB_ALIGN_POS);
         }
-
-
     }
 
     private void claw() {
         if (gamepad1.a && !aPressedLastIteratoion) {
             clawIn = !clawIn;
-            telemetry.addData("BANG", "BANG");
         }
         aPressedLastIteratoion = gamepad1.a;
         if (!clawIn) {
@@ -77,6 +74,8 @@ public class Prototype extends OpMode {
 
 
     private void telemetry() {
+        telemetry.addLine("Ridicare");
+        telemetry.addData("Pozitie", robot.lift.getCurrentPosition());
         telemetry.update();
     }
 

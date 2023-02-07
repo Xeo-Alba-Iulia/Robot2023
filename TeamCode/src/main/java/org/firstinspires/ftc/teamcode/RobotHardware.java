@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.PwmControl;
@@ -25,18 +26,20 @@ public class RobotHardware {
     public DcMotor backRight = null;
 
     // Sisteme
-    public DcMotor ridicare1 = null;
-    public DcMotor ridicare2 = null;
+    public DcMotorEx ridicare1 = null;
+    public DcMotorEx ridicare2 = null;
     public CRServo claw = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
     public ElapsedTime clawTimer = new ElapsedTime();
-    public final double VFB_OUTTAKE_POS = 0.69;
+    public final double VFB_OUTTAKE_POS = 0.79;
     public final double VFB_ALIGN_POS = 0.65;
     public final double VFB_INTAKE_POS = 0.05;
 
-    public Ridicare lift = new Ridicare(this);
+
+
+    public Ridicare lift;
      
 
     // Sensors
@@ -63,8 +66,9 @@ public class RobotHardware {
         backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
 
 //      Sisteme
-        ridicare1 = myOpMode.hardwareMap.get(DcMotor.class, "RidicareAproape");
-        ridicare2 = myOpMode.hardwareMap.get(DcMotor.class, "RidicareDeparte");
+        ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
+        ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
+        lift = new Ridicare(ridicare1, ridicare2);
         claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
@@ -89,7 +93,9 @@ public class RobotHardware {
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         claw.setDirection(DcMotorSimple.Direction.REVERSE);
-        ridicare1.setDirection(DcMotorSimple.Direction.REVERSE);
+        ridicare1.setDirection(DcMotorSimple.Direction.FORWARD);
+        ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
+
         vFB1.setPosition(0);
         vFB2.setPosition(1);
     }

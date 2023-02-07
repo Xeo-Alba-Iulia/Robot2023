@@ -11,14 +11,14 @@ public class RidicareManual extends OpMode {
     @Override
     public void init() {
         robot.init();
+        robot.setVFBPosition(robot.VFB_ALIGN_POS);
     }
 
     @Override
     public void loop() {
-        robot.ridicare1.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
-        telemetry.addData("pozitie",robot.ridicare1.getCurrentPosition());
-        telemetry.addData("pozitie ridicare", robot.ridicare1.getCurrentPosition());
-        telemetry.addData("target", robot.ridicare1.getTargetPosition());
+        robot.lift.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+        telemetry.addData("pozitie",robot.lift.getCurrentPosition());
+        telemetry.addData("pozitie ridicare", robot.lift.getCurrentPosition());
         telemetry.update();
     }
 }

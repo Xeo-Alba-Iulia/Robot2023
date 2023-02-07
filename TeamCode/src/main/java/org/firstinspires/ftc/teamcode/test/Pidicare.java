@@ -35,7 +35,7 @@ public class Pidicare extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            robot.ridicare1.setPower(update(POZITIE, -robot.ridicare1.getCurrentPosition()));;
+            robot.lift.setPower(update(POZITIE, robot.ridicare1.getCurrentPosition()));;
 
             dashboardTelemetry.addData("Target Position", POZITIE);
             dashboardTelemetry.addData("Current Position", robot.ridicare1.getCurrentPosition());
