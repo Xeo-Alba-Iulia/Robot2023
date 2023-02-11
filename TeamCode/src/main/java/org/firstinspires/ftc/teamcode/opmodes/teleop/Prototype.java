@@ -9,13 +9,9 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 @TeleOp(name = "prototype", group = "B")
 public class Prototype extends OpMode {
 
-    static final int RIDICARE_POS_1 = 8700;
-    static final int RIDICARE_POS_2 = 17000;
-    static final int RIDICARE_POS_3 = 20000;
-
 
     RobotHardware robot = new RobotHardware(this);
-    PIDController ridicareController = new PIDController(0.00296, 0, 0.01865059, this);
+    PIDController ridicareController = new PIDController(0.0019, 0.0002, 0.02975039, this);
     double ridicareTarget = 1;
     double target = 0;
 
@@ -29,16 +25,25 @@ public class Prototype extends OpMode {
         clawIn = false;
         target = 0;
     }
+    @Override
+    public void start() {
+        robot.start();
+    }
 
-    private void ridicare() {
+
+    private void intakeOuttake() {
         if (gamepad2.dpad_down) {
-            target = 1000;
+            target = 600;
+            robot.setVFBPosition(robot.VFB_ALIGN_POS);
         } else if (gamepad2.dpad_left) {
-            target = RIDICARE_POS_1;
+            target = robot.RIDICARE_POS_1;
+            robot.setVFBPosition(robot.VFB_OUTTAKE_POS);
         } else if (gamepad2.dpad_up) {
-            target = RIDICARE_POS_2;
+            target = robot.RIDICARE_POS_2;
+            robot.setVFBPosition(robot.VFB_OUTTAKE_POS);
         } else if (gamepad2.dpad_right) {
-            target = RIDICARE_POS_3;
+            target = robot.RIDICARE_POS_3;
+            robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POS);
         }
         robot.lift.setPower(ridicareController.update(target, robot.lift.getCurrentPosition()));
     }
@@ -59,18 +64,14 @@ public class Prototype extends OpMode {
         }
         aPressedLastIteratoion = gamepad1.a;
         if (!clawIn) {
-            robot.claw.setPower(0.4);
+            robot.claw.setPosition(robot.GHEARA_INCHISA);
         } else {
-            robot.claw.setPower(-0.1);
+            robot.claw.setPosition(robot.GHEARA_DESCHISA);
         }
 
     }
 
 
-    @Override
-    public void start() {
-        robot.start();
-    }
 
 
     private void telemetry() {
@@ -82,7 +83,7 @@ public class Prototype extends OpMode {
 
     public void loop() {
         robot.movement(gamepad1);
-        ridicare();
+        intakeOuttake();
         virtualFourBar();
         claw();
 

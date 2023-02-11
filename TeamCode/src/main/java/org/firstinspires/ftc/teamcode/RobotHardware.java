@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -20,24 +19,26 @@ public class RobotHardware {
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally
 
-    public DcMotor frontLeft = null;
-    public DcMotor frontRight = null;
-    public DcMotor backLeft = null;
-    public DcMotor backRight = null;
+    public DcMotorEx frontLeft = null;
+    public DcMotorEx frontRight = null;
+    public DcMotorEx backLeft = null;
+    public DcMotorEx backRight = null;
 
     // Sisteme
     public DcMotorEx ridicare1 = null;
     public DcMotorEx ridicare2 = null;
-    public CRServo claw = null;
+    public ServoImplEx claw = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
     public ElapsedTime clawTimer = new ElapsedTime();
-    public final double VFB_OUTTAKE_POS = 0.79;
-    public final double VFB_ALIGN_POS = 0.65;
-    public final double VFB_INTAKE_POS = 0.05;
+    public final double VFB_OUTTAKE_POS = 0.85;
+    public final double VFB_ALIGN_POS = 0.5;
+    public final double VFB_INTAKE_POS = 0;
+    public final double VFB_ALIGN_HIGH_POS = 0.65;
 
-
+    public final double GHEARA_DESCHISA = 1;
+    public final double GHEARA_INCHISA = 0.8;
 
     public Ridicare lift;
      
@@ -47,9 +48,9 @@ public class RobotHardware {
 
     // Constants & Variables
     public double target = 0;
-    public final double RIDICARE_POS_1 = 4400;
-    public final double RIDICARE_POS_2 = 12000;
-    public final double RIDICARE_POS_3 = 17800;
+    public final double RIDICARE_POS_1 = 9200;
+    public final double RIDICARE_POS_2 = 17000;
+    public final double RIDICARE_POS_3 = 20000;
 
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
@@ -60,16 +61,16 @@ public class RobotHardware {
 
     public void init() {
 //      Sasiu
-        frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontLeft");
-        frontRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorFrontRight");
-        backLeft = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackLeft");
-        backRight = myOpMode.hardwareMap.get(DcMotor.class, "MotorBackRight");
+        frontLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
+        frontRight = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontRight");
+        backLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorBackLeft");
+        backRight = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorBackRight");
 
 //      Sisteme
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
         lift = new Ridicare(ridicare1, ridicare2);
-        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
+        claw = myOpMode.hardwareMap.get(ServoImplEx.class, "ServoGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
         vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
@@ -92,7 +93,6 @@ public class RobotHardware {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        claw.setDirection(DcMotorSimple.Direction.REVERSE);
         ridicare1.setDirection(DcMotorSimple.Direction.FORWARD);
         ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
