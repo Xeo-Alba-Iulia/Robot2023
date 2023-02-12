@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -17,7 +18,7 @@ public class RobotHardware {
     private final OpMode myOpMode;   // gain access to methods in the calling OpMode.
     //magnum pipirig ringabel
 
-    // Define Motor and Servo objects  (Make them private so they can't be accessed externally
+    // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
 
     public DcMotorEx frontLeft = null;
     public DcMotorEx frontRight = null;
@@ -27,7 +28,7 @@ public class RobotHardware {
     // Sisteme
     public DcMotorEx ridicare1 = null;
     public DcMotorEx ridicare2 = null;
-    public ServoImplEx claw = null;
+    public CRServo claw = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
@@ -41,16 +42,12 @@ public class RobotHardware {
     public final double GHEARA_INCHISA = 0.8;
 
     public Ridicare lift;
-     
-
-    // Sensors
-//    public DigitalChannel touch;
 
     // Constants & Variables
     public double target = 0;
-    public final double RIDICARE_POS_1 = 9200;
-    public final double RIDICARE_POS_2 = 17000;
-    public final double RIDICARE_POS_3 = 20000;
+    public final double RIDICARE_POS_1 = 8000;
+    public final double RIDICARE_POS_2 = 17200;
+    public final double RIDICARE_POS_3 = 17500;
 
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
@@ -70,7 +67,7 @@ public class RobotHardware {
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
         lift = new Ridicare(ridicare1, ridicare2);
-        claw = myOpMode.hardwareMap.get(ServoImplEx.class, "ServoGheara");
+        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
         vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
@@ -111,13 +108,14 @@ public class RobotHardware {
 
     public void movement(Gamepad gamepad1) {
         double y = -gamepad1.left_stick_y;
-        double x = -gamepad1.left_stick_x;
+        double x = gamepad1.left_stick_x * 1.1;
         double rx = gamepad1.right_stick_x;
 
-        double frontLeftPower = y + x + rx;
-        double backLeftPower = y - x + rx;
-        double frontRightPower = y - x - rx;
-        double backRightPower = y + x - rx;
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double frontLeftPower = (y + x + rx) / denominator;
+        double backLeftPower = (y - x + rx) / denominator;
+        double frontRightPower = (y - x - rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
 
         if (gamepad1.left_bumper) {
             frontRightPower *= 0.3;
@@ -136,9 +134,4 @@ public class RobotHardware {
         frontRight.setPower(frontRightPower);
         backRight.setPower(backRightPower);
     }
-
-
-
 }
-
-

@@ -11,7 +11,7 @@ public class Prototype extends OpMode {
 
 
     RobotHardware robot = new RobotHardware(this);
-    PIDController ridicareController = new PIDController(0.0019, 0.0002, 0.02975039, this);
+    PIDController ridicareController = new PIDController(0.001, 0.0002, 0.02975039, this);
     double ridicareTarget = 1;
     double target = 0;
 
@@ -22,7 +22,6 @@ public class Prototype extends OpMode {
     public void init() {
         robot.init();
         aPressedLastIteratoion = false;
-        clawIn = false;
         target = 0;
     }
     @Override
@@ -59,14 +58,12 @@ public class Prototype extends OpMode {
     }
 
     private void claw() {
-        if (gamepad1.a && !aPressedLastIteratoion) {
-            clawIn = !clawIn;
-        }
-        aPressedLastIteratoion = gamepad1.a;
-        if (!clawIn) {
-            robot.claw.setPosition(robot.GHEARA_INCHISA);
+        if(gamepad2.a) {
+            robot.claw.setPower(0.2);
+        } else if(gamepad2.b) {
+            robot.claw.setPower(-0.2);
         } else {
-            robot.claw.setPosition(robot.GHEARA_DESCHISA);
+            robot.claw.setPower(0);
         }
 
     }
