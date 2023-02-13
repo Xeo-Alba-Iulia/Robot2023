@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
-@TeleOp(name = "prototype", group = "B")
+@TeleOp(name = "TeleOP", group = "A")
 public class Prototype extends OpMode {
 
 
