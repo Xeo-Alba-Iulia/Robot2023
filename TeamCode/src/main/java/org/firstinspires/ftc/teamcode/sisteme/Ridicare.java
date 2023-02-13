@@ -34,7 +34,7 @@ public class Ridicare {
 
     /**
      * get the average velocity between the 2 motors
-     * @return (speed of motor1 + speed of motor 2) /2
+     * @return (speed of motor1 + speed of motor 2) / 2
      */
     public double getAverageVelocity() {
         double speed1 = ridicare1.getVelocity();
