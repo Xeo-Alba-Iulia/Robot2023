@@ -46,7 +46,7 @@ public class RobotHardware {
     // Constants & Variables
     public double target = 0;
     public final double RIDICARE_POS_1 = 8000;
-    public final double RIDICARE_POS_2 = 17200;
+    public final double RIDICARE_POS_2 = 14500;
     public final double RIDICARE_POS_3 = 17500;
 
 

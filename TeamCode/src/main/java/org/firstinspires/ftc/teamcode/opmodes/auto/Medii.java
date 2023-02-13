@@ -16,8 +16,14 @@ public class Medii extends LinearOpMode {
         Pose2d startPos = new Pose2d(35, -60.355, Math.toRadians(270));
         Trajectory inceput = drive.trajectoryBuilder(startPos)
                 .lineToLinearHeading(new Pose2d(35, -35, Math.toRadians(315)))
+                .build();
+        Trajectory align = drive.trajectoryBuilder(inceput.end())
                 .lineToLinearHeading(new Pose2d(36,-12, 0))
+                .build();
+        Trajectory cone = drive.trajectoryBuilder(align.end())
                 .forward(18)
+                .build();
+        Trajectory mid = drive.trajectoryBuilder(cone.end())
                 .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(45)))
                 .build();
 
@@ -25,5 +31,10 @@ public class Medii extends LinearOpMode {
         if (isStopRequested()) return;
 
         drive.followTrajectory(inceput);
+        drive.followTrajectory(align);
+        drive.followTrajectory(cone);
+        drive.followTrajectory(mid);
+
+
     }
 }

@@ -3,7 +3,6 @@ package com.example.meepmeeptesting;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
-import com.noahbres.meepmeep.roadrunner.SampleMecanumDrive;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
@@ -17,13 +16,17 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(35, -60.355, Math.toRadians(270)))
                                 .lineToLinearHeading(new Pose2d(35, -35, Math.toRadians(315)))
+                                .lineToLinearHeading(new Pose2d(36,-12, 0))
+                                .forward(18)
+                                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(45)))
                                 .build()
                 );
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_KAI_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
+                .setAxesInterval(5)
                 .start();
     }
 }
