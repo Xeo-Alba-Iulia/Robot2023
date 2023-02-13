@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
+import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 
 public class RobotHardware {
@@ -42,6 +43,8 @@ public class RobotHardware {
     public final double GHEARA_INCHISA = 0.8;
 
     public Ridicare lift;
+    private PIDController liftcontroller;
+
 
     // Constants & Variables
     public double target = 0;
@@ -66,7 +69,7 @@ public class RobotHardware {
 //      Sisteme
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
-        lift = new Ridicare(ridicare1, ridicare2);
+        lift = new Ridicare(ridicare1, ridicare2, myOpMode);
         claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
@@ -93,8 +96,7 @@ public class RobotHardware {
         ridicare1.setDirection(DcMotorSimple.Direction.FORWARD);
         ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        vFB1.setPosition(0);
-        vFB2.setPosition(1);
+
     }
 
     public void start() {

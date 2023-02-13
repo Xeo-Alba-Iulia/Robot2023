@@ -4,25 +4,21 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
-import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 @TeleOp(name = "TeleOP", group = "A")
 public class Prototype extends OpMode {
 
 
     RobotHardware robot = new RobotHardware(this);
-    PIDController ridicareController = new PIDController(0.001, 0.0002, 0.02975039, this);
-    double ridicareTarget = 1;
     double target = 0;
-
+    boolean autoLift;
     boolean aPressedLastIteratoion;
-    boolean clawIn;
 
     @Override
     public void init() {
         robot.init();
-        aPressedLastIteratoion = false;
-        target = 0;
+        robot.vFB1.setPosition(0);
+        robot.vFB2.setPosition(1);
     }
     @Override
     public void start() {
@@ -44,7 +40,16 @@ public class Prototype extends OpMode {
             target = robot.RIDICARE_POS_3;
             robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POS);
         }
-        robot.lift.setPower(ridicareController.update(target, robot.lift.getCurrentPosition()));
+
+
+
+
+        if(gamepad1.left_trigger==0 && gamepad1.right_trigger==0) {
+            robot.lift.update();
+        } else {
+            robot.lift.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
+            robot.lift.target=robot.lift.getCurrentPosition();
+        }
     }
 
     private void virtualFourBar() {
@@ -67,9 +72,6 @@ public class Prototype extends OpMode {
         }
 
     }
-
-
-
 
     private void telemetry() {
         telemetry.addLine("Ridicare");

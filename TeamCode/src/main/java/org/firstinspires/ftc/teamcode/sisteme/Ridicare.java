@@ -1,18 +1,24 @@
 package org.firstinspires.ftc.teamcode.sisteme;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 public class Ridicare {
     DcMotorEx ridicare1;
     DcMotorEx ridicare2;
-    public Ridicare (DcMotorEx ridicare1, DcMotorEx ridicare2) {
+    PIDController controller;
+    public int target;
+    public Ridicare (DcMotorEx ridicare1, DcMotorEx ridicare2, OpMode myOpMode) {
         this.ridicare1 = ridicare1;
         this.ridicare2 = ridicare2;
+        target = 0;
+        controller = new PIDController(0.001, 0.0012, 0.02975039, myOpMode);
     }
 
     /**
@@ -51,6 +57,14 @@ public class Ridicare {
     public void resetEncoder() {
         ridicare1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    /**
+     * update the power given by the pid controller
+     */
+    public void update() {
+        ridicare1.setPower(controller.update(target, ridicare1.getCurrentPosition()));
+        ridicare2.setPower(controller.update(target, ridicare1.getCurrentPosition()));
     }
 
 }
