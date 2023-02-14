@@ -39,7 +39,10 @@ public class Medii extends OpMode {
                 .build();
          mid = drive.trajectoryBuilder(cone.end())
                 .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(45)))
+                 .addDisplacementMarker(1.7, () -> robot.lift.target = robot.RIDICARE_POS_2)
+                 .addDisplacementMarker( () -> drive.followTrajectory(cone))
                 .build();
+
     }
     @Override
     public void start(){

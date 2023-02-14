@@ -48,9 +48,9 @@ public class RobotHardware {
 
     // Constants & Variables
     public double target = 0;
-    public final double RIDICARE_POS_1 = 8000;
-    public final double RIDICARE_POS_2 = 14500;
-    public final double RIDICARE_POS_3 = 17500;
+    public final int RIDICARE_POS_1 = 8000;
+    public final int RIDICARE_POS_2 = 14500;
+    public final int RIDICARE_POS_3 = 17500;
 
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
