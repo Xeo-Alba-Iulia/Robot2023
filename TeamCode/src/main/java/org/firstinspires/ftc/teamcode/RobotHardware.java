@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
-import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 
 public class RobotHardware {
@@ -43,14 +42,12 @@ public class RobotHardware {
     public final double GHEARA_INCHISA = 0.8;
 
     public Ridicare lift;
-    private PIDController liftcontroller;
-
 
     // Constants & Variables
     public double target = 0;
-    public final int RIDICARE_POS_1 = 8000;
-    public final int RIDICARE_POS_2 = 14500;
-    public final int RIDICARE_POS_3 = 17500;
+    public final int RIDICARE_POS_1 = 10700;
+    public final int RIDICARE_POS_2 = 17800;
+    public final int RIDICARE_POS_3 = 19500;
 
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
@@ -69,7 +66,7 @@ public class RobotHardware {
 //      Sisteme
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
-        lift = new Ridicare(ridicare1, ridicare2, myOpMode);
+        lift = new Ridicare (ridicare1, ridicare2, myOpMode);
         claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
@@ -96,7 +93,8 @@ public class RobotHardware {
         ridicare1.setDirection(DcMotorSimple.Direction.FORWARD);
         ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
-
+        vFB1.setPosition(0);
+        vFB2.setPosition(1);
     }
 
     public void start() {
@@ -120,15 +118,15 @@ public class RobotHardware {
         double backRightPower = (y + x - rx) / denominator;
 
         if (gamepad1.left_bumper) {
-            frontRightPower *= 0.3;
-            frontLeftPower *= 0.3;
-            backRightPower *= 0.3;
-            backLeftPower *= 0.3;
+            frontRightPower *= 0.4;
+            frontLeftPower *= 0.4;
+            backRightPower *= 0.4;
+            backLeftPower *= 0.4;
         } else if (!gamepad1.right_bumper) {
-            frontRightPower *= 0.6;
-            frontLeftPower *= 0.6;
-            backRightPower *= 0.6;
-            backLeftPower *= 0.6;
+            frontRightPower *= 0.7;
+            frontLeftPower *= 0.7;
+            backRightPower *= 0.7;
+            backLeftPower *= 0.7;
         }
 
         frontLeft.setPower(frontLeftPower);

@@ -11,7 +11,7 @@ public class RidicareManual extends OpMode {
     @Override
     public void init() {
         robot.init();
-        robot.setVFBPosition(robot.VFB_ALIGN_POS);
+        robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POS);
     }
 
     @Override

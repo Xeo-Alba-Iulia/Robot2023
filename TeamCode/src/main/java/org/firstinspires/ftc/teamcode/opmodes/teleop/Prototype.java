@@ -63,9 +63,9 @@ public class Prototype extends OpMode {
     }
 
     private void claw() {
-        if(gamepad2.a) {
+        if(gamepad2.b) {
             robot.claw.setPower(0.2);
-        } else if(gamepad2.b) {
+        } else if(gamepad2.a) {
             robot.claw.setPower(-0.2);
         } else {
             robot.claw.setPower(0);

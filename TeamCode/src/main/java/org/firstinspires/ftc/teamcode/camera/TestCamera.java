@@ -16,7 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @TeleOp
-public class camera extends LinearOpMode
+public class TestCamera extends LinearOpMode
 {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemtry= dashboard.getTelemetry();
