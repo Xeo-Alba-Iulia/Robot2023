@@ -28,19 +28,20 @@ public class Prototype extends OpMode {
 
     private void intakeOuttake() {
         if (gamepad2.dpad_down) {
-            target = 600;
+            robot.lift.target = 600;
             robot.setVFBPosition(robot.VFB_ALIGN_POS);
         } else if (gamepad2.dpad_left) {
-            target = robot.RIDICARE_POS_1;
+            robot.lift.target = robot.RIDICARE_POS_1;
             robot.setVFBPosition(robot.VFB_OUTTAKE_POS);
         } else if (gamepad2.dpad_up) {
-            target = robot.RIDICARE_POS_2;
+            robot.lift.target = robot.RIDICARE_POS_2;
             robot.setVFBPosition(robot.VFB_OUTTAKE_POS);
         } else if (gamepad2.dpad_right) {
-            target = robot.RIDICARE_POS_3;
+            robot.lift.target = robot.RIDICARE_POS_3;
             robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POS);
         }
 
+            robot.lift.update();
 
 
 
@@ -63,9 +64,9 @@ public class Prototype extends OpMode {
     }
 
     private void claw() {
-        if(gamepad2.b) {
+        if(gamepad2.a) {
             robot.claw.setPower(0.2);
-        } else if(gamepad2.a) {
+        } else if(gamepad2.b) {
             robot.claw.setPower(-0.2);
         } else {
             robot.claw.setPower(0);

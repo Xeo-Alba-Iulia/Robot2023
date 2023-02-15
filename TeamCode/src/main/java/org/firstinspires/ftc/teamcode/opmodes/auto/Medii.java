@@ -10,9 +10,12 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.camera.AprilRecognition;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+
+import java.util.ArrayList;
 
 @Autonomous(name = "Medii", group = "A", preselectTeleOp = "TeleOP")
 public class Medii extends OpMode {
@@ -23,6 +26,7 @@ public class Medii extends OpMode {
     RobotHardware robot;
     TrajectorySequence secventa;
     TrajectorySequence secventa2;
+    TrajectorySequence secventa3;
 
     OpenCvCamera camera;
     AprilRecognition aprilRecognition;
@@ -66,7 +70,7 @@ public class Medii extends OpMode {
             @Override
             public void onError(int errorCode)
             {
-                telemetry.addData("n-o mers camera că", errorCode);
+                telemetry.addData("nu merge camera", errorCode);
                 telemetry.update();
 
             }
@@ -81,21 +85,40 @@ public class Medii extends OpMode {
                 .build();
         secventa2= drive.trajectorySequenceBuilder(new Pose2d(40,-65.5, Math.toRadians(270))).
                 setReversed(true).
-                splineTo(new Vector2d(9,-40),60).
+                forward(-30).
+                strafeLeft(22).
                 build();
-                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+        secventa3= drive.trajectorySequenceBuilder(new Pose2d(40, -65.5, Math.toRadians(270))).
+            setReversed(true).
+            forward(-30).
+            build();
     }
 
     @Override
     public void start(){
+        ArrayList<AprilTagDetection> currentDetections = aprilRecognition.getLatestDetections();
+        if(currentDetections.size() != 0)
+        {
+            boolean tagFound = false;
+
+            for(AprilTagDetection tag : currentDetections)
+            { if(tag.id==CASE_1) drive.followTrajectorySequence(secventa3);
+
+               else if(tag.id==CASE_2) drive.followTrajectorySequence(secventa2);
+
+               else drive.followTrajectorySequence(secventa);
+
+
+            }}
         robot.start();
 
-        drive.followTrajectorySequence(secventa2);
+
     }
     public void loop() {
          drive.update();
          robot.lift.update();
-
+         start();
     }
 }
