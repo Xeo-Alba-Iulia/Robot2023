@@ -6,16 +6,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
 @TeleOp(name = "TeleOP", group = "A")
-public class Prototype extends OpMode {
+public class TeleOP extends OpMode {
 
+    boolean toggle;
 
     RobotHardware robot = new RobotHardware(this);
-    double target = 0;
-    boolean autoLift;
-    boolean aPressedLastIteratoion;
 
     @Override
     public void init() {
+        toggle = false;
         robot.init();
         robot.vFB1.setPosition(0);
         robot.vFB2.setPosition(1);
@@ -29,16 +28,16 @@ public class Prototype extends OpMode {
     private void intakeOuttake() {
         if (gamepad2.dpad_down) {
             robot.lift.target = 600;
-            robot.setVFBPosition(robot.VFB_ALIGN_POS);
+            robot.setVFBPosition(robot.VFB_ALIGN_POSE);
         } else if (gamepad2.dpad_left) {
             robot.lift.target = robot.RIDICARE_POS_1;
-            robot.setVFBPosition(robot.VFB_OUTTAKE_POS);
+            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
         } else if (gamepad2.dpad_up) {
             robot.lift.target = robot.RIDICARE_POS_2;
-            robot.setVFBPosition(robot.VFB_OUTTAKE_POS);
+            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
         } else if (gamepad2.dpad_right) {
             robot.lift.target = robot.RIDICARE_POS_3;
-            robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POS);
+            robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POSE);
         }
 
             robot.lift.update();
@@ -55,11 +54,11 @@ public class Prototype extends OpMode {
 
     private void virtualFourBar() {
         if (gamepad2.left_bumper) {
-            robot.setVFBPosition(robot.VFB_INTAKE_POS);
+            robot.setVFBPosition(robot.VFB_INTAKE_POSE);
         } else if (gamepad2.right_stick_button) {
-            robot.setVFBPosition(robot.VFB_OUTTAKE_POS);
+            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
         } else if (gamepad2.right_bumper) {
-            robot.setVFBPosition(robot.VFB_ALIGN_POS);
+            robot.setVFBPosition(robot.VFB_ALIGN_POSE);
         }
     }
 
@@ -74,9 +73,26 @@ public class Prototype extends OpMode {
 
     }
 
+    private void stack() {
+
+        if(gamepad1.a && !toggle) {
+            toggle = true;
+            robot.vfb_stack_pose-=0.07;
+            robot.setVFBPosition(robot.vfb_stack_pose);
+        } else if (gamepad1.y) {
+            toggle = true;
+            robot.vfb_stack_pose+=0.07;
+            robot.setVFBPosition(robot.vfb_stack_pose);
+        } else if ((!gamepad1.a || gamepad1.b) && toggle) {
+            toggle = false;
+        }
+    }
+
     private void telemetry() {
         telemetry.addLine("Ridicare");
         telemetry.addData("Pozitie", robot.lift.getCurrentPosition());
+        telemetry.addLine("Poz Vfb");
+        telemetry.addData("Stack",robot.vfb_stack_pose);
         telemetry.update();
     }
 
@@ -86,7 +102,7 @@ public class Prototype extends OpMode {
         intakeOuttake();
         virtualFourBar();
         claw();
-
+        stack();
 
         telemetry();
         telemetry.update();

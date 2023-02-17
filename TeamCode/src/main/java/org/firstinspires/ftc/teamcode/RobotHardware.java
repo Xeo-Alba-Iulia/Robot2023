@@ -33,10 +33,11 @@ public class RobotHardware {
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
     public ElapsedTime clawTimer = new ElapsedTime();
-    public final double VFB_OUTTAKE_POS = 0.85;
-    public final double VFB_ALIGN_POS = 0.5;
-    public final double VFB_INTAKE_POS = 0;
-    public final double VFB_ALIGN_HIGH_POS = 0.65;
+    public final double VFB_OUTTAKE_POSE = 0.85;
+    public final double VFB_ALIGN_POSE = 0.5;
+    public double vfb_stack_pose;
+    public final double VFB_INTAKE_POSE = 0;
+    public final double VFB_ALIGN_HIGH_POSE = 0.70;
 
     public final double GHEARA_DESCHISA = 1;
     public final double GHEARA_INCHISA = 0.8;
@@ -45,8 +46,8 @@ public class RobotHardware {
 
     // Constants & Variables
     public double target = 0;
-    public final int RIDICARE_POS_1 = 10700;
-    public final int RIDICARE_POS_2 = 17800;
+    public final int RIDICARE_POS_1 = 8600;
+    public final int RIDICARE_POS_2 = 16500;
     public final int RIDICARE_POS_3 = 19500;
 
 
@@ -72,6 +73,8 @@ public class RobotHardware {
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
         vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
         vFB2.setPwmRange(new PwmControl.PwmRange(500,2500));
+
+        vfb_stack_pose = 0.20;
 
         ridicare1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare1.setTargetPosition(0);
@@ -108,14 +111,13 @@ public class RobotHardware {
 
     public void movement(Gamepad gamepad1) {
         double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x * 1.1;
+        double x = gamepad1.left_stick_x;
         double rx = gamepad1.right_stick_x;
 
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx);
-        double backLeftPower = (y - x + rx);
-        double frontRightPower = (y - x - rx);
-        double backRightPower = (y + x - rx);
+        double frontLeftPower = y + x + rx;
+        double backLeftPower = y - x + rx;
+        double frontRightPower = y - x - rx;
+        double backRightPower = y + x - rx;
 
         if (gamepad1.left_bumper) {
             frontRightPower *= 0.4;
@@ -123,10 +125,10 @@ public class RobotHardware {
             backRightPower *= 0.4;
             backLeftPower *= 0.4;
         } else if (!gamepad1.right_bumper) {
-            frontRightPower *= 0.7;
-            frontLeftPower *= 0.7;
-            backRightPower *= 0.7;
-            backLeftPower *= 0.7;
+            frontRightPower *= 0.6;
+            frontLeftPower *= 0.6;
+            backRightPower *= 0.6;
+            backLeftPower *= 0.6;
         }
 
         frontLeft.setPower(frontLeftPower);

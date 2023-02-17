@@ -20,9 +20,16 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(36, -65.5, Math.toRadians(270)))
                                 .setReversed(true)
-                                .forward(-30)
-                                .strafeRight(22)
+                                .forward(-29.5).
+                                strafeLeft(-22)
+                          //     .splineToConstantHeading(new Vector2d(10, -35), Math.toRadians(90))
+                           //     .splineToConstantHeading(new Vector2d(36,-35),Math.toRadians(270))
+                            //    .splineToConstantHeading(new Vector2d(43,-30), Math.toRadians(40))
+                            //    .splineToConstantHeading(new Vector2d(64,-31),Math.toRadians(270))
+                              //  .splineToConstantHeading(new Vector2d(-63,31, Math.toRadians(270)))
+
                                 .build()
+
                 );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_KAI_DARK)

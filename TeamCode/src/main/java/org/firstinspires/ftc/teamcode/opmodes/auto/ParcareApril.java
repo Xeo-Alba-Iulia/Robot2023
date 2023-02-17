@@ -17,16 +17,16 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "Medii", group = "A", preselectTeleOp = "TeleOP")
-public class Medii extends OpMode {
+@Autonomous(group = "A", preselectTeleOp = "TeleOP")
+public class ParcareApril extends OpMode {
 
     SampleMecanumDrive drive;
 
     Pose2d startPose;
     RobotHardware robot;
-    TrajectorySequence secventa;
-    TrajectorySequence secventa2;
     TrajectorySequence secventa3;
+    TrajectorySequence secventa2;
+    TrajectorySequence secventa1;
 
     OpenCvCamera camera;
     AprilRecognition aprilRecognition;
@@ -47,29 +47,25 @@ public class Medii extends OpMode {
     int cameraMonitorViewid;
 
 
-
     //Trajectory inceput, align, cone, mid;
 
     @Override
-    public void init(){
-        cameraMonitorViewid= hardwareMap.appContext.getResources().getIdentifier(
+    public void init() {
+        cameraMonitorViewid = hardwareMap.appContext.getResources().getIdentifier(
                 "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam
                 (hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewid);
         aprilRecognition = new AprilRecognition(TAGSIZE, fx, fy, cx, cy);
         camera.setPipeline(aprilRecognition);
         camera.setPipeline(aprilRecognition);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                camera.startStreaming(800, 448, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
                 telemetry.addData("nu merge camera", errorCode);
                 telemetry.update();
 
@@ -79,46 +75,46 @@ public class Medii extends OpMode {
         startPose = new Pose2d(35, -60.355, Math.toRadians(270));
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(new Pose2d(32, -65.5, Math.toRadians(270.00)));
-        secventa = drive.trajectorySequenceBuilder(new Pose2d(32, -65.5, Math.toRadians(270.00)))
+        secventa3 = drive.trajectorySequenceBuilder(new Pose2d(32, -65.5, Math.toRadians(270.00)))
                 .setReversed(true)
-                .splineTo(new Vector2d(56, -39.00),0)
+                .splineTo(new Vector2d(55, -40.50), 0)
                 .build();
-        secventa2= drive.trajectorySequenceBuilder(new Pose2d(40,-65.5, Math.toRadians(270))).
+        secventa1 = drive.trajectorySequenceBuilder(new Pose2d(36, -65.5, Math.toRadians(270))).
                 setReversed(true).
-                forward(-30).
-                strafeLeft(22).
+                forward(-25.5).
+                strafeLeft(-26.5).
                 build();
 
-                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-        secventa3= drive.trajectorySequenceBuilder(new Pose2d(40, -65.5, Math.toRadians(270))).
-            setReversed(true).
-            forward(-30).
-            build();
+        // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+        secventa2 = drive.trajectorySequenceBuilder(new Pose2d(35, -63.5, Math.toRadians(270))).
+                setReversed(true).
+                forward(-30).
+                build();
     }
 
     @Override
-    public void start(){
+    public void start() {
         ArrayList<AprilTagDetection> currentDetections = aprilRecognition.getLatestDetections();
-        if(currentDetections.size() != 0)
-        {
+        if (currentDetections.size() != 0) {
             boolean tagFound = false;
 
-            for(AprilTagDetection tag : currentDetections)
-            { if(tag.id==CASE_1) drive.followTrajectorySequence(secventa3);
-
-               else if(tag.id==CASE_2) drive.followTrajectorySequence(secventa2);
-
-               else drive.followTrajectorySequence(secventa);
+            for (AprilTagDetection tag : currentDetections) {
+                if (tag.id == CASE_1) drive.followTrajectorySequence(secventa1);
 
 
-            }}
+                else if (tag.id == CASE_3) drive.followTrajectorySequence(secventa3);
+                else drive.followTrajectorySequence(secventa2);
+
+
+            }
+        }
         robot.start();
 
 
     }
+
     public void loop() {
-         drive.update();
-         robot.lift.update();
-         start();
+        drive.update();
+        start();
     }
 }
