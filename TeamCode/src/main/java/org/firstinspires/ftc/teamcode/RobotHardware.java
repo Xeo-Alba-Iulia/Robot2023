@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -28,7 +28,7 @@ public class RobotHardware {
     // Sisteme
     public DcMotorEx ridicare1 = null;
     public DcMotorEx ridicare2 = null;
-    public CRServo claw = null;
+    public Servo claw = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
@@ -39,8 +39,8 @@ public class RobotHardware {
     public final double VFB_INTAKE_POSE = 0;
     public final double VFB_ALIGN_HIGH_POSE = 0.70;
 
-    public final double GHEARA_DESCHISA = 1;
-    public final double GHEARA_INCHISA = 0.8;
+    public final double GHEARA_DESCHISA = 0.475;
+    public final double GHEARA_INCHISA = 0.410;
 
     public Ridicare lift;
 
@@ -68,13 +68,11 @@ public class RobotHardware {
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
         lift = new Ridicare (ridicare1, ridicare2, myOpMode);
-        claw = myOpMode.hardwareMap.get(CRServo.class, "ServoGheara");
+        claw = myOpMode.hardwareMap.get(Servo.class, "ServoGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
         vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
         vFB2.setPwmRange(new PwmControl.PwmRange(500,2500));
-
-        vfb_stack_pose = 0.20;
 
         ridicare1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare1.setTargetPosition(0);
@@ -96,8 +94,7 @@ public class RobotHardware {
         ridicare1.setDirection(DcMotorSimple.Direction.FORWARD);
         ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        vFB1.setPosition(0);
-        vFB2.setPosition(1);
+
     }
 
     public void start() {

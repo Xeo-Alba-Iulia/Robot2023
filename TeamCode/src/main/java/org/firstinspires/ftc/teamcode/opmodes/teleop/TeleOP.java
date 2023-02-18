@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,17 +7,19 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 @TeleOp(name = "TeleOP", group = "A")
 public class TeleOP extends OpMode {
 
-    boolean toggle;
+    boolean stackToggle;
 
     RobotHardware robot = new RobotHardware(this);
 
     @Override
     public void init() {
-        toggle = false;
+        stackToggle = false;
         robot.init();
+        robot.claw.setPosition(robot.GHEARA_DESCHISA);
         robot.vFB1.setPosition(0);
         robot.vFB2.setPosition(1);
     }
+
     @Override
     public void start() {
         robot.start();
@@ -40,15 +41,14 @@ public class TeleOP extends OpMode {
             robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POSE);
         }
 
-            robot.lift.update();
+        robot.lift.update();
 
 
-
-        if(gamepad1.left_trigger==0 && gamepad1.right_trigger==0) {
+        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0) {
             robot.lift.update();
         } else {
-            robot.lift.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
-            robot.lift.target=robot.lift.getCurrentPosition();
+            robot.lift.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+            robot.lift.target = robot.lift.getCurrentPosition();
         }
     }
 
@@ -63,28 +63,25 @@ public class TeleOP extends OpMode {
     }
 
     private void claw() {
-        if(gamepad2.a) {
-            robot.claw.setPower(0.2);
-        } else if(gamepad2.b) {
-            robot.claw.setPower(-0.2);
-        } else {
-            robot.claw.setPower(0);
+        if (gamepad2.a) {
+            robot.claw.setPosition(robot.GHEARA_INCHISA);
+        } else if (gamepad2.b) {
+            robot.claw.setPosition(robot.GHEARA_DESCHISA);
         }
-
     }
 
     private void stack() {
 
-        if(gamepad1.a && !toggle) {
-            toggle = true;
-            robot.vfb_stack_pose-=0.07;
+        if (gamepad1.a && !stackToggle) {
+            stackToggle = true;
+            robot.vfb_stack_pose -= 0.07;
             robot.setVFBPosition(robot.vfb_stack_pose);
         } else if (gamepad1.y) {
-            toggle = true;
-            robot.vfb_stack_pose+=0.07;
+            stackToggle = true;;
+            robot.vfb_stack_pose += 0.07;
             robot.setVFBPosition(robot.vfb_stack_pose);
-        } else if ((!gamepad1.a || gamepad1.b) && toggle) {
-            toggle = false;
+        } else if ((!gamepad1.a || gamepad1.b) && stackToggle) {
+            stackToggle = false;
         }
     }
 
@@ -92,7 +89,7 @@ public class TeleOP extends OpMode {
         telemetry.addLine("Ridicare");
         telemetry.addData("Pozitie", robot.lift.getCurrentPosition());
         telemetry.addLine("Poz Vfb");
-        telemetry.addData("Stack",robot.vfb_stack_pose);
+        telemetry.addData("Stack", robot.vfb_stack_pose);
         telemetry.update();
     }
 
@@ -102,7 +99,7 @@ public class TeleOP extends OpMode {
         intakeOuttake();
         virtualFourBar();
         claw();
-        stack();
+//        stack();
 
         telemetry();
         telemetry.update();

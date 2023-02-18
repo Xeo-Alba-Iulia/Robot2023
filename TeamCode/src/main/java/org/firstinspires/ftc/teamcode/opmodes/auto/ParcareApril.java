@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -20,30 +19,23 @@ import java.util.ArrayList;
 @Autonomous(group = "A", preselectTeleOp = "TeleOP")
 public class ParcareApril extends OpMode {
 
-    SampleMecanumDrive drive;
+    final static double TAGSIZE = 0.166;
+    private static final int CASE_1 = 7;
+    private static final int CASE_2 = 47;
+    private static final int CASE_3 = 333;
 
+    SampleMecanumDrive drive;
     Pose2d startPose;
     RobotHardware robot;
     TrajectorySequence secventa3;
     TrajectorySequence secventa2;
     TrajectorySequence secventa1;
-
     OpenCvCamera camera;
     AprilRecognition aprilRecognition;
-    static final double FEET_PER_METER = 3.28084;
-
     double fx = 578.272;
     double fy = 578.272;
     double cx = 402.145;
     double cy = 221.506;
-
-    final double TAGSIZE = 0.166;
-
-    private static final int CASE_1 = 7;
-    private static final int CASE_2 = 47;
-    private static final int CASE_3 = 333;
-
-
     int cameraMonitorViewid;
 
 
@@ -61,7 +53,7 @@ public class ParcareApril extends OpMode {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(800, 448, OpenCvCameraRotation.UPSIDE_DOWN);
+                camera.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_RIGHT);
             }
 
             @Override
@@ -72,49 +64,44 @@ public class ParcareApril extends OpMode {
             }
         });
         robot = new RobotHardware(this);
-        startPose = new Pose2d(35, -60.355, Math.toRadians(270));
+        startPose = new Pose2d(32, -65.5, Math.toRadians(270.00));
         drive = new SampleMecanumDrive(hardwareMap);
-        drive.setPoseEstimate(new Pose2d(32, -65.5, Math.toRadians(270.00)));
+        drive.setPoseEstimate(startPose);
         secventa3 = drive.trajectorySequenceBuilder(new Pose2d(32, -65.5, Math.toRadians(270.00)))
-                .setReversed(true)
-                .splineTo(new Vector2d(55, -40.50), 0)
+                .back(25.5)
+                .strafeLeft(26.5)
                 .build();
-        secventa1 = drive.trajectorySequenceBuilder(new Pose2d(36, -65.5, Math.toRadians(270))).
-                setReversed(true).
-                forward(-25.5).
-                strafeLeft(-26.5).
-                build();
+        secventa1 = drive.trajectorySequenceBuilder(new Pose2d(36, -65.5, Math.toRadians(270)))
+                .back(25.5)
+                .strafeRight(26.5)
+                .build();
 
         // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-        secventa2 = drive.trajectorySequenceBuilder(new Pose2d(35, -63.5, Math.toRadians(270))).
-                setReversed(true).
-                forward(-30).
-                build();
+        secventa2 = drive.trajectorySequenceBuilder(new Pose2d(35, -63.5, Math.toRadians(270)))
+                .back(30)
+                .build();
     }
 
     @Override
     public void start() {
         ArrayList<AprilTagDetection> currentDetections = aprilRecognition.getLatestDetections();
         if (currentDetections.size() != 0) {
-            boolean tagFound = false;
 
             for (AprilTagDetection tag : currentDetections) {
                 if (tag.id == CASE_1) drive.followTrajectorySequence(secventa1);
-
+                else if(tag.id == CASE_2) {
+                    drive.followTrajectorySequence(secventa2);
+                }
 
                 else if (tag.id == CASE_3) drive.followTrajectorySequence(secventa3);
-                else drive.followTrajectorySequence(secventa2);
-
-
             }
         }
         robot.start();
 
-
     }
 
+    @Override
     public void loop() {
         drive.update();
-        start();
     }
 }

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -16,6 +17,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
  * your Vuforia key below and select the 'Camera' preset on top right of the dashboard. This sample
  * also works for UVCs with slight adjustments.
  */
+@Disabled
 @Autonomous(name = "ochio", group = "test")
 public class Uachi extends LinearOpMode {
 

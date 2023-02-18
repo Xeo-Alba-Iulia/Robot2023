@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Disabled
-@TeleOp(name = "servotest")
-public class Servo extends OpMode {
+@TeleOp
+public class ServoTest extends OpMode {
     private ServoImplEx servo1;
     private ServoImplEx servo2;
     private final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);

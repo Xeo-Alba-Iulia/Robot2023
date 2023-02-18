@@ -10,28 +10,23 @@ public class MeepMeepTesting {
     public static void main(String[] args) {
         System.setProperty("sun.java2d.opengl", "true");
         MeepMeep meepMeep = new MeepMeep(800);
-        Pose2d startPose = new Pose2d(35, -60.355, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(36, -65.5, Math.toRadians(270));
         TrajectorySequence secventa;
+
+
 
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(62.8429523186, 62.8429523186, 4.676666736602783, 4.676666736602783, 8)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(36, -65.5, Math.toRadians(270)))
-                                .setReversed(true)
-                                .forward(-29.5).
-                                strafeLeft(-22)
-                          //     .splineToConstantHeading(new Vector2d(10, -35), Math.toRadians(90))
-                           //     .splineToConstantHeading(new Vector2d(36,-35),Math.toRadians(270))
-                            //    .splineToConstantHeading(new Vector2d(43,-30), Math.toRadians(40))
-                            //    .splineToConstantHeading(new Vector2d(64,-31),Math.toRadians(270))
-                              //  .splineToConstantHeading(new Vector2d(-63,31, Math.toRadians(270)))
-
+                        drive.trajectorySequenceBuilder(startPose)
+                                .lineToLinearHeading(new Pose2d(36, -31, Math.toRadians(330)))
+                                .lineToLinearHeading(new Pose2d(36, -12, 0))
+                                .forward(19)
+                                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(45)))
                                 .build()
-
                 );
-
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_KAI_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)

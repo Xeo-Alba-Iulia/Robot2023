@@ -1,11 +1,13 @@
-package org.firstinspires.ftc.teamcode.opmodes.teleop.auto;
+package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
+@Disabled
 @Autonomous(name = "parcare simpla", group = "A", preselectTeleOp = "prototype")
 public class ParcareSimpla extends LinearOpMode {
     ElapsedTime time = new ElapsedTime();
