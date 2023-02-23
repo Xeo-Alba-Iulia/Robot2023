@@ -13,6 +13,9 @@ import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.firstinspires.ftc.teamcode.utilities.posStorage;
+
+
 
 import java.util.ArrayList;
 
@@ -103,5 +106,7 @@ public class ParcareApril extends OpMode {
     @Override
     public void loop() {
         drive.update();
+        posStorage.currentPose= drive.getPoseEstimate();
     }
+
 }

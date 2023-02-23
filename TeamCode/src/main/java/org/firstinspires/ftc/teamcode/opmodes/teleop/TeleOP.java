@@ -1,8 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.utilities.posStorage;
+import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 
 @TeleOp(name = "TeleOP", group = "A")
 public class TeleOP extends OpMode {
@@ -10,6 +16,11 @@ public class TeleOP extends OpMode {
     boolean stackToggle;
 
     RobotHardware robot = new RobotHardware(this);
+    StandardTrackingWheelLocalizer myLocalizer = new StandardTrackingWheelLocalizer(hardwareMap);
+    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+
+    TrajectorySequence junction1;
 
     @Override
     public void init() {
@@ -18,6 +29,7 @@ public class TeleOP extends OpMode {
         robot.claw.setPosition(robot.GHEARA_DESCHISA);
         robot.vFB1.setPosition(0);
         robot.vFB2.setPosition(1);
+        myLocalizer.setPoseEstimate(posStorage.currentPose);
     }
 
     @Override
@@ -25,6 +37,43 @@ public class TeleOP extends OpMode {
         robot.start();
     }
 
+//    public void teleOpRoadRunner() {
+//
+//
+//        // Set your initial pose to x: 10, y: 10, facing 90 degrees
+//        myLocalizer.setPoseEstimate(new Pose2d(10, 10, Math.toRadians(90)));
+//
+////        waitForStart();
+//
+//
+//            // Make sure to call drive.update() on *every* loop
+//            // Increasing loop time by utilizing bulk reads and minimizing writes will increase your odometry accuracy
+//
+//
+//            // Retrieve your pose
+//
+//
+//            telemetry.addData("x", myPose.getX());
+//            telemetry.addData("y", myPose.getY());
+//            telemetry.addData("heading", myPose.getHeading());
+//
+//            // Insert whatever teleop code you're using
+//
+//    }
+
+    public void allignJunction() {
+        myLocalizer.setPoseEstimate(posStorage.currentPose);
+        drive.setPoseEstimate(posStorage.currentPose);
+        Pose2d myPose = drive.getPoseEstimate();
+        //sau
+//         Pose2d myPose = myLocalizer.getPoseEstimate();
+        Pose2d posjunction1 = new Pose2d(-31, 8, 135);
+
+        junction1 = drive.trajectorySequenceBuilder(myPose)
+                .lineToLinearHeading(posjunction1)
+                .build();
+
+    }
 
     private void intakeOuttake() {
         if (gamepad2.dpad_down) {
@@ -95,10 +144,14 @@ public class TeleOP extends OpMode {
 
 
     public void loop() {
+        myLocalizer.update();
+        drive.update();
         robot.movement(gamepad1);
         intakeOuttake();
         virtualFourBar();
         claw();
+        allignJunction();
+//        teleOpRoadRunner();
 //        stack();
 
         telemetry();

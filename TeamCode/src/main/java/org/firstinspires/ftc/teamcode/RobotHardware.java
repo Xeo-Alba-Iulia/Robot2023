@@ -107,14 +107,21 @@ public class RobotHardware {
     }
 
     public void movement(Gamepad gamepad1) {
+
         double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x;
+        double x;
+        if(gamepad1.left_stick_x < 0.25 && gamepad1.left_stick_x > -0.25)
+            x = 0;
+        else
+        {
+            x=gamepad1.left_stick_x;
+        }
         double rx = gamepad1.right_stick_x;
 
-        double frontLeftPower = y + x + rx;
-        double backLeftPower = y - x + rx;
-        double frontRightPower = y - x - rx;
-        double backRightPower = y + x - rx;
+            double frontLeftPower = y + x + rx;
+            double backLeftPower = y - x + rx;
+            double frontRightPower = y - x - rx;
+            double backRightPower = y + x - rx;
 
         if (gamepad1.left_bumper) {
             frontRightPower *= 0.4;
@@ -128,9 +135,14 @@ public class RobotHardware {
             backLeftPower *= 0.6;
         }
 
+
+
         frontLeft.setPower(frontLeftPower);
         backLeft.setPower(backLeftPower);
         frontRight.setPower(frontRightPower);
-        backRight.setPower(backRightPower);
-    }
+        backRight.setPower(backRightPower);}
+
 }
+
+
+
