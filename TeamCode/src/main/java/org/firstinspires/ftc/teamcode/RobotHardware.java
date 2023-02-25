@@ -43,9 +43,9 @@ public class RobotHardware {
 
     public final double CLAW_POS1 = 0;
 
-    public final double CLAW_POS2 = 0;
+    public final double CLAW_POS2 = 90;
 
-    public final double CLAW_POS3 = 0;
+    public final double CLAW_POS3 = 120;
 
 
 
