@@ -29,6 +29,8 @@ public class RobotHardware {
     public DcMotorEx ridicare1 = null;
     public DcMotorEx ridicare2 = null;
     public Servo claw = null;
+
+    public Servo claw_alligner = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
@@ -38,6 +40,15 @@ public class RobotHardware {
     public double vfb_stack_pose;
     public final double VFB_INTAKE_POSE = 0;
     public final double VFB_ALIGN_HIGH_POSE = 0.70;
+
+    public final double CLAW_POS1 = 0;
+
+    public final double CLAW_POS2 = 0;
+
+    public final double CLAW_POS3 = 0;
+
+
+
 
     public final double GHEARA_DESCHISA = 0.475;
     public final double GHEARA_INCHISA = 0.410;

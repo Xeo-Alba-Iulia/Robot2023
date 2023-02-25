@@ -26,6 +26,7 @@ public class TeleOP extends OpMode {
     public void init() {
         stackToggle = false;
         robot.init();
+        robot.claw_alligner.setPosition(robot.CLAW_POS1);
         robot.claw.setPosition(robot.GHEARA_DESCHISA);
         robot.vFB1.setPosition(0);
         robot.vFB2.setPosition(1);
@@ -111,6 +112,15 @@ public class TeleOP extends OpMode {
         }
     }
 
+    private void allignclaw()
+    {
+        if(gamepad2.x){
+            robot.claw_alligner.setPosition(robot.CLAW_POS1);
+        }
+        if(gamepad2.y) {
+            robot.claw_alligner.setPosition(robot.CLAW_POS2);
+        }
+    }
     private void claw() {
         if (gamepad2.a) {
             robot.claw.setPosition(robot.GHEARA_INCHISA);
@@ -151,6 +161,7 @@ public class TeleOP extends OpMode {
         virtualFourBar();
         claw();
         allignJunction();
+        allignclaw();
 //        teleOpRoadRunner();
 //        stack();
 
