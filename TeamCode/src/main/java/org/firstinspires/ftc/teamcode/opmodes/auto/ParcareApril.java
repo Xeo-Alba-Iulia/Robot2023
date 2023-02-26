@@ -94,12 +94,9 @@ public class ParcareApril extends OpMode {
                 if (tag.id == CASE_1) drive.followTrajectorySequence(secventa1);
                 else if(tag.id == CASE_2) {
                     drive.followTrajectorySequence(secventa2);
-                }
-
-                else if (tag.id == CASE_3) drive.followTrajectorySequence(secventa3);
+                } else if (tag.id == CASE_3) drive.followTrajectorySequence(secventa3);
             }
         }
-        robot.start();
 
     }
 

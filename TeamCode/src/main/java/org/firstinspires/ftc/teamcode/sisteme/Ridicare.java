@@ -9,13 +9,13 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 public class Ridicare {
     DcMotorEx ridicare1;
     DcMotorEx ridicare2;
-    PIDController controller;
+    public PIDController controller;
     public int target;
     public Ridicare (DcMotorEx ridicare1, DcMotorEx ridicare2, OpMode myOpMode) {
         this.ridicare1 = ridicare1;
         this.ridicare2 = ridicare2;
         target = 0;
-        controller = new PIDController(0.001, 0.0012, 0.02975039, myOpMode);
+        controller = new PIDController(0, 0, 0, myOpMode);
     }
 
     /**
@@ -27,8 +27,12 @@ public class Ridicare {
         ridicare2.setPower(power);
     }
 
+    public double getPower() {
+        return (ridicare1.getPower() + ridicare2.getPower()) / 2.0;
+    }
+
     /**
-     * get position of the motor with the encoder attached
+     * Get position of the motor with the encoder attached
      * @return ridicare1's current encoder's ticks
      */
     public int getCurrentPosition() {
@@ -36,7 +40,7 @@ public class Ridicare {
     }
 
     /**
-     * get the average velocity between the 2 motors
+     * Get the average velocity between the 2 motors
      * @return (speed of motor1 + speed of motor 2) / 2
      */
     public double getAverageVelocity() {
@@ -45,10 +49,8 @@ public class Ridicare {
         return (speed1 + speed2) / 2.0;
     }
 
-
-
     /**
-     * reset both encoder's ticks
+     * Reset both encoder's ticks
      * even if one of them is redundant, for safety
      */
     public void resetEncoder() {
@@ -57,11 +59,10 @@ public class Ridicare {
     }
 
     /**
-     * update the power given by the pid controller
+     * Update the power given by the pid controller
      */
     public void update() {
-        ridicare1.setPower(controller.update(target, ridicare1.getCurrentPosition()));
-        ridicare2.setPower(controller.update(target, ridicare1.getCurrentPosition()));
+        ridicare1.setPower(controller.update(target, -ridicare1.getCurrentPosition()));
+        ridicare2.setPower(controller.update(target, -ridicare1.getCurrentPosition()));
     }
-
 }

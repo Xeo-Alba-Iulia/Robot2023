@@ -182,7 +182,6 @@ public class PorcInAjunuCraciunului extends OpMode {
         } else
             drive.followTrajectorySequence(secventa_con2);
 
-        robot.start();
 
 
     }

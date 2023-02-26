@@ -20,8 +20,6 @@ public class TeleOP extends OpMode {
     RobotHardware robot = new RobotHardware(this);
     StandardTrackingWheelLocalizer myLocalizer;
     SampleMecanumDrive drive;
-
-
     TrajectorySequence junction1;
 
     @Override
@@ -39,10 +37,6 @@ public class TeleOP extends OpMode {
         myLocalizer.setPoseEstimate(posStorage.currentPose);
     }
 
-    @Override
-    public void start() {
-        robot.start();
-    }
 
     public void allignJunction() {
         myLocalizer.setPoseEstimate(posStorage.currentPose);
@@ -73,10 +67,10 @@ public class TeleOP extends OpMode {
             robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POSE);
         }
 
-        robot.lift.update();
+        boolean manualActive = gamepad1.left_trigger != 0 && gamepad1.right_trigger != 0;
 
 
-        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0) {
+        if (!manualActive) {
             robot.lift.update();
         } else {
             robot.lift.setPower(gamepad1.right_trigger - gamepad1.left_trigger);

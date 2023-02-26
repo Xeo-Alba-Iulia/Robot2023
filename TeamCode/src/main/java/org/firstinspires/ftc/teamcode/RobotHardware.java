@@ -52,7 +52,6 @@ public class RobotHardware {
     public Ridicare lift;
 
     // Constants & Variables
-    public double target = 0;
     public final int RIDICARE_POS_1 = 10400;
     public final int RIDICARE_POS_2 = 16500;
     public final int RIDICARE_POS_3 = 20000;
@@ -99,15 +98,12 @@ public class RobotHardware {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        ridicare1.setDirection(DcMotorSimple.Direction.REVERSE);
-        ridicare2.setDirection(DcMotorSimple.Direction.FORWARD);
+        ridicare1.setDirection(DcMotorSimple.Direction.FORWARD);
+        ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
     }
 
-    public void start() {
-        ridicareTimer.reset();
-    }
 
     public void setVFBPosition(double position) {
         vFB1.setPosition(position);
@@ -142,14 +138,9 @@ public class RobotHardware {
             backLeftPower *= 0.6;
         }
 
-
-
         frontLeft.setPower(frontLeftPower);
         backLeft.setPower(backLeftPower);
         frontRight.setPower(frontRightPower);
         backRight.setPower(backRightPower);}
 
 }
-
-
-
