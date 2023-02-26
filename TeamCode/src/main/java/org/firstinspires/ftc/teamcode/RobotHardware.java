@@ -52,9 +52,7 @@ public class RobotHardware {
     public Ridicare lift;
 
     // Constants & Variables
-    public final int RIDICARE_POS_1 = 10400;
-    public final int RIDICARE_POS_2 = 16500;
-    public final int RIDICARE_POS_3 = 20000;
+
 
 
     // Define a constructor that allows the OpMode to pass a reference to itself.

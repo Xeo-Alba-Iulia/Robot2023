@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Disabled
 @Autonomous
@@ -36,7 +37,7 @@ public class Destrabalare extends OpMode {
         robot.claw.setPosition(robot.GHEARA_INCHISA);
         Trajectory toFirstJunction = drive.trajectoryBuilder(startPose)
                 .addTemporalMarker(0, () -> {
-                    robot.lift.target = robot.RIDICARE_POS_2;
+                    robot.lift.target = Ridicare.POS_2;
                 })
                 .lineToLinearHeading(firstJunction)
                 .addDisplacementMarker(3, () -> {

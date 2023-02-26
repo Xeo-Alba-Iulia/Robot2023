@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 
 public class PIDController {
     private static final double integralSumLimit = 1000;
-    private static final double MARGIN_OF_ERROR = 0;
     RobotHardware robot;
     double Kp, Ki, Kd;
     public ElapsedTime timer;
@@ -15,7 +14,6 @@ public class PIDController {
     double integralSum = 0;
     double lastTime = 0;
     double lastReference = 0;
-    double lastTarget = 0;
     OpMode opMode;
 
     /**

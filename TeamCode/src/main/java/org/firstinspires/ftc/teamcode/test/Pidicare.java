@@ -33,19 +33,16 @@ public class Pidicare extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if(lastKp != Kp || lastKi != Ki || lastKd != Ki) {
+            if(Kp != lastKp || Ki != lastKi || Kd != lastKd) {
                 robot.lift.controller = new PIDController(Kp, Ki, Kd, this);
             }
-
             robot.lift.target = POZITIE;
             robot.lift.update();
             lastKp = Kp;
             lastKi = Ki;
             lastKd = Kd;
-            dashboardTelemetry.addData("Target Position", POZITIE);
-            dashboardTelemetry.addData("Current Position", -robot.lift.getCurrentPosition());
-            dashboardTelemetry.addData( "Power Motor", robot.lift.getPower());
-            dashboardTelemetry.addData("Timer", robot.lift.controller.timer.seconds());
+            dashboardTelemetry.addData("Current Pos", robot.lift.getCurrentPosition());
+            dashboardTelemetry.addData("Target", -POZITIE);
             dashboardTelemetry.update();
         }
     }

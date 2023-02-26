@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
+import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.utilities.posStorage;
 
@@ -28,8 +29,8 @@ public class TeleOP extends OpMode {
         clawToggle = false;
         currentA = false;
         robot.init();
-        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_UP);
-        robot.claw.setPosition(robot.GHEARA_INIT);
+//        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_UP);
+//        robot.claw.setPosition(robot.GHEARA_INIT);
         robot.vFB1.setPosition(0);
         robot.vFB2.setPosition(1);
         drive = new SampleMecanumDrive(hardwareMap);
@@ -55,27 +56,19 @@ public class TeleOP extends OpMode {
     private void intakeOuttake() {
         if (gamepad2.dpad_down) {
             robot.lift.target = 600;
-            robot.setVFBPosition(robot.VFB_ALIGN_POSE);
+//            robot.setVFBPosition(robot.VFB_ALIGN_POSE);
         } else if (gamepad2.dpad_left) {
-            robot.lift.target = robot.RIDICARE_POS_1;
-            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
+            robot.lift.target = Ridicare.POS_1;
+//            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
         } else if (gamepad2.dpad_up) {
-            robot.lift.target = robot.RIDICARE_POS_2;
-            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
+            robot.lift.target = Ridicare.POS_2;
+//            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
         } else if (gamepad2.dpad_right) {
-            robot.lift.target = robot.RIDICARE_POS_3;
-            robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POSE);
+            robot.lift.target = Ridicare.POS_3;
+//            robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POSE);
         }
 
-        boolean manualActive = gamepad1.left_trigger != 0 && gamepad1.right_trigger != 0;
-
-
-        if (!manualActive) {
             robot.lift.update();
-        } else {
-            robot.lift.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
-            robot.lift.target = robot.lift.getCurrentPosition();
-        }
     }
 
     private void virtualFourBar() {
@@ -112,21 +105,6 @@ public class TeleOP extends OpMode {
     }
 
 
-    private void stack() {
-
-        if (gamepad1.a && !stackToggle) {
-            stackToggle = true;
-            robot.vfb_stack_pose -= 0.07;
-            robot.setVFBPosition(robot.vfb_stack_pose);
-        } else if (gamepad1.y) {
-            stackToggle = true;
-            robot.vfb_stack_pose += 0.07;
-            robot.setVFBPosition(robot.vfb_stack_pose);
-        } else if ((!gamepad1.a || gamepad1.y) && stackToggle) {
-            stackToggle = false;
-        }
-    }
-
     private void telemetry() {
         telemetry.addLine("Ridicare");
         telemetry.addData("Pozitie", robot.lift.getCurrentPosition());
@@ -141,7 +119,7 @@ public class TeleOP extends OpMode {
         drive.update();
         robot.movement(gamepad1);
         intakeOuttake();
-        virtualFourBar();
+//        virtualFourBar();
         claw();
         allignJunction();
         allignclaw();
