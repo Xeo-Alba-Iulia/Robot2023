@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.test;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Disabled
+@Config
 @TeleOp
 public class ServoTest extends OpMode {
     private ServoImplEx servo1;
@@ -19,8 +19,8 @@ public class ServoTest extends OpMode {
 
     @Override
     public void init() {
-        servo1 =hardwareMap.get(ServoImplEx.class,"vfb1");
-        servo2 =hardwareMap.get(ServoImplEx.class,"vfb2");
+        servo1 =hardwareMap.get(ServoImplEx.class,"Gheara");
+        servo2 =hardwareMap.get(ServoImplEx.class,"AliniereGheara");
         servo1.setPwmRange(new PwmControl.PwmRange(500,2500));
         servo2.setPwmRange(new PwmControl.PwmRange(500, 2500));
         servo1.setPosition(1);
@@ -28,6 +28,7 @@ public class ServoTest extends OpMode {
     }
 
     @Override
+
     public void start() {
         timer.reset();
     }

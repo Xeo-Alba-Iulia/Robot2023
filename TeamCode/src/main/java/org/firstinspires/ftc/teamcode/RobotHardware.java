@@ -34,32 +34,28 @@ public class RobotHardware {
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
     public ElapsedTime ridicareTimer = new ElapsedTime();
-    public ElapsedTime clawTimer = new ElapsedTime();
     public final double VFB_OUTTAKE_POSE = 0.85;
-    public final double VFB_ALIGN_POSE = 0.5;
+    public final double VFB_ALIGN_POSE = 0.4;
     public double vfb_stack_pose;
     public final double VFB_INTAKE_POSE = 0;
     public final double VFB_ALIGN_HIGH_POSE = 0.70;
 
-    public final double CLAW_POS1 = 0;
-
-    public final double CLAW_POS2 = 90;
-
-    public final double CLAW_POS3 = 120;
+    public final double CLAW_ALLIGN_POS_UP = 0.15;
+    public final double CLAW_ALLIGN_POS_INTAKE = 0.50;
+    public final double CLAW_ALLIGN_POS_FALLEN = 0.85;
 
 
-
-
-    public final double GHEARA_DESCHISA = 0.475;
-    public final double GHEARA_INCHISA = 0.410;
+    public final double GHEARA_DESCHISA = 0.7;
+    public final double GHEARA_INCHISA = 0.63;
+    public final double GHEARA_INIT= 0.65;
 
     public Ridicare lift;
 
     // Constants & Variables
     public double target = 0;
-    public final int RIDICARE_POS_1 = 8600;
+    public final int RIDICARE_POS_1 = 10400;
     public final int RIDICARE_POS_2 = 16500;
-    public final int RIDICARE_POS_3 = 19500;
+    public final int RIDICARE_POS_3 = 20000;
 
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
@@ -79,7 +75,8 @@ public class RobotHardware {
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
         lift = new Ridicare (ridicare1, ridicare2, myOpMode);
-        claw = myOpMode.hardwareMap.get(Servo.class, "ServoGheara");
+        claw = myOpMode.hardwareMap.get(Servo.class, "Gheara");
+        claw_alligner = myOpMode.hardwareMap.get(Servo.class, "AliniereGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
         vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
@@ -102,8 +99,8 @@ public class RobotHardware {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        ridicare1.setDirection(DcMotorSimple.Direction.FORWARD);
-        ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
+        ridicare1.setDirection(DcMotorSimple.Direction.REVERSE);
+        ridicare2.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
     }
@@ -121,10 +118,9 @@ public class RobotHardware {
 
         double y = -gamepad1.left_stick_y;
         double x;
-        if(gamepad1.left_stick_x < 0.25 && gamepad1.left_stick_x > -0.25)
+        if(gamepad1.left_stick_x < 0.25 && gamepad1.left_stick_x > -0.25) {
             x = 0;
-        else
-        {
+        } else {
             x=gamepad1.left_stick_x;
         }
         double rx = gamepad1.right_stick_x;

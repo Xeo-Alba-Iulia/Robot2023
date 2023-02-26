@@ -1,23 +1,25 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.utilities.posStorage;
-import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 
 @TeleOp(name = "TeleOP", group = "A")
 public class TeleOP extends OpMode {
 
     boolean stackToggle;
+    boolean clawToggle;
+    boolean currentA;
 
     RobotHardware robot = new RobotHardware(this);
-    StandardTrackingWheelLocalizer myLocalizer = new StandardTrackingWheelLocalizer(hardwareMap);
-    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+    StandardTrackingWheelLocalizer myLocalizer;
+    SampleMecanumDrive drive;
 
 
     TrajectorySequence junction1;
@@ -25,11 +27,15 @@ public class TeleOP extends OpMode {
     @Override
     public void init() {
         stackToggle = false;
+        clawToggle = false;
+        currentA = false;
         robot.init();
-        robot.claw_alligner.setPosition(robot.CLAW_POS1);
-        robot.claw.setPosition(robot.GHEARA_DESCHISA);
+        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_UP);
+        robot.claw.setPosition(robot.GHEARA_INIT);
         robot.vFB1.setPosition(0);
         robot.vFB2.setPosition(1);
+        drive = new SampleMecanumDrive(hardwareMap);
+        myLocalizer = new StandardTrackingWheelLocalizer(hardwareMap);
         myLocalizer.setPoseEstimate(posStorage.currentPose);
     }
 
@@ -37,30 +43,6 @@ public class TeleOP extends OpMode {
     public void start() {
         robot.start();
     }
-
-//    public void teleOpRoadRunner() {
-//
-//
-//        // Set your initial pose to x: 10, y: 10, facing 90 degrees
-//        myLocalizer.setPoseEstimate(new Pose2d(10, 10, Math.toRadians(90)));
-//
-////        waitForStart();
-//
-//
-//            // Make sure to call drive.update() on *every* loop
-//            // Increasing loop time by utilizing bulk reads and minimizing writes will increase your odometry accuracy
-//
-//
-//            // Retrieve your pose
-//
-//
-//            telemetry.addData("x", myPose.getX());
-//            telemetry.addData("y", myPose.getY());
-//            telemetry.addData("heading", myPose.getHeading());
-//
-//            // Insert whatever teleop code you're using
-//
-//    }
 
     public void allignJunction() {
         myLocalizer.setPoseEstimate(posStorage.currentPose);
@@ -112,22 +94,29 @@ public class TeleOP extends OpMode {
         }
     }
 
-    private void allignclaw()
-    {
-        if(gamepad2.x){
-            robot.claw_alligner.setPosition(robot.CLAW_POS1);
-        }
-        if(gamepad2.y) {
-            robot.claw_alligner.setPosition(robot.CLAW_POS2);
-        }
+    private void allignclaw() {
+        if (gamepad2.x) {
+            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_UP);
+        } else if (gamepad2.y) {
+            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
+        } else if (gamepad2.right_bumper)
+            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_FALLEN);
     }
+
     private void claw() {
-        if (gamepad2.a) {
-            robot.claw.setPosition(robot.GHEARA_INCHISA);
-        } else if (gamepad2.b) {
-            robot.claw.setPosition(robot.GHEARA_DESCHISA);
+        if (gamepad1.a != currentA) {
+            currentA = gamepad1.a;
+            if (gamepad1.a) {
+                clawToggle = !clawToggle;
+                if (clawToggle) {
+                    robot.claw.setPosition(robot.GHEARA_INCHISA);
+                } else {
+                    robot.claw.setPosition(robot.GHEARA_DESCHISA);
+                }
+            }
         }
     }
+
 
     private void stack() {
 
@@ -136,10 +125,10 @@ public class TeleOP extends OpMode {
             robot.vfb_stack_pose -= 0.07;
             robot.setVFBPosition(robot.vfb_stack_pose);
         } else if (gamepad1.y) {
-            stackToggle = true;;
+            stackToggle = true;
             robot.vfb_stack_pose += 0.07;
             robot.setVFBPosition(robot.vfb_stack_pose);
-        } else if ((!gamepad1.a || gamepad1.b) && stackToggle) {
+        } else if ((!gamepad1.a || gamepad1.y) && stackToggle) {
             stackToggle = false;
         }
     }
@@ -162,7 +151,6 @@ public class TeleOP extends OpMode {
         claw();
         allignJunction();
         allignclaw();
-//        teleOpRoadRunner();
 //        stack();
 
         telemetry();
