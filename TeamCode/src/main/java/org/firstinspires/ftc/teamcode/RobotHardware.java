@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -8,51 +10,59 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
+import org.firstinspires.ftc.teamcode.sisteme.VirtualFourBar;
 
 
 public class RobotHardware {
+    public final double VFB_OUTTAKE_POSE = 0.85;
 
-    private final OpMode myOpMode;   // gain access to methods in the calling OpMode.
+    public double VFB_STACK_POSE = 0.69;
     //magnum pipirig ringabel
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
+    public final double VFB_ALIGN_POSE = 0.4;
+    public final double VFB_INTAKE_POSE = 0.88;
 
+  //  public final double VFB_LOW_FRONT= 0.50;
+
+    public final double VFB_FALLEN= 0.83;
+
+    public final double VFB_LOW= 0.09;
+
+    public final double VFB_MEDIUM= 0.13;
+
+    public final double VFB_HIGH= 0.27;
+
+    public final double CLAW_ALLIGN_POS_UP = 0.15;
+
+    public final double CLAW_ALLIGN_POS_LOW= 0.6;
+
+    public final double CLAW_ALLIGN_POS_HIGH = 0.56;
+    public final double CLAW_ALLIGN_POS_INTAKE = 0.47;
+    public final double CLAW_ALLIGN_POS_FALLEN = 0.85;
+    public final double GHEARA_DESCHISA = 0.68;
+    public final double GHEARA_INCHISA = 0.59;
+
+    public final double GHEARA_INIT = 0.65;
+    private final OpMode myOpMode;   // gain access to methods in the calling OpMode.
     public DcMotorEx frontLeft = null;
     public DcMotorEx frontRight = null;
     public DcMotorEx backLeft = null;
     public DcMotorEx backRight = null;
-
     // Sisteme
     public DcMotorEx ridicare1 = null;
     public DcMotorEx ridicare2 = null;
     public Servo claw = null;
-
     public Servo claw_alligner = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
-    public ElapsedTime ridicareTimer = new ElapsedTime();
-    public final double VFB_OUTTAKE_POSE = 0.85;
-    public final double VFB_ALIGN_POSE = 0.4;
-    public double vfb_stack_pose;
-    public final double VFB_INTAKE_POSE = 0;
-    public final double VFB_ALIGN_HIGH_POSE = 0.70;
-
-    public final double CLAW_ALLIGN_POS_UP = 0.15;
-    public final double CLAW_ALLIGN_POS_INTAKE = 0.50;
-    public final double CLAW_ALLIGN_POS_FALLEN = 0.85;
-
-
-    public final double GHEARA_DESCHISA = 0.7;
-    public final double GHEARA_INCHISA = 0.63;
-    public final double GHEARA_INIT= 0.65;
-
+    public VirtualFourBar virtualFourBar;
+    public double vfb_stack_pose ;
     public Ridicare lift;
 
     // Constants & Variables
-
 
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
@@ -71,13 +81,15 @@ public class RobotHardware {
 //      Sisteme
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
-        lift = new Ridicare (ridicare1, ridicare2, myOpMode);
+        lift = new Ridicare(ridicare1, ridicare2, myOpMode);
         claw = myOpMode.hardwareMap.get(Servo.class, "Gheara");
         claw_alligner = myOpMode.hardwareMap.get(Servo.class, "AliniereGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
         vFB1.setPwmRange(new PwmControl.PwmRange(500, 2500));
         vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
-        vFB2.setPwmRange(new PwmControl.PwmRange(500,2500));
+        vFB2.setPwmRange(new PwmControl.PwmRange(500, 2500));
+        virtualFourBar = new VirtualFourBar(vFB1, vFB2);
+
 
         ridicare1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ridicare1.setTargetPosition(0);
@@ -102,34 +114,27 @@ public class RobotHardware {
 
     }
 
-
-    public void setVFBPosition(double position) {
-        vFB1.setPosition(position);
-        vFB2.setPosition(1 - position);
-    }
-
-    public void movement(Gamepad gamepad1) {
-
+    public void movement(@NonNull Gamepad gamepad1) {
         double y = -gamepad1.left_stick_y;
         double x;
-        if(gamepad1.left_stick_x < 0.25 && gamepad1.left_stick_x > -0.25) {
+        if (gamepad1.left_stick_x < 0.25 && gamepad1.left_stick_x > -0.25) {
             x = 0;
         } else {
-            x=gamepad1.left_stick_x;
+            x = gamepad1.left_stick_x;
         }
         double rx = gamepad1.right_stick_x;
 
-            double frontLeftPower = y + x + rx;
-            double backLeftPower = y - x + rx;
-            double frontRightPower = y - x - rx;
-            double backRightPower = y + x - rx;
+        double frontLeftPower = y + x + rx;
+        double backLeftPower = y - x + rx;
+        double frontRightPower = y - x - rx;
+        double backRightPower = y + x - rx;
 
-        if (gamepad1.left_bumper) {
+        if (gamepad1.left_trigger!=0) {
             frontRightPower *= 0.4;
             frontLeftPower *= 0.4;
             backRightPower *= 0.4;
             backLeftPower *= 0.4;
-        } else if (!gamepad1.right_bumper) {
+        } else if (gamepad1.right_trigger!=0) {
             frontRightPower *= 0.6;
             frontLeftPower *= 0.6;
             backRightPower *= 0.6;
@@ -139,6 +144,7 @@ public class RobotHardware {
         frontLeft.setPower(frontLeftPower);
         backLeft.setPower(backLeftPower);
         frontRight.setPower(frontRightPower);
-        backRight.setPower(backRightPower);}
+        backRight.setPower(backRightPower);
+    }
 
 }

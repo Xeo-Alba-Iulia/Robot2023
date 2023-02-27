@@ -9,7 +9,7 @@ import com.noahbres.meepmeep.roadrunner.trajectorysequence.TrajectorySequence;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         System.setProperty("sun.java2d.opengl", "true");
-        MeepMeep meepMeep = new MeepMeep(800);
+        MeepMeep meepMeep = new MeepMeep(850);
         Pose2d startPose = new Pose2d(36, -65.5, Math.toRadians(270));
         TrajectorySequence secventa;
 
@@ -21,10 +21,7 @@ public class MeepMeepTesting {
                 .setConstraints(62.8429523186, 62.8429523186, 4.676666736602783, 4.676666736602783, 8)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineToLinearHeading(new Pose2d(36, -31, Math.toRadians(330)))
-                                .lineToLinearHeading(new Pose2d(36, -12, 0))
-                                .forward(19)
-                                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(45)))
+                                .lineToLinearHeading(new Pose2d(36, -35, Math.toRadians(315)))
                                 .build()
                 );
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_KAI_DARK)

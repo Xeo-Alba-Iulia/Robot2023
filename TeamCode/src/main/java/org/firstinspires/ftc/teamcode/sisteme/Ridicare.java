@@ -11,15 +11,16 @@ public class Ridicare {
     DcMotorEx ridicare2;
     public PIDController controller;
 
-    public static final int POS_1 = 7800;
-    public static final int POS_2 = 12700;
-    public static final int POS_3 = 17500;
+    public static final int POS_1 = 9000;
+    public static final int POS_2 = 16200;
+    public static final int POS_3 = 19500;
     public int target;
+
     public Ridicare (DcMotorEx ridicare1, DcMotorEx ridicare2, OpMode myOpMode) {
         this.ridicare1 = ridicare1;
         this.ridicare2 = ridicare2;
         target = 0;
-        controller = new PIDController(0.0007, 0, 0.000001723790323, myOpMode);
+        controller = new PIDController(0.0007, 0, 0.000001723790323);
     }
 
     /**

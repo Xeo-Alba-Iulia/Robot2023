@@ -1,20 +1,15 @@
 package org.firstinspires.ftc.teamcode.utilities;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.RobotHardware;
 
 public class PIDController {
     private static final double integralSumLimit = 1000;
-    RobotHardware robot;
     double Kp, Ki, Kd;
     public ElapsedTime timer;
     double lastError = 0;
     double integralSum = 0;
     double lastTime = 0;
     double lastReference = 0;
-    OpMode opMode;
 
     /**
      * construct PID controller
@@ -23,12 +18,10 @@ public class PIDController {
      * @param Ki Integral coefficient
      * @param Kd Derivative coefficient
      */
-    public PIDController(double Kp, double Ki, double Kd, OpMode opMode) {
+    public PIDController(double Kp, double Ki, double Kd) {
         this.Kp = Kp;
         this.Ki = Ki;
         this.Kd = Kd;
-        this.opMode = opMode;
-        robot = new RobotHardware(opMode);
         timer = new ElapsedTime();
     }
 

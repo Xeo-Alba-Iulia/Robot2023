@@ -15,8 +15,13 @@ import org.firstinspires.ftc.teamcode.utilities.posStorage;
 public class TeleOP extends OpMode {
 
     boolean stackToggle;
+    boolean intakeToggle;
     boolean clawToggle;
     boolean currentA;
+    boolean currentX;
+    boolean currentDdown;
+
+
 
     RobotHardware robot = new RobotHardware(this);
     StandardTrackingWheelLocalizer myLocalizer;
@@ -27,12 +32,14 @@ public class TeleOP extends OpMode {
     public void init() {
         stackToggle = false;
         clawToggle = false;
+        intakeToggle = false;
         currentA = false;
+        currentX = false;
+        currentDdown=false;
         robot.init();
-//        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_UP);
-//        robot.claw.setPosition(robot.GHEARA_INIT);
-        robot.vFB1.setPosition(0);
-        robot.vFB2.setPosition(1);
+        robot.virtualFourBar.setPosition(robot.VFB_ALIGN_POSE);
+        robot.claw.setPosition(robot.GHEARA_DESCHISA);
+        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
         drive = new SampleMecanumDrive(hardwareMap);
         myLocalizer = new StandardTrackingWheelLocalizer(hardwareMap);
         myLocalizer.setPoseEstimate(posStorage.currentPose);
@@ -53,31 +60,52 @@ public class TeleOP extends OpMode {
 
     }
 
+    private void intake() {
+        if (gamepad2.dpad_down != currentDdown) {
+            currentDdown = gamepad1.a;
+            if (gamepad2.dpad_down) {
+                intakeToggle = !intakeToggle;
+                if (intakeToggle) {
+                    robot.virtualFourBar.setPosition(robot.VFB_ALIGN_POSE);
+                } else {
+                    robot.virtualFourBar.setPosition(robot.VFB_ALIGN_POSE);
+                }
+            }
+        }
+    }
     private void intakeOuttake() {
         if (gamepad2.dpad_down) {
             robot.lift.target = 600;
-//            robot.setVFBPosition(robot.VFB_ALIGN_POSE);
+            robot.virtualFourBar.setPosition(robot.VFB_ALIGN_POSE);
+            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
+            robot.claw.setPosition(robot.GHEARA_INCHISA);
         } else if (gamepad2.dpad_left) {
             robot.lift.target = Ridicare.POS_1;
-//            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
+            robot.virtualFourBar.setPosition(robot.VFB_LOW);
+            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_LOW);
+            robot.claw.setPosition(robot.GHEARA_INCHISA);
         } else if (gamepad2.dpad_up) {
             robot.lift.target = Ridicare.POS_2;
-//            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
+            robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
+            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_LOW);
+            robot.claw.setPosition(robot.GHEARA_INCHISA);
         } else if (gamepad2.dpad_right) {
             robot.lift.target = Ridicare.POS_3;
-//            robot.setVFBPosition(robot.VFB_ALIGN_HIGH_POSE);
+            robot.virtualFourBar.setPosition(robot.VFB_HIGH);
+            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_HIGH);
+            robot.claw.setPosition(robot.GHEARA_INCHISA);
         }
 
             robot.lift.update();
     }
 
     private void virtualFourBar() {
-        if (gamepad2.left_bumper) {
-            robot.setVFBPosition(robot.VFB_INTAKE_POSE);
+        if (gamepad1.left_bumper) {
+            robot.virtualFourBar.setPosition(robot.VFB_INTAKE_POSE);
         } else if (gamepad2.right_stick_button) {
-            robot.setVFBPosition(robot.VFB_OUTTAKE_POSE);
+            robot.virtualFourBar.setPosition(robot.VFB_OUTTAKE_POSE);
         } else if (gamepad2.right_bumper) {
-            robot.setVFBPosition(robot.VFB_ALIGN_POSE);
+            robot.virtualFourBar.setPosition(robot.VFB_ALIGN_POSE);
         }
     }
 
@@ -103,6 +131,38 @@ public class TeleOP extends OpMode {
             }
         }
     }
+    private void cazut() {
+            if (gamepad1.x != currentX) {
+                currentX = gamepad1.x;
+                if (gamepad1.x) {
+                    clawToggle = !clawToggle;
+                    if (clawToggle) {
+                        robot.claw.setPosition(robot.VFB_FALLEN);
+                        robot.virtualFourBar.setPosition(robot.VFB_FALLEN);
+                        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_FALLEN);
+                        robot.lift.target = 600;
+                    } else {
+                        robot.claw.setPosition(robot.VFB_ALIGN_POSE);
+                        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
+
+                    }
+                }
+            }
+            robot.lift.update();
+        }
+
+    private void stackModifier()  {
+       if(gamepad1.b) {
+           robot.VFB_STACK_POSE += 0.005;
+           robot.virtualFourBar.setPosition(robot.VFB_STACK_POSE);
+       }
+       else if(gamepad1.y) {
+           robot.VFB_STACK_POSE -= 0.005;
+           robot.virtualFourBar.setPosition(robot.VFB_STACK_POSE);
+       }
+
+    }
+
 
 
     private void telemetry() {
@@ -119,11 +179,12 @@ public class TeleOP extends OpMode {
         drive.update();
         robot.movement(gamepad1);
         intakeOuttake();
-//        virtualFourBar();
+        virtualFourBar();
         claw();
         allignJunction();
         allignclaw();
-//        stack();
+        cazut();
+        stackModifier();
 
         telemetry();
         telemetry.update();

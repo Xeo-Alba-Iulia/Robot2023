@@ -34,7 +34,7 @@ public class Pidicare extends LinearOpMode {
         while (opModeIsActive()) {
 
             if(Kp != lastKp || Ki != lastKi || Kd != lastKd) {
-                robot.lift.controller = new PIDController(Kp, Ki, Kd, this);
+                robot.lift.controller = new PIDController(Kp, Ki, Kd);
             }
             robot.lift.target = POZITIE;
             robot.lift.update();
