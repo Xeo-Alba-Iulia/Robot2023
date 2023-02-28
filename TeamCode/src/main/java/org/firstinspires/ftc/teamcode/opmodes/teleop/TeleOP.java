@@ -11,6 +11,9 @@ import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.utilities.posStorage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @TeleOp(name = "TeleOP", group = "A")
 public class TeleOP extends OpMode {
 
@@ -41,7 +44,9 @@ public class TeleOP extends OpMode {
         robot.claw.setPosition(robot.GHEARA_DESCHISA);
         robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
         drive = new SampleMecanumDrive(hardwareMap);
-        myLocalizer = new StandardTrackingWheelLocalizer(hardwareMap);
+        List<Integer> lastTrackingEncPositions = new ArrayList<>();
+        List<Integer> lastTrackingEncVels = new ArrayList<>();
+        myLocalizer = new StandardTrackingWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels);
         myLocalizer.setPoseEstimate(posStorage.currentPose);
     }
 
@@ -104,7 +109,7 @@ public class TeleOP extends OpMode {
             robot.virtualFourBar.setPosition(robot.VFB_INTAKE_POSE);
         } else if (gamepad2.right_stick_button) {
             robot.virtualFourBar.setPosition(robot.VFB_OUTTAKE_POSE);
-        } else if (gamepad2.right_bumper) {
+        } else if (gamepad2.left_stick_button) {
             robot.virtualFourBar.setPosition(robot.VFB_ALIGN_POSE);
         }
     }
