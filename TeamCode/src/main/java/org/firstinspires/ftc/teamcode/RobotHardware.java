@@ -23,7 +23,7 @@ public class RobotHardware {
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
     public final double VFB_ALIGN_POSE = 0.4;
-    public final double VFB_INTAKE_POSE = 0.88;
+    public final double VFB_INTAKE_POSE = 0.87;
 
   //  public final double VFB_LOW_FRONT= 0.50;
 
@@ -34,16 +34,19 @@ public class RobotHardware {
     public final double VFB_MEDIUM= 0.13;
 
     public final double VFB_HIGH= 0.27;
+    public final double VFB_INTER= 0.35;
 
     public final double CLAW_ALLIGN_POS_UP = 0.15;
 
     public final double CLAW_ALLIGN_POS_LOW= 0.6;
 
-    public final double CLAW_ALLIGN_POS_HIGH = 0.56;
+    public final double CLAW_ALLIGN_POS_HIGH = 0.49;
     public final double CLAW_ALLIGN_POS_INTAKE = 0.47;
     public final double CLAW_ALLIGN_POS_FALLEN = 0.85;
-    public final double GHEARA_DESCHISA = 0.68;
-    public final double GHEARA_INCHISA = 0.59;
+
+    public final double CLAW_ALLIGN_POS_INTER = 0.15;
+    public final double GHEARA_DESCHISA = 0.72;
+    public final double GHEARA_INCHISA = 0.6;
 
     public final double GHEARA_INIT = 0.65;
     private final OpMode myOpMode;   // gain access to methods in the calling OpMode.
@@ -81,7 +84,7 @@ public class RobotHardware {
 //      Sisteme
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
-        lift = new Ridicare(ridicare1, ridicare2, myOpMode);
+        lift = new Ridicare(ridicare1, ridicare2);
         claw = myOpMode.hardwareMap.get(Servo.class, "Gheara");
         claw_alligner = myOpMode.hardwareMap.get(Servo.class, "AliniereGheara");
         vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
@@ -91,12 +94,10 @@ public class RobotHardware {
         virtualFourBar = new VirtualFourBar(vFB1, vFB2);
 
 
-        ridicare1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ridicare1.setTargetPosition(0);
+
         ridicare1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ridicare1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        ridicare2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ridicare2.setTargetPosition(0);
+
         ridicare2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ridicare2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 

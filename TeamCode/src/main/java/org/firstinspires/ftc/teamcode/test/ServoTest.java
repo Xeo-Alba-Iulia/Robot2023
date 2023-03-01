@@ -14,7 +14,7 @@ public class ServoTest extends OpMode {
     private ServoImplEx servo2;
     private final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
     ElapsedTime timer = new ElapsedTime();
-    private int pos = 0;
+    private static double pos = 0;
 
 
     @Override

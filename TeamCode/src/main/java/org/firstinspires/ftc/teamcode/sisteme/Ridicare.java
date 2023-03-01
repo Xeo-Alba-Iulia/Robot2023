@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.sisteme;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
@@ -11,12 +10,12 @@ public class Ridicare {
     DcMotorEx ridicare2;
     public PIDController controller;
 
-    public static final int POS_1 = 9000;
+    public static final int POS_1 = 9300;
     public static final int POS_2 = 16200;
     public static final int POS_3 = 19500;
     public int target;
 
-    public Ridicare (DcMotorEx ridicare1, DcMotorEx ridicare2, OpMode myOpMode) {
+    public Ridicare (DcMotorEx ridicare1, DcMotorEx ridicare2) {
         this.ridicare1 = ridicare1;
         this.ridicare2 = ridicare2;
         target = 0;
