@@ -11,7 +11,7 @@ public class Ridicare {
     public PIDController controller;
 
     public static final int POS_1 = 9300;
-    public static final int POS_2 = 16200;
+    public static final int POS_2 = 15700;
     public static final int POS_3 = 19500;
     public int target;
 

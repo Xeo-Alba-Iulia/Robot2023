@@ -176,11 +176,11 @@ public class TeleOP extends OpMode {
 
     private void allignclaw() {
         if (gamepad2.x) {
-            increasePosAlign = robot.lift.getCurrentPosition();
+            increasePosAlign = robot.virtualFourBar.getPosition();
             increasePosAlign += 0.005;
             robot.virtualFourBar.setPosition(increasePosAlign);
         } else if (gamepad2.y) {
-            increasePosAlign = robot.lift.getCurrentPosition();
+            increasePosAlign = robot.virtualFourBar.getPosition();
             increasePosAlign -= 0.005;
             robot.virtualFourBar.setPosition(increasePosAlign);
 
@@ -222,14 +222,19 @@ public class TeleOP extends OpMode {
     }
 
     private void stackModifier() {
+        if(gamepad1.dpad_up)
+        {
+            robot.virtualFourBar.setPosition(robot.VFB_STACK_POSE);
+        }
         if (gamepad1.b) {
-            increasePosVFB=robot.lift.getCurrentPosition();
-             increasePosVFB+= 0.005;
-            robot.virtualFourBar.setPosition(increasePosVFB);
+            increasePosAlign = robot.virtualFourBar.getPosition();
+            increasePosAlign += 0.005;
+            robot.virtualFourBar.setPosition(increasePosAlign);
         } else if (gamepad1.y) {
-            increasePosVFB=robot.lift.getCurrentPosition();
-            increasePosVFB-= 0.005;
-            robot.virtualFourBar.setPosition(increasePosVFB);
+            increasePosAlign = robot.virtualFourBar.getPosition();
+            increasePosAlign -= 0.005;
+            robot.virtualFourBar.setPosition(increasePosAlign);
+
         }
 
     }
@@ -279,7 +284,7 @@ public class TeleOP extends OpMode {
        // virtualFourBar();
         claw();
         allignJunction();
-        allignclaw();
+        //allignclaw();
         cazut();
         stackModifier();
 

@@ -38,7 +38,7 @@ public class RobotHardware {
 
     public final double CLAW_ALLIGN_POS_UP = 0.15;
 
-    public final double CLAW_ALLIGN_POS_LOW= 0.6;
+    public final double CLAW_ALLIGN_POS_LOW= 0.55;
 
     public final double CLAW_ALLIGN_POS_HIGH = 0.49;
     public final double CLAW_ALLIGN_POS_INTAKE = 0.42;
