@@ -44,6 +44,8 @@ public class TeleOP extends OpMode {
     private double state_claw_align=robot.CLAW_ALLIGN_POS_INTAKE;
     private static int state_lift_pos=600;
     private double state_vfb_pos=robot.VFB_ALIGN_POSE;
+    private double increasePosVFB;
+    private double increasePosAlign;
 
     StandardTrackingWheelLocalizer myLocalizer;
     SampleMecanumDrive drive;
@@ -174,12 +176,15 @@ public class TeleOP extends OpMode {
 
     private void allignclaw() {
         if (gamepad2.x) {
-            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_UP);
+            increasePosAlign = robot.lift.getCurrentPosition();
+            increasePosAlign += 0.005;
+            robot.virtualFourBar.setPosition(increasePosAlign);
         } else if (gamepad2.y) {
-            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
-        } else if (gamepad2.right_bumper)
-            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_FALLEN);
+            increasePosAlign = robot.lift.getCurrentPosition();
+            increasePosAlign -= 0.005;
+            robot.virtualFourBar.setPosition(increasePosAlign);
 
+        }
     }
 
     private void claw() {
@@ -218,11 +223,13 @@ public class TeleOP extends OpMode {
 
     private void stackModifier() {
         if (gamepad1.b) {
-            robot.VFB_STACK_POSE += 0.005;
-            robot.virtualFourBar.setPosition(robot.VFB_STACK_POSE);
+            increasePosVFB=robot.lift.getCurrentPosition();
+             increasePosVFB+= 0.005;
+            robot.virtualFourBar.setPosition(increasePosVFB);
         } else if (gamepad1.y) {
-            robot.VFB_STACK_POSE -= 0.005;
-            robot.virtualFourBar.setPosition(robot.VFB_STACK_POSE);
+            increasePosVFB=robot.lift.getCurrentPosition();
+            increasePosVFB-= 0.005;
+            robot.virtualFourBar.setPosition(increasePosVFB);
         }
 
     }

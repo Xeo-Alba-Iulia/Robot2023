@@ -23,7 +23,7 @@ public class RobotHardware {
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
     public final double VFB_ALIGN_POSE = 0.4;
-    public final double VFB_INTAKE_POSE = 0.87;
+    public final double VFB_INTAKE_POSE = 0.89;
 
   //  public final double VFB_LOW_FRONT= 0.50;
 
@@ -33,7 +33,7 @@ public class RobotHardware {
 
     public final double VFB_MEDIUM= 0.13;
 
-    public final double VFB_HIGH= 0.27;
+    public final double VFB_HIGH= 0.24;
     public final double VFB_INTER= 0.35;
 
     public final double CLAW_ALLIGN_POS_UP = 0.15;
