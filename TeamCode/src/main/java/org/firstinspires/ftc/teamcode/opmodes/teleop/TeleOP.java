@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.utilities.PosStorage;
+import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +67,12 @@ public class TeleOP extends OpMode {
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
         myLocalizer = new StandardTrackingWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels);
-        myLocalizer.setPoseEstimate(PosStorage.currentPose);
+        myLocalizer.setPoseEstimate(PoseStorage.currentPose);
     }
 
     public void allignJunction() {
-        myLocalizer.setPoseEstimate(PosStorage.currentPose);
-        drive.setPoseEstimate(PosStorage.currentPose);
+        myLocalizer.setPoseEstimate(PoseStorage.currentPose);
+        drive.setPoseEstimate(PoseStorage.currentPose);
         Pose2d myPose = drive.getPoseEstimate();
         //sau
 //         Pose2d myPose = myLocalizer.getPoseEstimate();
