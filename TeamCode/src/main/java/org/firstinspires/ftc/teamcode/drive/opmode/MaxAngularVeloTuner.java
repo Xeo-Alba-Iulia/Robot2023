@@ -29,10 +29,11 @@ public class MaxAngularVeloTuner extends LinearOpMode {
 
     private ElapsedTime timer;
     private double maxAngVelocity = 0.0;
+    SampleMecanumDrive drive;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        drive = new SampleMecanumDrive(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -57,6 +58,8 @@ public class MaxAngularVeloTuner extends LinearOpMode {
 
             Pose2d poseVelo = Objects.requireNonNull(drive.getPoseVelocity(), "poseVelocity() must not be null. Ensure that the getWheelVelocities() method has been overridden in your localizer.");
 
+            telemetry.addData("Pose velo", poseVelo.getHeading());
+            telemetry.update();
             maxAngVelocity = Math.max(poseVelo.getHeading(), maxAngVelocity);
         }
 

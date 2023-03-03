@@ -90,11 +90,11 @@ public class DriveConstants {
      */
     public static double MAX_VEL = 67.1472641213;
     public static double MAX_ACCEL = 67.1472641213;
-    public static double MAX_ANG_VEL = 2.4722591400146485;
-    public static double MAX_ANG_ACCEL = 2.4722591400146485;
+    public static double MAX_ANG_VEL = 5.092444610595703;
+    public static double MAX_ANG_ACCEL = 5.092444610595703;
 
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
-            RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
+            RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
             RevHubOrientationOnRobot.UsbFacingDirection.UP;
 
