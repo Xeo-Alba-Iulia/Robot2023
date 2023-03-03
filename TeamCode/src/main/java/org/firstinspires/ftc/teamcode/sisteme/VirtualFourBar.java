@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 public class VirtualFourBar {
     ServoImplEx vFB1, vFB2;
-    private static final double  VFB_ALIGN= 404;
     public VirtualFourBar(ServoImplEx vFB1, ServoImplEx vFB2) {
         this.vFB1 = vFB1;
         this.vFB2 = vFB2;

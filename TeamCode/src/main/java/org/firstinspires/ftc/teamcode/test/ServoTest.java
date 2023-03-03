@@ -1,30 +1,35 @@
 package org.firstinspires.ftc.teamcode.test;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.sisteme.VirtualFourBar;
 
 @Config
 @TeleOp
 public class ServoTest extends OpMode {
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry telemetry = dashboard.getTelemetry();
+
     private ServoImplEx servo1;
     private ServoImplEx servo2;
-    private final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
+    public static double position = 0.35;
     ElapsedTime timer = new ElapsedTime();
     private static double pos = 0;
+    VirtualFourBar virtualFourBar;
 
 
     @Override
     public void init() {
-        servo1 =hardwareMap.get(ServoImplEx.class,"Gheara");
-        servo2 =hardwareMap.get(ServoImplEx.class,"AliniereGheara");
-        servo1.setPwmRange(new PwmControl.PwmRange(500,2500));
-        servo2.setPwmRange(new PwmControl.PwmRange(500, 2500));
-        servo1.setPosition(1);
-        servo2.setPosition(0);
+        servo1 =hardwareMap.get(ServoImplEx.class,"vfb1");
+        servo2 =hardwareMap.get(ServoImplEx.class,"vfb2");
+        virtualFourBar = new VirtualFourBar(servo1, servo2);
+        virtualFourBar.setPosition(0.35);
     }
 
     @Override
@@ -35,13 +40,8 @@ public class ServoTest extends OpMode {
 
     @Override
     public void loop() {
-        if(timer.seconds() > 5 && timer.seconds() < 10) {
-            servo1.setPosition(0.6);
-            servo2.setPosition(1-0.6);
-        } else if (timer.seconds() >= 10) {
-            servo1.setPosition(0.3);
-            servo2.setPosition(1-0.3);
-        }
+
+        virtualFourBar.setPosition(position);
 
         telemetry.addData("poz1", servo1.getPosition());
         telemetry.addData("poz2", servo2.getPosition());

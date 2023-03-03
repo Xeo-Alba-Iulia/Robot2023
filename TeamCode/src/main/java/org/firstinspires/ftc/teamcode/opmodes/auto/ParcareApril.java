@@ -29,7 +29,7 @@ public class ParcareApril extends OpMode {
 
     SampleMecanumDrive drive;
     Pose2d startPose;
-    RobotHardware robot;
+    RobotHardware robot = new RobotHardware(this);
     TrajectorySequence secventa3;
     TrajectorySequence secventa2;
     TrajectorySequence secventa1;
@@ -56,7 +56,7 @@ public class ParcareApril extends OpMode {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+                camera.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
@@ -66,7 +66,7 @@ public class ParcareApril extends OpMode {
 
             }
         });
-        robot = new RobotHardware(this);
+        robot.init();
         startPose = new Pose2d(32, -65.5, Math.toRadians(270.00));
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
@@ -83,6 +83,10 @@ public class ParcareApril extends OpMode {
         secventa2 = drive.trajectorySequenceBuilder(new Pose2d(35, -63.5, Math.toRadians(270)))
                 .back(30)
                 .build();
+
+        robot.virtualFourBar.setPosition(1);
+        robot.claw_alligner.setPosition(0);
+        robot.claw.setPosition(robot.GHEARA_INCHISA);
     }
 
     @Override
