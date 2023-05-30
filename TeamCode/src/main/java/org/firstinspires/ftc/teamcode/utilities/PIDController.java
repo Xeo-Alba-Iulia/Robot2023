@@ -11,6 +11,8 @@ public class PIDController {
     double lastTime = 0;
     double lastReference = 0;
 
+
+
     /**
      * construct PID controller
      *
@@ -46,7 +48,7 @@ public class PIDController {
         if (integralSum < -integralSumLimit) {
             integralSum = -integralSumLimit;
         }
-        double output = Kp * error + Ki * integralSum + Kd * derivative;
+        double output = Kp * error + Ki * integralSum + Kd * derivative ;
         lastError = error;
         lastTime = timer.seconds();
         lastReference = target;

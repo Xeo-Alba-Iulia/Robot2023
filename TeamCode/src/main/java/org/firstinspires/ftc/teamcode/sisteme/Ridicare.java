@@ -10,7 +10,7 @@ public class Ridicare {
     DcMotorEx ridicare2;
     public PIDController controller;
 
-    public static final int POS_1 = 9300;
+    public static final int POS_1 = 4000;
     public static final int POS_2 = 15700;
     public static final int POS_3 = 19500;
     public int target;
@@ -19,7 +19,7 @@ public class Ridicare {
         this.ridicare1 = ridicare1;
         this.ridicare2 = ridicare2;
         target = 0;
-        controller = new PIDController(0.0007, 0, 0.000001723790323);
+        controller = new PIDController(0.024, 0.007955396742, 0);
     }
 
     /**
@@ -66,7 +66,7 @@ public class Ridicare {
      * Update the power given by the pid controller
      */
     public void update() {
-        double power = controller.update(target, -ridicare1.getCurrentPosition());
+        double power = controller.update(target, ridicare1.getCurrentPosition());
         ridicare1.setPower(power);
         ridicare2.setPower(power);
     }

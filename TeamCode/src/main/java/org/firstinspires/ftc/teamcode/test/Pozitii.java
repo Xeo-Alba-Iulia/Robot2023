@@ -27,8 +27,8 @@ public class Pozitii extends LinearOpMode {
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
         robot.init();
         robot.virtualFourBar.setPosition(1);
-        robot.claw.setPosition(0);
-        robot.claw_alligner.setPosition(0);
+        robot.claw.setPosition(0.11);
+        robot.claw_alligner.setPosition(1);
 
 
         waitForStart();
@@ -47,6 +47,7 @@ public class Pozitii extends LinearOpMode {
             dashboardTelemetry.addData("pozitie aliniere gheara", robot.claw_alligner.getPosition());
             dashboardTelemetry.update();
         }
+
     }
 
 }

@@ -9,13 +9,11 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.camera.pipelines.AprilRecognition;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
-
-
 
 import java.util.ArrayList;
 
@@ -96,18 +94,19 @@ public class ParcareApril extends OpMode {
 
             for (AprilTagDetection tag : currentDetections) {
                 if (tag.id == CASE_1) drive.followTrajectorySequence(secventa1);
-                else if(tag.id == CASE_2) {
-                    drive.followTrajectorySequence(secventa2);
-                } else if (tag.id == CASE_3) drive.followTrajectorySequence(secventa3);
+                else if (tag.id == CASE_3) {
+                    drive.followTrajectorySequence(secventa3);
+                } else drive.followTrajectorySequence(secventa2);
             }
         }
-
     }
+
+
 
     @Override
     public void loop() {
         drive.update();
-        PoseStorage.currentPose= drive.getPoseEstimate();
+        PoseStorage.currentPose = drive.getPoseEstimate();
     }
 
 }

@@ -18,9 +18,12 @@ public class ServoTest extends OpMode {
 
     private ServoImplEx servo1;
     private ServoImplEx servo2;
+
     public static double position = 0.35;
     ElapsedTime timer = new ElapsedTime();
+
     private static double pos = 0;
+
     VirtualFourBar virtualFourBar;
 
 

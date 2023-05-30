@@ -20,7 +20,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous(group = "A", preselectTeleOp = "TeleOP")
-public class plpdreapta extends LinearOpMode {
+public class preloadstanga extends LinearOpMode {
 
     final static double TAGSIZE = 0.166;
     private static final int CASE_1 = 7;
@@ -28,7 +28,7 @@ public class plpdreapta extends LinearOpMode {
     private static final int CASE_3 = 333;
     private static int parkcase = 2;
 
-    private static int ok123 = 0;
+
 
     public Ridicare lift;
     AutoDreapta.State currentState = AutoDreapta.State.IDLE;
@@ -57,8 +57,6 @@ public class plpdreapta extends LinearOpMode {
     Trajectory TRAJ_DEFAULT;
 
 
-
-
     private void initCamera() {
         cameraMonitorViewid = hardwareMap.appContext.getResources().getIdentifier(
                 "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -84,55 +82,38 @@ public class plpdreapta extends LinearOpMode {
 
     }
 
-    private void park(int autoCase) {
-        if(autoCase == CASE_1) {
-            drive.followTrajectory(PARK_CASE1);
-        } else if(autoCase == CASE_2) {
-            drive.followTrajectory(PARK_CASE2);
-        } else {
-            drive.followTrajectory(TRAJ_DEFAULT);
-        }
-
-    }
-
-
 
     @Override
-    public void runOpMode() {
-        initCamera();
+    public void runOpMode() throws InterruptedException {
         robot.init();
+        initCamera();
         robot.claw.setPosition(0.6);
         robot.claw_alligner.setPosition(0.48);
         robot.virtualFourBar.setPosition(0.13);
 
         drive = new SampleMecanumDrive(hardwareMap);
-        startPos = new Pose2d(38, -65.5, Math.toRadians(270));
+        startPos = new Pose2d(-35.5, -62, Math.toRadians(270));
         drive.setPoseEstimate(startPos);
 
         preload = drive.trajectoryBuilder(startPos)
-                .lineToLinearHeading(new Pose2d(27.6, -32.4, Math.toRadians(315)),
-                        SampleMecanumDrive.getVelocityConstraint(
-                                45,
-                                DriveConstants.MAX_ANG_VEL,
-                                DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToSplineHeading(new Pose2d(-35, -30, Math.toRadians(270)),
+                        SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(15))
+                .splineToSplineHeading(new Pose2d(-28, -5, Math.toRadians(225)), Math.toRadians(45),
+                        SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(15))
                 .build();
 
         stack_align = drive.trajectoryBuilder(preload.end())
-                .lineToLinearHeading(new Pose2d(46, -11, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-46, -11, Math.toRadians(0)))
                 .build();
 
         stack_forword_fast = drive.trajectoryBuilder(stack_align.end())
-                .lineToLinearHeading(new Pose2d(49.8, -11, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(
-                                18,
-                                DriveConstants.MAX_ANG_VEL,
-                                DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(-49.8, -11, Math.toRadians(0)))
                 .build();
 
         stack_forward_slow = drive.trajectoryBuilder(stack_forword_fast.end())
-                .lineToLinearHeading(new Pose2d(52.8, -11, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(-52.8, -11, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(
                                 10,
                                 DriveConstants.MAX_ANG_VEL,
@@ -142,7 +123,7 @@ public class plpdreapta extends LinearOpMode {
 
 
         park_align = drive.trajectoryBuilder(stack_forward_slow.end())
-                .lineToLinearHeading(new Pose2d(35, -35, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(-35, -35, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(
                                 40,
                                 DriveConstants.MAX_ANG_VEL,
@@ -155,10 +136,7 @@ public class plpdreapta extends LinearOpMode {
                 .back(24)
                 .build();
         PARK_CASE2 = drive.trajectoryBuilder(park_align.end())
-                .lineToLinearHeading(new Pose2d(
-                        park_align.end().getX(),
-                        park_align.end().getY(),
-                        Math.toRadians(270)))
+                .strafeLeft(10)
                 .build();
         TRAJ_DEFAULT = drive.trajectoryBuilder(park_align.end())
                 .forward(24)
@@ -167,7 +145,6 @@ public class plpdreapta extends LinearOpMode {
         double waitTime2 = 3;
         double waitTime1 = 0.75;
         ElapsedTime timer = new ElapsedTime();
-        ElapsedTime waitTimer2 = new ElapsedTime();
 
 
         waitForStart();
@@ -184,17 +161,16 @@ public class plpdreapta extends LinearOpMode {
         }
 
 
-
         currentState = AutoDreapta.State.START;
-        drive.followTrajectory(preload);
 
+        drive.followTrajectoryAsync(preload);
 
         while (opModeIsActive() && !isStopRequested()) {
             switch (currentState) {
                 case START:
                     if (!drive.isBusy()) {
                         currentState = AutoDreapta.State.REACHED_JUNCTION;
-                        robot.lift.target = Ridicare.POS_2;
+                        robot.lift.target = Ridicare.POS_3;
                         robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
                     }
                     break;
@@ -203,7 +179,6 @@ public class plpdreapta extends LinearOpMode {
 
                     if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.target) < 800) {
                         timer.reset();
-                        ok123 = 1;
                         currentState = AutoDreapta.State.RELEASE_PRELOAD;
 
                     }
@@ -218,28 +193,35 @@ public class plpdreapta extends LinearOpMode {
                         robot.lift.target = 600;
                         robot.virtualFourBar.setPosition(0.4);
 
-                        drive.followTrajectory(stack_align);
+//                        drive.followTrajectory(stack_align);
+                        drive.followTrajectoryAsync(park_align);
+                        currentState = AutoDreapta.State.PARK;
                     }
                     break;
 
                 case PARK:
-                    park(parkcase);
+                    if (parkcase == 1) {
+                        drive.followTrajectoryAsync(PARK_CASE1);
+                    } else if (parkcase == 2) {
+                        drive.followTrajectoryAsync(PARK_CASE2);
+                    } else {
+                        drive.followTrajectoryAsync(TRAJ_DEFAULT);
+                    }
 
 
             }
             drive.update();
             telemetry.addData("state", currentState);
-            telemetry.addData("intra if", ok123);
             telemetry.addData("Ridicare", robot.lift.getCurrentPosition());
             telemetry.update();
             robot.lift.update();
+            if (isStopRequested()) {
+                return;
+            }
 
         }
     }
 }
-
-
-
 
 
 

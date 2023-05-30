@@ -20,7 +20,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous(group = "C", preselectTeleOp = "TeleOp")
-public class StateAutonomous extends LinearOpMode {
+public class AutoDreapta extends LinearOpMode {
+
+    private static int ok123=0;
     final static double TAGSIZE = 0.166;
     private static final int CASE_1 = 7;
     private static final int CASE_2 = 47;
@@ -68,7 +70,6 @@ public class StateAutonomous extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
         initCamera();
         robot.init();
         robot.claw.setPosition(0.6);
@@ -76,28 +77,53 @@ public class StateAutonomous extends LinearOpMode {
         robot.virtualFourBar.setPosition(0.13);
 
         drive = new SampleMecanumDrive(hardwareMap);
-        startPos = new Pose2d(38, -65.5, Math.toRadians(270));
+        startPos = new Pose2d(30, -63.5, Math.toRadians(270));
         drive.setPoseEstimate(startPos);
+
 
 
         Trajectory preload = drive.trajectoryBuilder(startPos)
                 .lineToLinearHeading(new Pose2d(27.6, -32.4, Math.toRadians(315)),
                         SampleMecanumDrive.getVelocityConstraint(
-                                45,
+                                60,
                                 DriveConstants.MAX_ANG_VEL,
                                 DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
-        Trajectory park_align = drive.trajectoryBuilder(preload.end())
+
+
+
+        Trajectory stack_align = drive.trajectoryBuilder(preload.end())
+                .lineToLinearHeading(new Pose2d(46, -11, Math.toRadians(0)))
+                .build();
+        Trajectory stack_forword_fast = drive.trajectoryBuilder(stack_align.end())
+                .lineToLinearHeading(new Pose2d(49.8, -11, Math.toRadians(0)),
+                        SampleMecanumDrive.getVelocityConstraint(
+                                18,
+                                DriveConstants.MAX_ANG_VEL,
+                                DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        Trajectory stack_forward_slow = drive.trajectoryBuilder(stack_forword_fast.end())
+                .lineToLinearHeading(new Pose2d(52.8, -11, Math.toRadians(0)),
+                        SampleMecanumDrive.getVelocityConstraint(
+                                10,
+                                DriveConstants.MAX_ANG_VEL,
+                                DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        Trajectory back_to_junction = drive.trajectoryBuilder(stack_forword_fast.end())
+                .lineToLinearHeading(new Pose2d(15.8, -11, Math.toRadians(225)),
+                        SampleMecanumDrive.getVelocityConstraint(
+                                30,
+                                DriveConstants.MAX_ANG_VEL,
+                                DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        Trajectory park_align = drive.trajectoryBuilder(stack_forward_slow.end())
                 .lineToLinearHeading(new Pose2d(35, -35, Math.toRadians(0)))
                 .build();
-
-
-        Trajectory stack = drive.trajectoryBuilder(preload.end())
-                .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(0)))
-                .build();
-
         Trajectory PARK_CASE1 = drive.trajectoryBuilder(park_align.end())
                 .forward(10)
                 .build();
@@ -148,7 +174,7 @@ public class StateAutonomous extends LinearOpMode {
 
         if (isStopRequested()) return;
         currentState = State.START;
-        drive.followTrajectory(preload);
+        drive.followTrajectoryAsync(preload);
 
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -166,48 +192,80 @@ public class StateAutonomous extends LinearOpMode {
                     // Once `isBusy() == false`, the trajectory follower signals that it is finished
                     // We move on to the next state
                     // Make sure we use the async follow function
-                    robot.lift.target = Ridicare.POS_2;
-                    robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
+
 
 
                     if (!drive.isBusy()) {
                         currentState = State.REACHED_JUNCTION;
-                        timer.reset();
-
+                        robot.lift.target = Ridicare.POS_2;
+                        robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
                     }
                     break;
 
                 case REACHED_JUNCTION:
 
-                    if (robot.lift.getCurrentPosition() - robot.lift.target < 800) {
+                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.target) < 800) {
                         timer.reset();
-                    }
+                        ok123=1;
+                        currentState=State.RELEASE_PRELOAD;
 
-                    if (timer.seconds() > 1.5) {
+                    }
+                    break;
+
+                case RELEASE_PRELOAD:
+                    if (timer.seconds() > 2 && timer.seconds() < 4) {
                         robot.claw.setPosition(robot.GHEARA_DESCHISA);
-                        timer.reset();
                     }
-
-
-                    if (timer.seconds() > 0.4) {
+                    if (timer.seconds() >= 4) {
                         robot.claw.setPosition(robot.GHEARA_INCHISA);
-                        robot.lift.target = 600;
-                        robot.virtualFourBar.setPosition(robot.VFB_STACK_POSE - 0.04);
-                        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
-                        currentState = State.STACK;
-                        drive.followTrajectory(stack);
+                        robot.lift.target = 7800;
+                        robot.virtualFourBar.setPosition(0.70);
+
+                        currentState = State.STACK_FAST;
+                        drive.followTrajectoryAsync(stack_align);
+                    }
+                    break;
+
+                case STACK_FAST:
+                    robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
+                    robot.claw.setPosition(robot.GHEARA_DESCHISA);
+
+                    if (!drive.isBusy()) {
+                        currentState = State.STACK_SLOW;
+                        drive.followTrajectoryAsync(stack_forword_fast);
+
                     }
 
                     break;
-
-                case STACK:
+                case STACK_SLOW:
 
                     robot.claw.setPosition(robot.GHEARA_DESCHISA);
-                    if(!drive.isBusy()) {
-                        currentState = State.IDLE;
-                    }
 
+                    if (!drive.isBusy()) {
+                        currentState = State.PICKUP;
+
+                        drive.followTrajectoryAsync(stack_forward_slow);
+                        timer.reset();
+
+                    }
+                case PICKUP:
+                    robot.claw.setPosition(robot.GHEARA_INCHISA);
+                    if(timer.seconds()>=0.5)
+                    {
+                        robot.virtualFourBar.setPosition(robot.VFB_STACK_POSE-15);
+                        drive.followTrajectory(back_to_junction);
+                        currentState=State.BACK_TO_JUNCTION;
+                    }
                     break;
+                case BACK_TO_JUNCTION:
+                    if(!drive.isBusy())
+                    {
+                        currentState=State.IDLE;
+                    }
+                    break;
+
+
+
 
 
                 case IDLE:
@@ -216,22 +274,28 @@ public class StateAutonomous extends LinearOpMode {
 
             }
             drive.update();
-
             telemetry.addData("state", currentState);
+            telemetry.addData("intra if", ok123);
+            telemetry.addData("Ridicare", robot.lift.getCurrentPosition());
+            telemetry.update();
             robot.lift.update();
         }
 
     }
 
     enum State {
+        SCORE,
         START,
         REACHED_JUNCTION,
-        STACK,
-        WAIT_3,
-        MEDIUMJUNCTION,
+        RELEASE_PRELOAD,
+
+        STACK_ALIGN,
+        STACK_FAST,
+        STACK_SLOW,
+        PICKUP,
+        BACK_TO_JUNCTION,
         WAIT_2,
-        ALIGNSTATE,
-        WAIT_4,
+        INTAKE_STACK,
         PARK,
         PARK_ALIGN,
         IDLE

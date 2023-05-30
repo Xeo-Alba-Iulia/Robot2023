@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.camera.pipelines.AprilRecognition;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
 import org.openftc.apriltag.AprilTagDetection;
@@ -20,7 +19,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous(group = "A", preselectTeleOp = "TeleOP")
-public class plpdreapta extends LinearOpMode {
+public class preloaddreapta extends LinearOpMode {
 
     final static double TAGSIZE = 0.166;
     private static final int CASE_1 = 7;
@@ -84,21 +83,12 @@ public class plpdreapta extends LinearOpMode {
 
     }
 
-    private void park(int autoCase) {
-        if(autoCase == CASE_1) {
-            drive.followTrajectory(PARK_CASE1);
-        } else if(autoCase == CASE_2) {
-            drive.followTrajectory(PARK_CASE2);
-        } else {
-            drive.followTrajectory(TRAJ_DEFAULT);
-        }
 
-    }
 
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         initCamera();
         robot.init();
         robot.claw.setPosition(0.6);
@@ -106,16 +96,11 @@ public class plpdreapta extends LinearOpMode {
         robot.virtualFourBar.setPosition(0.13);
 
         drive = new SampleMecanumDrive(hardwareMap);
-        startPos = new Pose2d(38, -65.5, Math.toRadians(270));
+        startPos = new Pose2d(37, -64, Math.toRadians(270));
         drive.setPoseEstimate(startPos);
 
         preload = drive.trajectoryBuilder(startPos)
-                .lineToLinearHeading(new Pose2d(27.6, -32.4, Math.toRadians(315)),
-                        SampleMecanumDrive.getVelocityConstraint(
-                                45,
-                                DriveConstants.MAX_ANG_VEL,
-                                DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(27.6, -32.4, Math.toRadians(315)))
                 .build();
 
         stack_align = drive.trajectoryBuilder(preload.end())
@@ -123,31 +108,16 @@ public class plpdreapta extends LinearOpMode {
                 .build();
 
         stack_forword_fast = drive.trajectoryBuilder(stack_align.end())
-                .lineToLinearHeading(new Pose2d(49.8, -11, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(
-                                18,
-                                DriveConstants.MAX_ANG_VEL,
-                                DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(49.8, -11, Math.toRadians(0)))
                 .build();
 
         stack_forward_slow = drive.trajectoryBuilder(stack_forword_fast.end())
-                .lineToLinearHeading(new Pose2d(52.8, -11, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(
-                                10,
-                                DriveConstants.MAX_ANG_VEL,
-                                DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(52.8, -11, Math.toRadians(0)))
                 .build();
 
 
         park_align = drive.trajectoryBuilder(stack_forward_slow.end())
-                .lineToLinearHeading(new Pose2d(35, -35, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(
-                                40,
-                                DriveConstants.MAX_ANG_VEL,
-                                DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(35, -35, Math.toRadians(0)))
                 .build();
 
 
@@ -155,10 +125,7 @@ public class plpdreapta extends LinearOpMode {
                 .back(24)
                 .build();
         PARK_CASE2 = drive.trajectoryBuilder(park_align.end())
-                .lineToLinearHeading(new Pose2d(
-                        park_align.end().getX(),
-                        park_align.end().getY(),
-                        Math.toRadians(270)))
+                .strafeLeft(10)
                 .build();
         TRAJ_DEFAULT = drive.trajectoryBuilder(park_align.end())
                 .forward(24)
@@ -171,6 +138,10 @@ public class plpdreapta extends LinearOpMode {
 
 
         waitForStart();
+
+        if (isStopRequested()) {
+            return;
+        }
 
         ArrayList<AprilTagDetection> currentDetections = aprilRecognition.getLatestDetections();
         if (currentDetections.size() != 0) {
@@ -186,12 +157,12 @@ public class plpdreapta extends LinearOpMode {
 
 
         currentState = AutoDreapta.State.START;
-        drive.followTrajectory(preload);
 
 
         while (opModeIsActive() && !isStopRequested()) {
             switch (currentState) {
                 case START:
+                    drive.followTrajectoryAsync(preload);
                     if (!drive.isBusy()) {
                         currentState = AutoDreapta.State.REACHED_JUNCTION;
                         robot.lift.target = Ridicare.POS_2;
@@ -218,12 +189,20 @@ public class plpdreapta extends LinearOpMode {
                         robot.lift.target = 600;
                         robot.virtualFourBar.setPosition(0.4);
 
-                        drive.followTrajectory(stack_align);
+//                        drive.followTrajectory(stack_align);
+                        drive.followTrajectoryAsync(park_align);
+                        currentState = AutoDreapta.State.PARK;
                     }
                     break;
 
                 case PARK:
-                    park(parkcase);
+                    if(parkcase == 1) {
+                        drive.followTrajectoryAsync(PARK_CASE1);
+                    } else if(parkcase == 2) {
+                        drive.followTrajectoryAsync(PARK_CASE2);
+                    } else {
+                        drive.followTrajectoryAsync(TRAJ_DEFAULT);
+                    }
 
 
             }
@@ -233,6 +212,10 @@ public class plpdreapta extends LinearOpMode {
             telemetry.addData("Ridicare", robot.lift.getCurrentPosition());
             telemetry.update();
             robot.lift.update();
+
+            if(isStopRequested()) {
+                return;
+            }
 
         }
     }

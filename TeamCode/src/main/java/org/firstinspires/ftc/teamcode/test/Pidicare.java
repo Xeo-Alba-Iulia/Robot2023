@@ -42,7 +42,9 @@ public class Pidicare extends LinearOpMode {
             lastKi = Ki;
             lastKd = Kd;
             dashboardTelemetry.addData("Current Pos", robot.lift.getCurrentPosition());
-            dashboardTelemetry.addData("Target", -POZITIE);
+            dashboardTelemetry.addData("Target", POZITIE);
+            dashboardTelemetry.addData("pozitie ridicare 1" ,robot.ridicare1.getCurrentPosition());
+            dashboardTelemetry.addData("pozitie ridicare 2", robot.ridicare2.getCurrentPosition());
             dashboardTelemetry.update();
         }
     }

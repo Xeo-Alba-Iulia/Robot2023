@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.sisteme.VirtualFourBar;
 
 
 public class RobotHardware {
+    ///asta nu ii bun
     public final double VFB_OUTTAKE_POSE = 0.85;
 
     public double VFB_STACK_POSE = 0.69;
@@ -25,30 +26,44 @@ public class RobotHardware {
     public final double VFB_ALIGN_POSE = 0.4;
     public final double VFB_INTAKE_POSE = 0.89;
 
-  //  public final double VFB_LOW_FRONT= 0.50;
+    public final double VFB_LOW_FRONT= 0.50;
 
     public final double VFB_FALLEN= 0.83;
 
-    public final double VFB_LOW= 0.09;
+    public final double VFB_LOW= 0.97;
 
-    public final double VFB_MEDIUM= 0.13;
+    public final double VFB_MEDIUM= 1;
 
-    public final double VFB_HIGH= 0.24;
-    public final double VFB_INTER= 0.35;
+    public final double VFB_HIGH= 0.96;
+//
+    public final double VFB_INTER= 0.5;
+
+    public final double VFB_INTAKE=0.1;
+
+    public final double VFB_OUTTAKE=0.15;
+
 
     public final double CLAW_ALLIGN_POS_UP = 0.15;
 
-    public final double CLAW_ALLIGN_POS_LOW= 0.55;
+    public final double CLAW_ALLIGN_POS_LOW= 0.68;
 
-    public final double CLAW_ALLIGN_POS_HIGH = 0.49;
-    public final double CLAW_ALLIGN_POS_INTAKE = 0.42;
+    public final double CLAW_ALLIGN_POS_MEDIUM=0.7;
+
+
+    public final double CLAW_ALLIGN_POS_HIGH = 0.7;
+    public final double CLAW_ALLIGN_POS_INTAKE = 1;
+
     public final double CLAW_ALLIGN_POS_FALLEN = 0.85;
 
     public final double CLAW_ALLIGN_POS_INTER = 0.15;
-    public final double GHEARA_DESCHISA = 0.72;
-    public final double GHEARA_INCHISA = 0.6;
+    public final double GHEARA_DESCHISA = 0.1;
+    public final double GHEARA_INCHISA = 0.28;
 
     public final double GHEARA_INIT = 0.65;
+
+
+
+
     private final OpMode myOpMode;   // gain access to methods in the calling OpMode.
     public DcMotorEx frontLeft = null;
     public DcMotorEx frontRight = null;
@@ -61,8 +76,10 @@ public class RobotHardware {
     public Servo claw_alligner = null;
     public ServoImplEx vFB1 = null;
     public ServoImplEx vFB2 = null;
+
     public VirtualFourBar virtualFourBar;
     public double vfb_stack_pose ;
+
     public Ridicare lift;
 
     // Constants & Variables
@@ -74,7 +91,10 @@ public class RobotHardware {
         myOpMode = opmode;
     }
 
+
     public void init() {
+
+
 //      Sasiu
         frontLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
         frontRight = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontRight");
@@ -95,6 +115,7 @@ public class RobotHardware {
 
 
 
+
         ridicare1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ridicare1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -109,7 +130,6 @@ public class RobotHardware {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        ridicare1.setDirection(DcMotorSimple.Direction.FORWARD);
         ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
