@@ -11,8 +11,8 @@ public class Ridicare {
     public PIDController controller;
 
     public static final int POS_1 = 4000;
-    public static final int POS_2 = 15700;
-    public static final int POS_3 = 19500;
+    public static final int POS_2 = 8822;
+    public static final int POS_3 = 10550;
     public int target;
 
     public Ridicare (DcMotorEx ridicare1, DcMotorEx ridicare2) {
@@ -43,15 +43,7 @@ public class Ridicare {
         return ridicare1.getCurrentPosition();
     }
 
-    /**
-     * Get the average velocity between the 2 motors
-     * @return (speed of motor1 + speed of motor 2) / 2
-     */
-    public double getAverageVelocity() {
-        double speed1 = ridicare1.getVelocity();
-        double speed2 = ridicare2.getVelocity();
-        return (speed1 + speed2) / 2.0;
-    }
+
 
     /**
      * Reset both encoder's ticks
