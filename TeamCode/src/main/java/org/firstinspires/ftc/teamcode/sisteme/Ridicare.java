@@ -10,10 +10,13 @@ public class Ridicare {
     DcMotorEx ridicare2;
     public PIDController controller;
 
-    public static final int POS_1 = 4000;
-    public static final int POS_2 = 8822;
-    public static final int POS_3 = 10550;
+    public static final int POS_1 = 800;
+    public static final int POS_2 = 3000;
+    public static final int POS_3 = 4000;
+
     public int target;
+
+
 
     public Ridicare (DcMotorEx ridicare1, DcMotorEx ridicare2) {
         this.ridicare1 = ridicare1;

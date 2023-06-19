@@ -13,10 +13,10 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 @Autonomous
 public class Pozitii extends LinearOpMode {
     RobotHardware robot = new RobotHardware(this);
-    public static double VFB = 1;
+    public static double VFB = 0.3;
     public static int RIDICARE = 0;
     public static double GHEARA = 0;
-    public static double ALLIGNER = 0;
+    public static double ALLIGNER = 1;
 
 
 

@@ -22,9 +22,10 @@ public class RobotHardware {
     public double VFB_STACK_POSE = 0.69;
     //magnum pipirig ringabel
 
+
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
-    public final double VFB_ALIGN_POSE = 0.4;
-    public final double VFB_INTAKE_POSE = 0.89;
+    public final double VFB_ALIGN_POSE = 0.5;
+    public final double VFB_INTAKE_POSE = 1;
 
     public final double VFB_LOW_FRONT= 0.50;
 
@@ -32,32 +33,32 @@ public class RobotHardware {
 
     public final double VFB_LOW= 0.97;
 
-    public final double VFB_MEDIUM= 1;
+    public final double VFB_MEDIUM= 0.97;
 
-    public final double VFB_HIGH= 0.96;
+    public final double VFB_HIGH= 0.83;
 //
-    public final double VFB_INTER= 0.5;
+    public final double VFB_INTER= 0.4;
 
-    public final double VFB_INTAKE=0.1;
+    public final double VFB_INTAKE=1;
 
-    public final double VFB_OUTTAKE=0.15;
+    public final double VFB_OUTTAKE=0.3;
 
 
     public final double CLAW_ALLIGN_POS_UP = 0.15;
 
-    public final double CLAW_ALLIGN_POS_LOW= 0.68;
+    public final double CLAW_ALLIGN_POS_LOW= 0.5;
 
-    public final double CLAW_ALLIGN_POS_MEDIUM=0.7;
+    public final double CLAW_ALLIGN_POS_MEDIUM=0.54;
 
 
-    public final double CLAW_ALLIGN_POS_HIGH = 0.7;
-    public final double CLAW_ALLIGN_POS_INTAKE = 1;
+    public final double CLAW_ALLIGN_POS_HIGH = 0.57;
+    public final double CLAW_ALLIGN_POS_INTAKE = 0.61;
 
     public final double CLAW_ALLIGN_POS_FALLEN = 0.85;
 
     public final double CLAW_ALLIGN_POS_INTER = 0.15;
-    public final double GHEARA_DESCHISA = 0.1;
-    public final double GHEARA_INCHISA = 0.28;
+    public final double GHEARA_DESCHISA = 0.2;
+    public final double GHEARA_INCHISA = 0.32;
 
     public final double GHEARA_INIT = 0.65;
 
@@ -83,7 +84,6 @@ public class RobotHardware {
     public Ridicare lift;
 
     // Constants & Variables
-
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
 
