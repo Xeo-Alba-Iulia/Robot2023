@@ -99,7 +99,7 @@ public class AutoStangaMid extends LinearOpMode {
         drive = new SampleMecanumDrive(hardwareMap);
         startPos = new Pose2d(-35.5, -62, Math.toRadians(270));
         drive.setPoseEstimate(startPos);
-        robot.lift.resetEncoder();
+        robot.lift.resetEncoders();
 
         preload = drive.trajectorySequenceBuilder(startPos)
                 .lineToSplineHeading(new Pose2d(-37, -28, Math.toRadians(270)),

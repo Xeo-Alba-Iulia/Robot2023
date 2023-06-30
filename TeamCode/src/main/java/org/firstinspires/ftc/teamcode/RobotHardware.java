@@ -25,34 +25,35 @@ public class RobotHardware {
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
     public final double VFB_ALIGN_POSE = 0.5;
-    public final double VFB_INTAKE_POSE = 1;
+
 
     public final double VFB_LOW_FRONT= 0.50;
 
     public final double VFB_FALLEN= 0.83;
 
-    public final double VFB_LOW= 0.97;
+    public final double VFB_LOW= 1;
 
-    public final double VFB_MEDIUM= 0.97;
+    public final double VFB_MEDIUM= 0.95;
 
-    public final double VFB_HIGH= 0.83;
+    public final double VFB_HIGH= 0.87;
 //
-    public final double VFB_INTER= 0.4;
 
-    public final double VFB_INTAKE=1;
+    public final double VFB_INTER=0.15;
 
     public final double VFB_OUTTAKE=0.3;
+
+    public final double VFB_INTAKE=0.1;
 
 
     public final double CLAW_ALLIGN_POS_UP = 0.15;
 
-    public final double CLAW_ALLIGN_POS_LOW= 0.5;
+    public final double CLAW_ALLIGN_POS_LOW= 0.6;
 
-    public final double CLAW_ALLIGN_POS_MEDIUM=0.54;
+    public final double CLAW_ALLIGN_POS_MEDIUM=0.64;
 
 
-    public final double CLAW_ALLIGN_POS_HIGH = 0.57;
-    public final double CLAW_ALLIGN_POS_INTAKE = 0.61;
+    public final double CLAW_ALLIGN_POS_HIGH = 0.68;
+    public final double CLAW_ALLIGN_POS_INTAKE = 1;
 
     public final double CLAW_ALLIGN_POS_FALLEN = 0.85;
 
@@ -79,6 +80,7 @@ public class RobotHardware {
     public ServoImplEx vFB2 = null;
 
     public VirtualFourBar virtualFourBar;
+
     public double vfb_stack_pose ;
 
     public Ridicare lift;
@@ -127,8 +129,11 @@ public class RobotHardware {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
 
         ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -160,6 +165,7 @@ public class RobotHardware {
             frontLeftPower *= 0.6;
             backRightPower *= 0.6;
             backLeftPower *= 0.6;
+
         }
 
         frontLeft.setPower(frontLeftPower);

@@ -28,6 +28,7 @@ public class AutoDreapta extends LinearOpMode {
     private static final int CASE_2 = 47;
     private static final int CASE_3 = 333;
     private static int parkcase = 2;
+
     public Ridicare lift;
     State currentState = State.IDLE;
     RobotHardware robot = new RobotHardware(this);

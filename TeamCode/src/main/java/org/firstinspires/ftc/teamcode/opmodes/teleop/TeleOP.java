@@ -46,7 +46,7 @@ public class TeleOP extends OpMode {
         robot.init();
         robot.virtualFourBar.setPosition(robot.VFB_INTAKE);
         robot.claw.setPosition(robot.GHEARA_INCHISA);
-//        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
+        robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
         drive = new SampleMecanumDrive(hardwareMap);
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -63,7 +63,7 @@ public class TeleOP extends OpMode {
 //
 //    private void intakeOuttake() {
 //
-//        if (gamepad2.dpad_left) {
+//        if (gamepad2.dpad_left    ) {
 //            state_lift_pos = Ridicare.POS_1;
 //            state_claw_align = robot.CLAW_ALLIGN_POS_LOW;
 //            state_vfb_pos = robot.VFB_LOW;
@@ -127,7 +127,7 @@ public class TeleOP extends OpMode {
     private void intakeOuttake(){
         if(gamepad1.dpad_down) {
            robot.lift.target= 0;
-           robot.virtualFourBar.setPosition(robot.VFB_INTAKE_POSE);
+           robot.virtualFourBar.setPosition(robot.VFB_INTAKE);
            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
            robot.claw.setPosition(robot.GHEARA_INCHISA);
         } else if(gamepad1.dpad_left) {
@@ -153,9 +153,8 @@ public class TeleOP extends OpMode {
     private void virtualFourBar() {
         if (gamepad1.right_bumper) {
             robot.virtualFourBar.setPosition(robot.VFB_INTAKE);
+
         } else if (gamepad1.left_bumper) {
-            robot.virtualFourBar.setPosition(robot.VFB_OUTTAKE);
-        } else if (gamepad1.x) {
             robot.virtualFourBar.setPosition(robot.VFB_INTER);
 
         }

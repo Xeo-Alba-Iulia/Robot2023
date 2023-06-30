@@ -19,7 +19,7 @@ public class ResetEncoders extends LinearOpMode {
         lift = new Ridicare(ridicare1, ridicare2);
         telemetry.addData("Poz Ridicare", lift.getCurrentPosition());
         waitForStart();
-        lift.resetEncoder();
+        lift.resetEncoders();
 
     }
 }

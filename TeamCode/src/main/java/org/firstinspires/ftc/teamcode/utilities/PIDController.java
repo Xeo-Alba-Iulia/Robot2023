@@ -4,12 +4,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PIDController {
     private static final double integralSumLimit = 1000;
-    double Kp, Ki, Kd;
+    double  Kp, Ki, Kd, Kg;
     public ElapsedTime timer;
     double lastError = 0;
     double integralSum = 0;
     double lastTime = 0;
     double lastReference = 0;
+
+
+
 
 
 
@@ -48,7 +51,7 @@ public class PIDController {
         if (integralSum < -integralSumLimit) {
             integralSum = -integralSumLimit;
         }
-        double output = Kp * error + Ki * integralSum + Kd * derivative ;
+        double output = Kp * error + Ki * integralSum + Kd * derivative + Kg;
         lastError = error;
         lastTime = timer.seconds();
         lastReference = target;
