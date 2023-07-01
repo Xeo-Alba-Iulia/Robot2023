@@ -39,7 +39,9 @@ public class Forwardicare extends LinearOpMode {
 
 
             int currentPosition = robot.lift.getCurrentPosition();
+
             double currentSpeed = robot.ridicare1.getVelocity();
+
 
 
             boolean targetReached = currentPosition < (target + toleranta) && currentPosition > (target - toleranta);

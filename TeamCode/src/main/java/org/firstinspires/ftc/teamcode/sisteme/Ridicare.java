@@ -52,7 +52,9 @@ public class Ridicare {
     public void setVelocity(double velocity) {
         ridicare1.setVelocity(velocity);
         ridicare2.setVelocity(velocity);
+
     }
+
 
     public double getVelocity(double velocity) {
         return ridicare1.getVelocity();
@@ -69,6 +71,7 @@ public class Ridicare {
      * @return ridicare1's current encoder's ticks
      */
     public int getCurrentPosition() {
+
         return ridicare1.getCurrentPosition();
     }
 
