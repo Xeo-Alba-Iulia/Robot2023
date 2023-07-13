@@ -170,14 +170,14 @@ public class preloadstanga extends LinearOpMode {
                 case START:
                     if (!drive.isBusy()) {
                         currentState = AutoDreapta.State.REACHED_JUNCTION;
-                        robot.lift.target = Ridicare.POS_3;
+                        robot.lift.reference = Ridicare.POS_3;
                         robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
                     }
                     break;
 
                 case REACHED_JUNCTION:
 
-                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.target) < 800) {
+                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.reference) < 800) {
                         timer.reset();
                         currentState = AutoDreapta.State.RELEASE_PRELOAD;
 
@@ -190,7 +190,7 @@ public class preloadstanga extends LinearOpMode {
                     }
                     if (timer.seconds() >= 4) {
                         robot.claw.setPosition(robot.GHEARA_INCHISA);
-                        robot.lift.target = 600;
+                        robot.lift.reference = 600;
                         robot.virtualFourBar.setPosition(0.4);
 
 //                        drive.followTrajectory(stack_align);

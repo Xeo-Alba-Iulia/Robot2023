@@ -37,7 +37,7 @@ public class Destrabalare extends OpMode {
         robot.claw.setPosition(robot.GHEARA_INCHISA);
         Trajectory toFirstJunction = drive.trajectoryBuilder(startPose)
                 .addTemporalMarker(0, () -> {
-                    robot.lift.target = Ridicare.POS_2;
+                    robot.lift.reference = Ridicare.POS_2;
                 })
                 .lineToLinearHeading(firstJunction)
                 .addDisplacementMarker(3, () -> {

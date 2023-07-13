@@ -76,13 +76,13 @@ public class AutoStangaMid extends LinearOpMode {
     }
 
     private void intake() {
-        robot.lift.target = 600;
+        robot.lift.reference = 600;
         robot.virtualFourBar.setPosition(robot.VFB_STACK_POSE);
         robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
     }
 
     private void outtake() {
-        robot.lift.target = Ridicare.POS_2;
+        robot.lift.reference = Ridicare.POS_2;
         robot.virtualFourBar.setPosition(robot.VFB_OUTTAKE_POSE);
         robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_HIGH);
     }
@@ -105,14 +105,14 @@ public class AutoStangaMid extends LinearOpMode {
                 .lineToSplineHeading(new Pose2d(-37, -28, Math.toRadians(270)),
                         SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(15))
-                .addDisplacementMarker(() -> {robot.lift.target = Ridicare.POS_3;})
+                .addDisplacementMarker(() -> {robot.lift.reference = Ridicare.POS_3;})
                 .splineToSplineHeading(new Pose2d(-31, -8, Math.toRadians(230)), Math.toRadians(45),
                         SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(15))
                 .build();
 
         intake = drive.trajectorySequenceBuilder(preload.end())
-                .addDisplacementMarker(4, () -> {robot.lift.target = 600;})
+                .addDisplacementMarker(4, () -> {robot.lift.reference = 600;})
                 .setTangent(Math.toRadians(210))
                 .splineToSplineHeading(new Pose2d(-58, -11.5, Math.toRadians(180)), Math.toRadians(180),
                         SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -177,14 +177,14 @@ public class AutoStangaMid extends LinearOpMode {
                 case START:
                     if (!drive.isBusy()) {
                         currentState = AutoDreapta.State.REACHED_JUNCTION;
-                        robot.lift.target = Ridicare.POS_3;
+                        robot.lift.reference = Ridicare.POS_3;
                         robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_HIGH);
                         robot.virtualFourBar.setPosition(robot.VFB_HIGH);
                     }
                     break;
 
                 case REACHED_JUNCTION:
-                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.target) < 800) {
+                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.reference) < 800) {
                         timer.reset();
                         currentState = AutoDreapta.State.RELEASE_PRELOAD;
                     }
@@ -204,7 +204,7 @@ public class AutoStangaMid extends LinearOpMode {
 
                 case INTAKE_STACK:
                     intake();
-                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.target) < 600) {
+                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.reference) < 600) {
                         robot.claw.setPosition(robot.GHEARA_DESCHISA);
                         drive.followTrajectorySequenceAsync(score);
                     }

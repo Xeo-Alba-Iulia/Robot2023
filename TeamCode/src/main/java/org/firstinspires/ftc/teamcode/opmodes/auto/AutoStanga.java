@@ -166,7 +166,7 @@ public class AutoStanga extends LinearOpMode {
                     // Once `isBusy() == false`, the trajectory follower signals that it is finished
                     // We move on to the next state
                     // Make sure we use the async follow function
-                    robot.lift.target= Ridicare.POS_2;
+                    robot.lift.reference = Ridicare.POS_2;
                     robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
                     robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTER);
 
@@ -199,7 +199,7 @@ public class AutoStanga extends LinearOpMode {
 
                     }
                     if (waitTimer1.seconds() >= waitTime2) {
-                        robot.lift.target=600;
+                        robot.lift.reference =600;
                         currentState= AutoDreapta.State.PARK_ALIGN;
                         drive.followTrajectory(park_align);
 
