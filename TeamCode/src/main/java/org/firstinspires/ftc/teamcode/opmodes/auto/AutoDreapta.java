@@ -198,14 +198,14 @@ public class AutoDreapta extends LinearOpMode {
 
                     if (!drive.isBusy()) {
                         currentState = State.REACHED_JUNCTION;
-                        robot.lift.reference = Ridicare.POS_2;
+                        robot.lift.target = Ridicare.POS_2;
                         robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
                     }
                     break;
 
                 case REACHED_JUNCTION:
 
-                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.reference) < 800) {
+                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.target) < 800) {
                         timer.reset();
                         ok123=1;
                         currentState=State.RELEASE_PRELOAD;
@@ -219,7 +219,7 @@ public class AutoDreapta extends LinearOpMode {
                     }
                     if (timer.seconds() >= 4) {
                         robot.claw.setPosition(robot.GHEARA_INCHISA);
-                        robot.lift.reference = 7800;
+                        robot.lift.target = 7800;
                         robot.virtualFourBar.setPosition(0.70);
 
                         currentState = State.STACK_FAST;

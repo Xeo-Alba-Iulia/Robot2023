@@ -165,14 +165,14 @@ public class preloaddreapta extends LinearOpMode {
                     drive.followTrajectoryAsync(preload);
                     if (!drive.isBusy()) {
                         currentState = AutoDreapta.State.REACHED_JUNCTION;
-                        robot.lift.reference = Ridicare.POS_2;
+                        robot.lift.target = Ridicare.POS_2;
                         robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
                     }
                     break;
 
                 case REACHED_JUNCTION:
 
-                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.reference) < 800) {
+                    if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.target) < 800) {
                         timer.reset();
                         ok123 = 1;
                         currentState = AutoDreapta.State.RELEASE_PRELOAD;
@@ -186,7 +186,7 @@ public class preloaddreapta extends LinearOpMode {
                     }
                     if (timer.seconds() >= 4) {
                         robot.claw.setPosition(robot.GHEARA_INCHISA);
-                        robot.lift.reference = 600;
+                        robot.lift.target = 600;
                         robot.virtualFourBar.setPosition(0.4);
 
 //                        drive.followTrajectory(stack_align);

@@ -29,6 +29,11 @@ public class TeleOP extends OpMode {
     SampleMecanumDrive drive;
     TrajectorySequence junction1;
     ElapsedTime liftTimer = new ElapsedTime();
+        private double state_claw_align=robot.CLAW_ALLIGN_POS_INTAKE;
+    private static int state_lift_pos=600;
+    private double state_vfb_pos=robot.VFB_ALIGN_POSE;
+    private double increasePosVFB;
+    private double increasePosAlign;
 
     @Override
     public void init() {
@@ -51,24 +56,92 @@ public class TeleOP extends OpMode {
     }
 
 
+
+
+
+//
+//
+//    private void intakeOuttake() {
+//
+//        if (gamepad2.dpad_left    ) {
+//            state_lift_pos = Ridicare.POS_1;
+//            state_claw_align = robot.CLAW_ALLIGN_POS_LOW;
+//            state_vfb_pos = robot.VFB_LOW;
+//        } else if (gamepad2.dpad_up) {
+//            state_lift_pos = Ridicare.POS_2;
+//            state_claw_align = robot.CLAW_ALLIGN_POS_MEDIUM;
+//            state_vfb_pos = robot.VFB_MEDIUM;
+//        } else if (gamepad2.dpad_right) {
+//            state_lift_pos = Ridicare.POS_3;
+//            state_claw_align = robot.CLAW_ALLIGN_POS_HIGH;
+//            state_vfb_pos = robot.VFB_HIGH;
+//        }
+//
+//        switch (liftState) {
+//            case LIFT_START:
+//                if (state_lift_pos != 600) {
+//                    robot.lift.target = state_lift_pos;
+//                    robot.virtualFourBar.setPosition(state_vfb_pos);
+//                    robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
+//                    robot.claw.setPosition(robot.GHEARA_INCHISA);
+//                    liftState = LiftState.LIFT_EXTEND;
+//                }
+//                virtualFourBar();
+//                break;
+//
+//            case LIFT_EXTEND:
+//                if (Math.abs(-robot.lift.getCurrentPosition() - robot.lift.target) < 800) {
+//                    liftTimer.reset();
+//                    liftState = LiftState.LIFT_EXTEND2;
+//                }
+//                break;
+//            case LIFT_EXTEND2:
+//                if (liftTimer.milliseconds() > 200) {
+//                    robot.claw_alligner.setPosition(state_claw_align);
+//                    liftState = LiftState.LIFT_DUMP;
+//                }
+//                break;
+//
+//
+//            case LIFT_DUMP:
+//                if (gamepad2.dpad_down) {
+//                    robot.lift.target = 600;
+//                    state_lift_pos = robot.lift.target;
+//                    robot.virtualFourBar.setPosition(robot.VFB_ALIGN_POSE);
+//                    robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
+//                    robot.claw.setPosition(robot.GHEARA_INCHISA);
+//                    liftState = LiftState.LIFT_RETRACT;
+//                }
+//
+//            case LIFT_RETRACT:
+//                if (Math.abs(-robot.lift.getCurrentPosition() - 600) < 800) {
+//                    liftState = LiftState.LIFT_START;
+//                }
+//        }
+//
+//
+//        robot.lift.update();
+//    }
+
+
     private void intakeOuttake(){
         if(gamepad1.dpad_down) {
-           robot.lift.reference = 0;
+           robot.lift.target= 0;
            robot.virtualFourBar.setPosition(robot.VFB_INTAKE);
            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
            robot.claw.setPosition(robot.GHEARA_INCHISA);
         } else if(gamepad1.dpad_left) {
-            robot.lift.reference = Ridicare.POS_1;
+            robot.lift.target = Ridicare.POS_1;
             robot.virtualFourBar.setPosition(robot.VFB_LOW);
             robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_LOW);
             robot.claw.setPosition(robot.GHEARA_INCHISA);
         } else if(gamepad1.dpad_up) {
-            robot.lift.reference = Ridicare.POS_2;
+            robot.lift.target = Ridicare.POS_2;
             robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
             robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_MEDIUM);
             robot.claw.setPosition(robot.GHEARA_INCHISA);
         } else if(gamepad1.dpad_right) {
-            robot.lift.reference =Ridicare.POS_3;
+            robot.lift.target=Ridicare.POS_3;
             robot.virtualFourBar.setPosition(robot.VFB_HIGH);
             robot.claw.setPosition(robot.GHEARA_INCHISA);
             robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_HIGH);

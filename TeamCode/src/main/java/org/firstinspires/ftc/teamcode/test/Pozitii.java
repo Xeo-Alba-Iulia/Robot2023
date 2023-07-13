@@ -34,7 +34,7 @@ public class Pozitii extends LinearOpMode {
         waitForStart();
         if(isStopRequested()) return;
         while(opModeIsActive()) {
-            robot.lift.reference = RIDICARE;
+            robot.lift.target = RIDICARE;
             robot.lift.update();
             robot.virtualFourBar.setPosition(VFB);
             robot.claw.setPosition(GHEARA);
