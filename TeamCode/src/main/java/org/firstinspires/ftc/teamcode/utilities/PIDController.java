@@ -40,7 +40,7 @@ public class PIDController {
     public double update(double target, double state) {
         double error = target - state;
         double derivative = (error - lastError) / timer.seconds();
-        integralSum += error * timer.seconds();
+        integralSum += error * timer.seconds(); 
         // reset integral sum upon setpoint changes
         if (target != lastReference) {
             integralSum = 0;

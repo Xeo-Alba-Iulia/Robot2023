@@ -15,8 +15,8 @@ import org.firstinspires.ftc.teamcode.utilities.PIDController;
 public class Pidicare extends LinearOpMode {
 
     public static int POZITIE = 0;
-    public static double Kp = 0.024 , Ki = 0, Kd = 0, Kg=0;
-    double lastKp, lastKi, lastKd, lastKg;
+    public static double Kp = 0.024 , Ki = 0, Kd = 0;
+    double lastKp, lastKi, lastKd;
 
     double maxVelo=0;
     RobotHardware robot = new RobotHardware(this);
@@ -37,7 +37,7 @@ public class Pidicare extends LinearOpMode {
             double currentVelo = robot.ridicare1.getVelocity();
 
 
-            if(Kp != lastKp || Ki != lastKi || Kd != lastKd || Kg!=lastKg) {
+            if(Kp != lastKp || Ki != lastKi || Kd != lastKd) {
                 robot.lift.controller = new PIDController(Kp, Ki, Kd);
             }
             robot.lift.target = POZITIE;
@@ -45,14 +45,18 @@ public class Pidicare extends LinearOpMode {
             lastKp = Kp;
             lastKi = Ki;
             lastKd = Kd;
-            lastKg= Kg;
-            if(currentVelo>maxVelo) maxVelo=currentVelo;
+            if(currentVelo>maxVelo)
+                maxVelo=currentVelo;
             dashboardTelemetry.addData("Current Pos", robot.lift.getCurrentPosition());
             dashboardTelemetry.addData("Target", POZITIE);
             dashboardTelemetry.addData("pozitie ridicare 1" ,robot.ridicare1.getCurrentPosition());
             dashboardTelemetry.addData("pozitie ridicare 2", robot.ridicare2.getCurrentPosition());
-            dashboardTelemetry.addData("fortza",robot.ridicare1.getPower());
-            dashboardTelemetry.addData("Max velocity", maxVelo);
+            dashboardTelemetry.addData("Putere",robot.ridicare1.getPower());
+            robot.lift.printVelocity(dashboardTelemetry);
+            dashboardTelemetry.addData("timer", robot.lift.profileTimer.time());
+            dashboardTelemetry.addData("MP X", robot.lift.profile.get(robot.lift.profileTimer.time()).getX());
+
+
             dashboardTelemetry.update();
 
         }

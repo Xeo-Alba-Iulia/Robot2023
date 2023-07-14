@@ -29,7 +29,7 @@ public class TeleOP extends OpMode {
     SampleMecanumDrive drive;
     TrajectorySequence junction1;
     ElapsedTime liftTimer = new ElapsedTime();
-        private double state_claw_align=robot.CLAW_ALLIGN_POS_INTAKE;
+    private double state_claw_align=robot.CLAW_ALLIGN_POS_INTAKE;
     private static int state_lift_pos=600;
     private double state_vfb_pos=robot.VFB_ALIGN_POSE;
     private double increasePosVFB;
@@ -125,22 +125,22 @@ public class TeleOP extends OpMode {
 
 
     private void intakeOuttake(){
-        if(gamepad1.dpad_down) {
+        if(gamepad2.dpad_down) {
            robot.lift.target= 0;
            robot.virtualFourBar.setPosition(robot.VFB_INTAKE);
            robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_INTAKE);
            robot.claw.setPosition(robot.GHEARA_INCHISA);
-        } else if(gamepad1.dpad_left) {
-            robot.lift.target = Ridicare.POS_1;
+        } else if(gamepad2.dpad_left) {
+            robot.lift.target =Ridicare.POS_1;
             robot.virtualFourBar.setPosition(robot.VFB_LOW);
             robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_LOW);
             robot.claw.setPosition(robot.GHEARA_INCHISA);
-        } else if(gamepad1.dpad_up) {
+        } else if(gamepad2.dpad_up) {
             robot.lift.target = Ridicare.POS_2;
             robot.virtualFourBar.setPosition(robot.VFB_MEDIUM);
             robot.claw_alligner.setPosition(robot.CLAW_ALLIGN_POS_MEDIUM);
             robot.claw.setPosition(robot.GHEARA_INCHISA);
-        } else if(gamepad1.dpad_right) {
+        } else if(gamepad2.dpad_right) {
             robot.lift.target=Ridicare.POS_3;
             robot.virtualFourBar.setPosition(robot.VFB_HIGH);
             robot.claw.setPosition(robot.GHEARA_INCHISA);
@@ -151,19 +151,19 @@ public class TeleOP extends OpMode {
 
     }
     private void virtualFourBar() {
-        if (gamepad1.right_bumper) {
+        if (gamepad2.right_bumper) {
             robot.virtualFourBar.setPosition(robot.VFB_INTAKE);
 
-        } else if (gamepad1.left_bumper) {
+        } else if (gamepad2.left_bumper) {
             robot.virtualFourBar.setPosition(robot.VFB_INTER);
 
         }
     }
 
     private void claw() {
-        if (gamepad1.a != currentA) {
-            currentA = gamepad1.a;
-            if (gamepad1.a) {
+        if (gamepad2.a != currentA) {
+            currentA = gamepad2.a;
+            if (gamepad2.a) {
                 clawToggle = !clawToggle;
                 if (clawToggle) {
                     robot.claw.setPosition(robot.GHEARA_INCHISA);

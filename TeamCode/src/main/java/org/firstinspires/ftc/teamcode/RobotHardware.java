@@ -24,31 +24,25 @@ public class RobotHardware {
 
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
-    public final double VFB_ALIGN_POSE = 0.5;
 
+    public final double VFB_ALIGN_POSE = 0.5;
 
     public final double VFB_LOW_FRONT= 0.50;
 
     public final double VFB_FALLEN= 0.83;
-
     public final double VFB_LOW= 1;
 
     public final double VFB_MEDIUM= 0.95;
 
     public final double VFB_HIGH= 0.87;
-//
 
     public final double VFB_INTER=0.15;
 
     public final double VFB_OUTTAKE=0.3;
-
     public final double VFB_INTAKE=0.1;
 
-
     public final double CLAW_ALLIGN_POS_UP = 0.15;
-
     public final double CLAW_ALLIGN_POS_LOW= 0.6;
-
     public final double CLAW_ALLIGN_POS_MEDIUM=0.64;
 
 
@@ -58,7 +52,7 @@ public class RobotHardware {
     public final double CLAW_ALLIGN_POS_FALLEN = 0.85;
 
     public final double CLAW_ALLIGN_POS_INTER = 0.15;
-    public final double GHEARA_DESCHISA = 0.2;
+    public final double GHEARA_DESCHISA = 0.17;
     public final double GHEARA_INCHISA = 0.32;
 
     public final double GHEARA_INIT = 0.65;
@@ -74,6 +68,7 @@ public class RobotHardware {
     // Sisteme
     public DcMotorEx ridicare1 = null;
     public DcMotorEx ridicare2 = null;
+
     public Servo claw = null;
     public Servo claw_alligner = null;
     public ServoImplEx vFB1 = null;
@@ -103,6 +98,7 @@ public class RobotHardware {
         backLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorBackLeft");
         backRight = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorBackRight");
 
+
 //      Sisteme
         ridicare1 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareAproape");
         ridicare2 = myOpMode.hardwareMap.get(DcMotorEx.class, "RidicareDeparte");
@@ -114,6 +110,7 @@ public class RobotHardware {
         vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb2");
         vFB2.setPwmRange(new PwmControl.PwmRange(500, 2500));
         virtualFourBar = new VirtualFourBar(vFB1, vFB2);
+
 
 
 
@@ -132,6 +129,12 @@ public class RobotHardware {
 
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+//        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
+
+
 
 
 
