@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.sisteme;
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.profile.MotionProfile;
 import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
 import com.acmerobotics.roadrunner.profile.MotionState;
@@ -8,13 +10,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 public class Ridicare {
+    PIDCoefficients coefficients;
+
+    public PIDFController controller;
     public static final int POS_1 = 1250;
     public static final int POS_2 = 3100;
     public static final int POS_3 = 4100;
-    public PIDController controller;
     public int target = 0;
     public double maxVelo =20;
     public double maxAccel=50;
@@ -28,7 +31,9 @@ public class Ridicare {
         this.ridicare1 = ridicare1;
         this.ridicare2 = ridicare2;
         target = 0;
-        controller = new PIDController(0.004, 0, 0);
+        coefficients = new PIDCoefficients(0.5,0,0);
+        controller = new PIDFController(coefficients);
+        controller.setTargetPosition(target);
         profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(ridicare1.getCurrentPosition(), 0, 0),
                 new MotionState(target, 0, 0),
@@ -119,11 +124,12 @@ public class Ridicare {
                     80,
                     true
             );
+
+
         }
         //the pid controller gets the reference given by the motion profile
-        double power = controller.update(
-                profile.get(profileTimer.time()).getX(),
-                ridicare1.getCurrentPosition());
+        controller.setTargetPosition(profile.get(profileTimer.time()).getX());
+        double power = controller.update(ridicare1.getCurrentPosition());
 
         ridicare1.setPower(power);
         ridicare2.setPower(power);

@@ -2,12 +2,13 @@ package org.firstinspires.ftc.teamcode.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.control.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotHardware;
-import org.firstinspires.ftc.teamcode.utilities.PIDController;
 
 
 @Config
@@ -16,10 +17,12 @@ public class Pidicare extends LinearOpMode {
 
     public static int POZITIE = 0;
     public static double Kp = 0.024 , Ki = 0, Kd = 0;
+
     double lastKp, lastKi, lastKd;
 
     double maxVelo=0;
     RobotHardware robot = new RobotHardware(this);
+    public static double MaxVelo=20, MaxAccel=100;
     //    public static double MARGIN;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -38,8 +41,12 @@ public class Pidicare extends LinearOpMode {
 
 
             if(Kp != lastKp || Ki != lastKi || Kd != lastKd) {
-                robot.lift.controller = new PIDController(Kp, Ki, Kd);
+                PIDCoefficients coefficients = new PIDCoefficients(Kp, Ki, Kd);
+                robot.lift.controller = new PIDFController(coefficients);
+
             }
+            robot.lift.maxVelo = maxVelo;
+            robot.lift.maxAccel = MaxAccel;
             robot.lift.target = POZITIE;
             robot.lift.update();
             lastKp = Kp;
