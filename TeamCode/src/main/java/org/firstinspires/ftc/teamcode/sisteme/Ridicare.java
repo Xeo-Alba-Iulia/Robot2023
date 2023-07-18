@@ -19,8 +19,8 @@ public class Ridicare {
     public static final int POS_2 = 3100;
     public static final int POS_3 = 4100;
     public int target = 0;
-    public double maxVelo =20;
-    public double maxAccel=50;
+    public double maxVelo =2000;
+    public double maxAccel=3000;
     DcMotorEx ridicare1;
     DcMotorEx ridicare2;
     public MotionProfile profile;
@@ -32,11 +32,11 @@ public class Ridicare {
         this.ridicare2 = ridicare2;
         target = 0;
         coefficients = new PIDCoefficients(0.5,0,0);
-        controller = new PIDFController(coefficients);
+        controller = new PIDFController(coefficients, 100);
         controller.setTargetPosition(target);
         profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(ridicare1.getCurrentPosition(), 0, 0),
-                new MotionState(target, 0, 0),
+                new MotionState(0, 0, 0),
                 maxVelo,
                 maxAccel,
                 80,
@@ -128,7 +128,10 @@ public class Ridicare {
 
         }
         //the pid controller gets the reference given by the motion profile
-        controller.setTargetPosition(profile.get(profileTimer.time()).getX());
+        MotionState state = profile.get(profileTimer.time());
+        controller.setTargetPosition(state.getX());
+        controller.setTargetAcceleration(state.getA());
+        controller.setTargetVelocity(state.getV());
         double power = controller.update(ridicare1.getCurrentPosition());
 
         ridicare1.setPower(power);

@@ -20,7 +20,6 @@ public class Pidicare extends LinearOpMode {
 
     double lastKp, lastKi, lastKd;
 
-    double maxVelo=0;
     RobotHardware robot = new RobotHardware(this);
     public static double MaxVelo=20, MaxAccel=100;
     //    public static double MARGIN;
@@ -45,15 +44,13 @@ public class Pidicare extends LinearOpMode {
                 robot.lift.controller = new PIDFController(coefficients);
 
             }
-            robot.lift.maxVelo = maxVelo;
+            robot.lift.maxVelo = MaxVelo;
             robot.lift.maxAccel = MaxAccel;
             robot.lift.target = POZITIE;
             robot.lift.update();
             lastKp = Kp;
             lastKi = Ki;
             lastKd = Kd;
-            if(currentVelo>maxVelo)
-                maxVelo=currentVelo;
             dashboardTelemetry.addData("Current Pos", robot.lift.getCurrentPosition());
             dashboardTelemetry.addData("Target", POZITIE);
             dashboardTelemetry.addData("pozitie ridicare 1" ,robot.ridicare1.getCurrentPosition());
@@ -70,4 +67,3 @@ public class Pidicare extends LinearOpMode {
     }
 
 }
-

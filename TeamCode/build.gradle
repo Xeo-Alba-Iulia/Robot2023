@@ -38,6 +38,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
     implementation 'com.acmerobotics.roadrunner:core:0.5.6'
 //  EasyOpenCV
-    implementation 'org.openftc:easyopencv:1.5.3'
-    implementation 'org.openftc:apriltag:1.1.1'
+    implementation 'org.openftc:easyopencv:1.7.0'
+    implementation 'org.openftc:apriltag:2.0.0'
 }
