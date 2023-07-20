@@ -43,7 +43,7 @@ public class TunerSmecherie extends LinearOpMode {
         telemetry.update();
         waitForStart();
         telemetry.addLine("am ajuns");
-        telemetry.update();
+        telemetry.update();//pt commit
         drive.setPoseEstimate(startPose);
 
         for (int i = 0; i < NUM; i++) {
