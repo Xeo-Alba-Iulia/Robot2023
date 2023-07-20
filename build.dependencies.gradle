@@ -24,6 +24,6 @@ dependencies {
     implementation 'org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0'
     implementation 'org.firstinspires.ftc:Vision:8.2.0'
 //    External Libraries
-    implementation 'com.acmerobotics.dashboard:dashboard:0.4.9'
-}
+    implementation 'com.acmerobotics.dashboard:dashboard:0.4.10'
+}9
 
