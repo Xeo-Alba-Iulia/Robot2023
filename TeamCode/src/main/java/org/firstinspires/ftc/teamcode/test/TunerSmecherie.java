@@ -7,20 +7,29 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.Angle;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.MovingStatistics;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.util.Encoder;
 
-@Autonomous(name = "mafutinwindows")
+@Autonomous(name = "its 1 am i want to sleep")
 public class TunerSmecherie extends LinearOpMode {
     private SampleMecanumDrive drive;
     double heading = 0;
-    Encoder leftEncoder;
-    Encoder rightEncoder;
+    private DcMotorEx leftEncoder;
+    private DcMotorEx rightEncoder;
+    private MovingStatistics statsRight;
+    private MovingStatistics statsLeft;
+    private double resultRight = 0;
+    private double resultLeft = 0;
 
     public static double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * 1 * ticks / TICKS_PER_REV;
@@ -32,47 +41,58 @@ public class TunerSmecherie extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
         Pose2d startPose = new Pose2d(0, 0 ,Math.toRadians(90));
-        int NUM = 5;
-        double leftEncoderSum = 0;
-        double rightEncoderSum = 0;
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "MotorBackRight"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "MotorBackLeft"));
-
-        double headingAccumulator = 0;
-        telemetry.addLine("ce pizdas masii");
-        telemetry.update();
+        int NUM = 10;
+        leftEncoder = hardwareMap.get(DcMotorEx.class, "MotorBackRight");
+        rightEncoder = hardwareMap.get(DcMotorEx.class, "MotorBackLeft");
+        leftEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftEncoder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightEncoder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        statsRight = new MovingStatistics(NUM);
+        statsLeft = new MovingStatistics(NUM);
+        double leftTravel = 0;
+        double rightTravel = 0;
         waitForStart();
-        telemetry.addLine("am ajuns");
-        telemetry.update();//pt commit
         drive.setPoseEstimate(startPose);
-
+        IMU imu = hardwareMap.get(IMU.class, "imu");
+        imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(
+                DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR)
+        ));
+        double lastLeft = 0;
+        double lastRight = 0;
         for (int i = 0; i < NUM; i++) {
-            telemetry.clear();
-            telemetry.addLine("am intrat");
-            telemetry.update();
 
             // it is important to handle heading wraparounds
+            double headingAccumulator = 0;
             double lastHeading = 0;
+            drive.turnAsync(Math.toRadians(180));
 
-            drive.turnAsync(Math.toRadians(360));
 
             while (!isStopRequested() && drive.isBusy()) {
-                double heading = drive.getPoseEstimate().getHeading();
-                headingAccumulator += Angle.normDelta(heading - lastHeading);
+                double externalHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+                headingAccumulator += Angle.normDelta(externalHeading - lastHeading);
                 lastHeading = heading;
-                leftEncoderSum += encoderTicksToInches(leftEncoder.getCurrentPosition());
-                rightEncoderSum += encoderTicksToInches(rightEncoder.getCurrentPosition());
+                drive.update();
 
             }
-
-            telemetry.addData("Acumulator", headingAccumulator);
-            telemetry.addData("Suma Stanga", leftEncoderSum);
-            telemetry.addData("Suma Dreapta", rightEncoderSum);
+            rightTravel = encoderTicksToInches(rightEncoder.getCurrentPosition()) - lastRight;
+            leftTravel = encoderTicksToInches(leftEncoder.getCurrentPosition()) - lastLeft;
+            lastRight =encoderTicksToInches(rightEncoder.getCurrentPosition());
+            lastLeft = encoderTicksToInches(leftEncoder.getCurrentPosition());
+            resultRight = rightTravel / headingAccumulator;
+            resultLeft = leftTravel / headingAccumulator;
+            statsRight.add(resultRight);
+            statsLeft.add(resultLeft);
+            telemetry.update();
+            telemetry.addData("Acumulator rads", headingAccumulator);
+            telemetry.addData("Acumulator deg", Math.toDegrees(headingAccumulator));
+            telemetry.addData("Suma Stanga", leftTravel);
+            telemetry.addData("Suma Dreapta", rightTravel);
             telemetry.update();
             sleep(1000);
         }
-        telemetry.addData("raza dreapta", rightEncoderSum / headingAccumulator);
-        telemetry.addData("raza stanga", leftEncoderSum/headingAccumulator);
+        telemetry.addData("raza dreapta", statsRight.getMean());
+        telemetry.addData("raza stanga", statsLeft.getMean());
         telemetry.update();
     }
 
