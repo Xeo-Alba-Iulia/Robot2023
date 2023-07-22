@@ -22,14 +22,6 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Autonomous(name = "its 1 am i want to sleep")
 public class TunerSmecherie extends LinearOpMode {
-    private SampleMecanumDrive drive;
-    double heading = 0;
-    private DcMotorEx leftEncoder;
-    private DcMotorEx rightEncoder;
-    private MovingStatistics statsRight;
-    private MovingStatistics statsLeft;
-    private double resultRight = 0;
-    private double resultLeft = 0;
 
     public static double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * 1 * ticks / TICKS_PER_REV;
@@ -37,19 +29,19 @@ public class TunerSmecherie extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        drive= new SampleMecanumDrive(hardwareMap);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
         Pose2d startPose = new Pose2d(0, 0 ,Math.toRadians(90));
         int NUM = 10;
-        leftEncoder = hardwareMap.get(DcMotorEx.class, "MotorBackRight");
-        rightEncoder = hardwareMap.get(DcMotorEx.class, "MotorBackLeft");
+        DcMotorEx leftEncoder = hardwareMap.get(DcMotorEx.class, "MotorBackRight");
+        DcMotorEx rightEncoder = hardwareMap.get(DcMotorEx.class, "MotorBackLeft");
         leftEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftEncoder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightEncoder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        statsRight = new MovingStatistics(NUM);
-        statsLeft = new MovingStatistics(NUM);
+        MovingStatistics statsRight = new MovingStatistics(NUM);
+        MovingStatistics statsLeft = new MovingStatistics(NUM);
         double leftTravel = 0;
         double rightTravel = 0;
         waitForStart();
@@ -71,7 +63,7 @@ public class TunerSmecherie extends LinearOpMode {
             while (!isStopRequested() && drive.isBusy()) {
                 double externalHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
                 headingAccumulator += Angle.normDelta(externalHeading - lastHeading);
-                lastHeading = heading;
+                lastHeading = externalHeading;
                 drive.update();
 
             }
@@ -79,15 +71,15 @@ public class TunerSmecherie extends LinearOpMode {
             leftTravel = encoderTicksToInches(leftEncoder.getCurrentPosition()) - lastLeft;
             lastRight =encoderTicksToInches(rightEncoder.getCurrentPosition());
             lastLeft = encoderTicksToInches(leftEncoder.getCurrentPosition());
-            resultRight = rightTravel / headingAccumulator;
-            resultLeft = leftTravel / headingAccumulator;
+            double resultRight = rightTravel / headingAccumulator;
+            double resultLeft = leftTravel / headingAccumulator;
             statsRight.add(resultRight);
             statsLeft.add(resultLeft);
             telemetry.update();
             telemetry.addData("Acumulator rads", headingAccumulator);
             telemetry.addData("Acumulator deg", Math.toDegrees(headingAccumulator));
-            telemetry.addData("Suma Stanga", leftTravel);
-            telemetry.addData("Suma Dreapta", rightTravel);
+            telemetry.addData("Distanta Stanga", leftTravel);
+            telemetry.addData("Distanta Dreapta", rightTravel);
             telemetry.update();
             sleep(1000);
         }
